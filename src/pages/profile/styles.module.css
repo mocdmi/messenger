@@ -1,0 +1,25 @@
+.detail {
+    margin-bottom: 40px;
+}
+
+.row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid var(--gray-color);
+    font-size: var(--font-size-m);
+    padding: 10px 0;
+
+    &:first-child {
+        border-top: 0;
+    }
+}
+
+.label {
+    font-weight: 500;
+}
+
+.value {
+    color: var(--dark-gray-color);
+    text-align: right;
+}

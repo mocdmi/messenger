@@ -1,0 +1,129 @@
+.input {
+    position: relative;
+    display: block;
+}
+
+.themeDefault {
+    .field {
+        --height: 32px;
+
+        background: none;
+        font-size: var(--font-size-s);
+        border: 0;
+        border-bottom: 1px solid var(--primary-color);
+        height: var(--height);
+        box-sizing: border-box;
+        padding: 0;
+    }
+
+    .text {
+        font-size: var(--font-size-s);
+    }
+}
+
+.themeColor {
+    .field {
+        --height: 32px;
+
+        background: var(--gray-color);
+        font-size: var(--font-size-s);
+        border: 0;
+        border-radius: 5px;
+        height: var(--height);
+        box-sizing: border-box;
+        padding: 0 20px;
+    }
+
+    .text {
+        font-size: var(--font-size-s);
+    }
+}
+
+.themeBlank {
+    .field {
+        background: none;
+        font-size: var(--font-size-s);
+        border: 0;
+        height: 13px;
+        padding: 0;
+    }
+
+    .placeholder {
+        padding: 0;
+    }
+
+    .text {
+        font-size: var(--font-size-s);
+    }
+}
+
+.label {
+    font-size: var(--font-size-xs);
+    color: var(--dark-gray-color);
+}
+
+.field {
+    font-family: "Inter", serif;
+    color: inherit;
+    width: 100%;
+    outline: none;
+
+    /* Хак: скрываем плейсхолдер в фокусе или не пустой */
+    &:focus,
+    &:not(:placeholder-shown) {
+        & + .placeholder {
+            justify-content: left;
+
+            .text {
+                display: none;
+            }
+        }
+    }
+
+    &.rounded {
+        border-radius: calc(var(--height) / 2);
+    }
+
+    &.withIcon {
+        padding-left: 40px;
+    }
+
+    &.alignRight {
+        text-align: right;
+    }
+}
+
+.placeholder {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    color: var(--dark-gray-color);
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+    pointer-events: none;
+    box-sizing: border-box;
+    padding: 0 20px;
+
+    &.placeholderCenter {
+        justify-content: center;
+        text-align: center;
+    }
+
+    &.placeholderRight {
+        justify-content: end;
+        text-align: right;
+    }
+}
+
+.icon {
+    margin-left: -10px;
+
+    &[data-icon=search] {
+        background: url('../../assets/images/search.svg') no-repeat center center;
+        width: 20px;
+        height: 20px;
+    }
+}
