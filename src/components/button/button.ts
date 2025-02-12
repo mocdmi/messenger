@@ -7,7 +7,8 @@ export default `
                 {{#if theme-default}}${styles.themeDefault}{{/if}}
                 {{#if theme-blank}}${styles.themeBlank}{{/if}}
                 {{#if theme-blank-light}}${styles.themeBlankLight}{{/if}}
-                {{#if active}}${styles.active}{{/if}}">
+                {{#if active}}${styles.active}{{/if}}"
+        type="{{type}}">
     {{#if icon}}<div class="${styles.icon} {{#if label}}${styles.iconOffset}{{/if}}" data-icon="{{icon}}"></div>{{/if}}
     {{label}}
 </button>

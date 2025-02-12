@@ -45,7 +45,7 @@
     height: 100%;
     width: 100%;
     border-radius: 50%;
-    color: #ffffff;
+    color: var(--light-color);
     box-sizing: border-box;
     padding: 50px;
 }

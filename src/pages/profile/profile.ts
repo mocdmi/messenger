@@ -11,7 +11,7 @@ export default `
             </div>
         {{/each}}
     </div>
-    <div>
+    <nav>
         <div class="${styles.row}">
             {{> Link href="#" theme-default=true label="Изменить данные" }}
         </div>
@@ -21,6 +21,6 @@ export default `
         <div class="${styles.row}">
             {{> Link href="#" theme-danger=true label="Выйти" }}
         </div>
-    </div>
+    </nav>
 {{/Profile}}
 `;

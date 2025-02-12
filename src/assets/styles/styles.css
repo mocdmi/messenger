@@ -7,12 +7,14 @@
     --font-size-l: 15px;
     --font-size-xl: 20px;
     --font-color: #1E1E1E;
+    --light-color: #FFFFFF;
     --light-gray-color: #FBFBFB;
     --gray-color: #EFEFEF;
     --dark-gray-color: #999999;
     --primary-color: #3369F3;
     --danger-color: #FF0000;
     --active-group-color: #E4EDFD;
+    --dark-color: #000000;
 }
 
 body {

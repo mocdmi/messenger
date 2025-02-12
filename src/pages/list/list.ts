@@ -3,7 +3,8 @@ import styles from './styles.module.css';
 // language=Handlebars
 export default `
 <main class="${styles.list}">
-    <ul class="${styles.nav}">
+    <nav>
+        <ul class="${styles.nav}">
         <li class="${styles.item}">
             {{> Link theme-default=true to="chat" label="Chat page"}}
         </li>
@@ -29,5 +30,6 @@ export default `
             {{> Link theme-default=true to="not-found" label="Not found page"}}
         </li>
     </ul>
+    </nav>
 </main>
 `;

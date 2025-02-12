@@ -2,7 +2,7 @@ import styles from './styles.module.css';
 
 // language=Handlebars
 export default `
-<main class="${styles.main}">
+<div class="${styles.main}">
     <header class="${styles.header}">
         <div class="${styles.info}">
             <div class="${styles.avatar}"></div>
@@ -69,5 +69,5 @@ export default `
             </div>
         </form>
     {{/Popup}}
-</main>
+</div>
 `;

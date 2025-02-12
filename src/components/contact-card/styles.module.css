@@ -64,7 +64,7 @@
     align-items: center;
     justify-content: center;
     background-color: var(--primary-color);
-    color: #ffffff;
+    color: var(--light-color);
     font-weight: 500;
     font-size: var(--font-size-xs);
     width: 20px;

@@ -17,13 +17,13 @@ export default `
         placeholder=""
         {{#if required}}required{{/if}}
     />
-    <div class="${styles.placeholder}
+    <span class="${styles.placeholder}
                 {{#if placeholder-center}}${styles.placeholderCenter}{{/if}}
                 {{#if placeholder-right}}${styles.placeholderRight}{{/if}}">
-        {{#if icon}}<div class="${styles.icon}" data-icon="{{icon}}"></div>{{/if}}
-        <div class="${styles.text}">
+        {{#if icon}}<span class="${styles.icon}" data-icon="{{icon}}"></span>{{/if}}
+        <span class="${styles.text}">
             {{placeholder}}
-        </div>
-    </div>
+        </span>
+    </span>
 </label>
 `;

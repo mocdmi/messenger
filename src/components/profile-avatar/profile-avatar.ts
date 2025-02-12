@@ -18,7 +18,7 @@ export default `
                     Выбрать файл на<br />
                     компьютере
                 </div>
-                <input type="file" name="upload" accept="image/*" class="${styles.input}" />
+                <input type="file" name="avatar" accept="image/*" class="${styles.input}" />
             </label>
             <div class="${styles.actionSubmit}">
                 {{> Button type="submit" theme-default=true label="Поменять"}}

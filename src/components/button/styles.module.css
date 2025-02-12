@@ -20,7 +20,7 @@
 
 .themeDefault {
     background: var(--primary-color);
-    color: #ffffff;
+    color: var(--light-color);
     min-width: 280px;
     height: 37px;
     border-radius: 8px;
@@ -33,7 +33,7 @@
 }
 
 .themeBlankLight {
-    color: #ffffff;
+    color: var(--light-color);
 }
 
 .icon {
