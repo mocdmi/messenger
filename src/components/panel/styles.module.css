@@ -1,0 +1,8 @@
+.panel {
+    max-width: 340px;
+    width: 100%;
+    height: auto;
+    border-radius: 12px;
+    background: var(--light-color);
+    box-shadow: 0 0 6px rgba(0, 0, 0, 0.14);
+}

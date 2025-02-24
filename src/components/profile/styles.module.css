@@ -1,0 +1,29 @@
+.profile {
+    height: 100vh;
+    box-sizing: border-box;
+    padding: 60px 20px;
+}
+
+.inner {
+    max-width: 510px;
+    height: auto;
+    margin: 0 auto;
+}
+
+.avatar {
+    margin-bottom: 40px;
+}
+
+.back {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 64px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: var(--light-gray-color);
+    border-right: 1px solid var(--gray-color);
+}

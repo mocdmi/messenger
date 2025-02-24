@@ -1,0 +1,12 @@
+.link {
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.themeDefault {
+    color: var(--primary-color);
+}
+
+.themeDanger {
+    color: var(--danger-color);
+}
