@@ -2,14 +2,41 @@ import { Button, LabelInput } from '../../../components';
 import { Block } from '../../../core';
 import styles from '../styles.module.css';
 
-export default class SignInForm extends Block {
+interface SignInFormProps {
+    formState: {
+        email: string;
+        login: string;
+        first_name: string;
+        second_name: string;
+        phone: string;
+        password: string;
+        confirm_password: string;
+    };
+}
+
+export default class SignInForm extends Block<SignInFormProps> {
     constructor() {
         super(
             'form',
             {
+                formState: {
+                    email: '',
+                    login: '',
+                    first_name: '',
+                    second_name: '',
+                    phone: '',
+                    password: '',
+                    confirm_password: '',
+                },
                 attrs: {
                     action: '#',
                     method: 'POST',
+                },
+                events: {
+                    submit: (e) => {
+                        e.preventDefault();
+                        console.log(this.props.formState);
+                    },
                 },
             },
             {
@@ -20,6 +47,17 @@ export default class SignInForm extends Block {
                     label: 'Почта',
                     'theme-default': true,
                     required: true,
+                    onChange: (e: Event) => {
+                        const el = e.target as HTMLInputElement;
+
+                        this.setProps({
+                            ...this.props,
+                            formState: {
+                                ...this.props.formState,
+                                email: el.value,
+                            },
+                        });
+                    },
                 }) as Block,
                 LoginInput: new LabelInput({
                     'theme-default': true,
@@ -28,6 +66,17 @@ export default class SignInForm extends Block {
                     type: 'text',
                     label: 'Логин',
                     required: true,
+                    onChange: (e: Event) => {
+                        const el = e.target as HTMLInputElement;
+
+                        this.setProps({
+                            ...this.props,
+                            formState: {
+                                ...this.props.formState,
+                                login: el.value,
+                            },
+                        });
+                    },
                 }) as Block,
                 FirstNameInput: new LabelInput({
                     'theme-default': true,
@@ -36,6 +85,17 @@ export default class SignInForm extends Block {
                     type: 'text',
                     label: 'Имя',
                     required: true,
+                    onChange: (e: Event) => {
+                        const el = e.target as HTMLInputElement;
+
+                        this.setProps({
+                            ...this.props,
+                            formState: {
+                                ...this.props.formState,
+                                first_name: el.value,
+                            },
+                        });
+                    },
                 }) as Block,
                 SecondNameInput: new LabelInput({
                     'theme-default': true,
@@ -44,6 +104,17 @@ export default class SignInForm extends Block {
                     type: 'text',
                     label: 'Фамилия',
                     required: true,
+                    onChange: (e: Event) => {
+                        const el = e.target as HTMLInputElement;
+
+                        this.setProps({
+                            ...this.props,
+                            formState: {
+                                ...this.props.formState,
+                                second_name: el.value,
+                            },
+                        });
+                    },
                 }) as Block,
                 PhoneInput: new LabelInput({
                     'theme-default': true,
@@ -52,6 +123,17 @@ export default class SignInForm extends Block {
                     type: 'text',
                     label: 'Телефон',
                     required: true,
+                    onChange: (e: Event) => {
+                        const el = e.target as HTMLInputElement;
+
+                        this.setProps({
+                            ...this.props,
+                            formState: {
+                                ...this.props.formState,
+                                phone: el.value,
+                            },
+                        });
+                    },
                 }) as Block,
                 PasswordInput: new LabelInput({
                     'theme-default': true,
@@ -60,6 +142,17 @@ export default class SignInForm extends Block {
                     type: 'password',
                     label: 'Пароль',
                     required: true,
+                    onChange: (e: Event) => {
+                        const el = e.target as HTMLInputElement;
+
+                        this.setProps({
+                            ...this.props,
+                            formState: {
+                                ...this.props.formState,
+                                password: el.value,
+                            },
+                        });
+                    },
                 }) as Block,
                 ConfirmPasswordInput: new LabelInput({
                     'theme-default': true,
@@ -68,6 +161,17 @@ export default class SignInForm extends Block {
                     type: 'password',
                     label: 'Пароль (ещё раз)',
                     required: true,
+                    onChange: (e: Event) => {
+                        const el = e.target as HTMLInputElement;
+
+                        this.setProps({
+                            ...this.props,
+                            formState: {
+                                ...this.props.formState,
+                                confirm_password: el.value,
+                            },
+                        });
+                    },
                 }) as Block,
                 SignInButton: new Button({
                     'theme-default': true,

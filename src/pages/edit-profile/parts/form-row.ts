@@ -3,8 +3,12 @@ import { ProfileDetail } from '../../../context/types/ProfileContext';
 import { Block } from '../../../core';
 import styles from '../styles.module.css';
 
+interface FormRowProps extends ProfileDetail {
+    handlerOnChange: (value: string) => void;
+}
+
 export default class FormRow extends Block<ProfileDetail> {
-    constructor(props: ProfileDetail) {
+    constructor(props: FormRowProps) {
         super(
             'div',
             {
@@ -18,6 +22,10 @@ export default class FormRow extends Block<ProfileDetail> {
                     'theme-blank': true,
                     'align-right': true,
                     'placeholder-right': true,
+                    onChange: (e: Event) => {
+                        const el = e.target as HTMLInputElement;
+                        props.handlerOnChange(el.value);
+                    },
                 }) as Block,
             },
         );

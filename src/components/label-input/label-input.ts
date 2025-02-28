@@ -18,6 +18,7 @@ export interface LabelInputProps {
     name: string;
     value: string;
     required?: boolean;
+    onChange?: (e: Event) => void;
 }
 
 export default class LabelInput extends Block<LabelInputProps> {
@@ -46,6 +47,7 @@ export default class LabelInput extends Block<LabelInputProps> {
                     value: props.value,
                     placeholder: '',
                     required: props.required,
+                    onChange: props.onChange,
                 }) as Block,
             },
         );

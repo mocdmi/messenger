@@ -2,14 +2,29 @@ import { Button, LabelInput } from '../../../components';
 import { Block } from '../../../core';
 import styles from '../styles.module.css';
 
-export default class RemoveContactForm extends Block {
+interface RemoveContactFormProps {
+    formState: {
+        login: string;
+    };
+}
+
+export default class RemoveContactForm extends Block<RemoveContactFormProps> {
     constructor() {
         super(
             'form',
             {
+                formState: {
+                    login: '',
+                },
                 attrs: {
                     action: '#',
                     method: 'POST',
+                },
+                events: {
+                    submit: (e) => {
+                        e.preventDefault();
+                        console.log(this.props.formState);
+                    },
                 },
             },
             {
@@ -20,6 +35,16 @@ export default class RemoveContactForm extends Block {
                     type: 'text',
                     label: 'Логин',
                     required: true,
+                    onChange: (e: Event) => {
+                        const el = e.target as HTMLInputElement;
+
+                        this.setProps({
+                            formState: {
+                                ...this.props.formState,
+                                login: el.value,
+                            },
+                        });
+                    },
                 }) as Block,
                 RemoveButton: new Button({
                     'theme-default': true,

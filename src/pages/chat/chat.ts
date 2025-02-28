@@ -66,7 +66,7 @@ export default class Chat extends Block<ChatProps> {
                     });
                 },
             }) as Block,
-            MessageForm: new MessageForm(),
+            MessageForm: new MessageForm() as Block,
         });
     }
 

@@ -49,6 +49,7 @@ const profileContext: ProfileContext = {
     name: 'Иван',
     password: '123456',
     showEditAvatar: false,
+
     detail,
 };
 

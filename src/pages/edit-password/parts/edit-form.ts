@@ -3,15 +3,34 @@ import { ProfileContext } from '../../../context/types/ProfileContext';
 import { Block } from '../../../core';
 import styles from '../styles.module.css';
 
-export default class EditForm extends Block<ProfileContext> {
+interface EditFormProps extends ProfileContext {
+    formState: {
+        oldPassword: string;
+        newPassword: string;
+        newPasswordConfirm: string;
+    };
+}
+
+export default class EditForm extends Block<EditFormProps> {
     constructor(props: ProfileContext) {
         super(
             'form',
             {
                 ...props,
+                formState: {
+                    oldPassword: props.password,
+                    newPassword: '',
+                    newPasswordConfirm: '',
+                },
                 attrs: {
                     action: '#',
                     method: 'POST',
+                },
+                events: {
+                    submit: (e) => {
+                        e.preventDefault();
+                        console.log(this.props.formState);
+                    },
                 },
             },
             {
@@ -23,6 +42,17 @@ export default class EditForm extends Block<ProfileContext> {
                     name: 'oldPassword',
                     value: props.password,
                     required: true,
+                    onChange: (e: Event) => {
+                        const el = e.target as HTMLInputElement;
+
+                        this.setProps({
+                            ...this.props,
+                            formState: {
+                                ...this.props.formState,
+                                oldPassword: el.value,
+                            },
+                        });
+                    },
                 }) as Block,
                 NewPasswordInput: new LabelInput({
                     'theme-blank': true,
@@ -32,6 +62,17 @@ export default class EditForm extends Block<ProfileContext> {
                     name: 'newPassword',
                     value: '',
                     required: true,
+                    onChange: (e: Event) => {
+                        const el = e.target as HTMLInputElement;
+
+                        this.setProps({
+                            ...this.props,
+                            formState: {
+                                ...this.props.formState,
+                                newPassword: el.value,
+                            },
+                        });
+                    },
                 }) as Block,
                 NewPasswordConfirmInput: new LabelInput({
                     'theme-blank': true,
@@ -41,6 +82,17 @@ export default class EditForm extends Block<ProfileContext> {
                     name: 'newPasswordConfirm',
                     value: '',
                     required: true,
+                    onChange: (e: Event) => {
+                        const el = e.target as HTMLInputElement;
+
+                        this.setProps({
+                            ...this.props,
+                            formState: {
+                                ...this.props.formState,
+                                newPasswordConfirm: el.value,
+                            },
+                        });
+                    },
                 }) as Block,
                 SendButton: new Button({
                     'theme-default': true,

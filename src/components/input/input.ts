@@ -8,6 +8,7 @@ interface InputAttrs {
     accept?: string;
     placeholder?: string;
     required?: boolean;
+    onChange?: (e: Event) => void;
 }
 
 interface InputProps extends InputAttrs {
@@ -33,6 +34,9 @@ export default class Input extends Block<InputProps, InputAttrs> {
 
                 return attrs;
             })(),
+            events: {
+                ...(props.onChange ? { change: props.onChange } : {}),
+            },
         });
     }
 

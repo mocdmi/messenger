@@ -2,14 +2,31 @@ import { Button, LabelInput } from '../../../components';
 import { Block } from '../../../core';
 import styles from '../styles.module.css';
 
-export default class LoginForm extends Block {
+interface LoginFormProps {
+    formState: {
+        login: string;
+        password: string;
+    };
+}
+
+export default class LoginForm extends Block<LoginFormProps> {
     constructor() {
         super(
             'form',
             {
+                formState: {
+                    login: '',
+                    password: '',
+                },
                 attrs: {
                     action: '#',
                     method: 'POST',
+                },
+                events: {
+                    submit: (e) => {
+                        e.preventDefault();
+                        console.log(this.props.formState);
+                    },
                 },
             },
             {
@@ -20,6 +37,17 @@ export default class LoginForm extends Block {
                     type: 'text',
                     label: 'Логин',
                     required: true,
+                    onChange: (e: Event) => {
+                        const el = e.target as HTMLInputElement;
+
+                        this.setProps({
+                            ...this.props,
+                            formState: {
+                                ...this.props.formState,
+                                login: el.value,
+                            },
+                        });
+                    },
                 }) as Block,
                 PasswordInput: new LabelInput({
                     'theme-default': true,
@@ -28,6 +56,17 @@ export default class LoginForm extends Block {
                     type: 'password',
                     label: 'Пароль',
                     required: true,
+                    onChange: (e: Event) => {
+                        const el = e.target as HTMLInputElement;
+
+                        this.setProps({
+                            ...this.props,
+                            formState: {
+                                ...this.props.formState,
+                                password: el.value,
+                            },
+                        });
+                    },
                 }) as Block,
                 LoginButton: new Button({
                     'theme-default': true,

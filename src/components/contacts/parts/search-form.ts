@@ -2,15 +2,30 @@ import { Block } from '../../../core';
 import { LabelInput } from '../../label-input';
 import styles from '../styles.module.css';
 
-export default class SearchForm extends Block {
+interface SearchFormProps {
+    formState: {
+        search: string;
+    };
+}
+
+export default class SearchForm extends Block<SearchFormProps> {
     constructor() {
         super(
             'form',
             {
+                formState: {
+                    search: '',
+                },
                 className: styles.search,
                 attrs: {
                     action: '#',
                     method: 'POST',
+                },
+                events: {
+                    submit: (e) => {
+                        e.preventDefault();
+                        console.log(this.props.formState);
+                    },
                 },
             },
             {
@@ -23,6 +38,16 @@ export default class SearchForm extends Block {
                     name: 'search',
                     value: '',
                     required: true,
+                    onChange: (e: Event) => {
+                        const el = e.target as HTMLInputElement;
+
+                        this.setProps({
+                            formState: {
+                                ...this.props.formState,
+                                search: el.value,
+                            },
+                        });
+                    },
                 }) as Block,
             },
         );
