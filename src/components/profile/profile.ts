@@ -1,5 +1,6 @@
 import { Block } from '../../core';
-import { Button } from '../button';
+import { PageNames } from '../../types/page-names';
+import { Link } from '../link';
 import { ProfileAvatar } from '../profile-avatar';
 import styles from './styles.module.css';
 
@@ -19,11 +20,10 @@ export default class Profile extends Block<ProfileProps> {
             {
                 Avatar: new ProfileAvatar(props) as Block,
                 Body: Array.isArray(props.Children) ? props.Children : [props.Children],
-                BackButton: new Button({
-                    'theme-default': true,
-                    rounded: true,
-                    icon: 'prev',
-                    type: 'button',
+                BackButton: new Link({
+                    label: 'Back',
+                    to: PageNames.CHAT,
+                    modificator: styles.backLink,
                 }) as Block,
             },
         );

@@ -7,11 +7,11 @@ interface LinkAttrs {
 }
 
 interface LinkProps extends LinkAttrs {
+    'theme-default'?: boolean;
+    'theme-danger'?: boolean;
     label: string;
     to?: string;
     href?: string;
-    'theme-default'?: boolean;
-    'theme-danger'?: boolean;
     modificator?: string;
 }
 

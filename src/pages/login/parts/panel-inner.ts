@@ -1,5 +1,6 @@
 import { Link } from '../../../components';
 import { Block } from '../../../core';
+import { PageNames } from '../../../types/page-names';
 import styles from '../styles.module.css';
 import LoginForm from './login-form';
 
@@ -15,7 +16,7 @@ export default class PanelInner extends Block {
                 SignInLink: new Link({
                     'theme-default': true,
                     label: 'Нет аккаунта?',
-                    href: '#',
+                    to: PageNames.SIGN_IN,
                 }) as Block,
             },
         );

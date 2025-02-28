@@ -1,6 +1,7 @@
 import { Link } from '../../components';
 import { ErrorContext } from '../../context/types/ErrorContext';
 import { Block } from '../../core';
+import { PageNames } from '../../types/page-names';
 import styles from './styles.module.css';
 
 export default class ErrorPage extends Block<ErrorContext> {
@@ -9,7 +10,7 @@ export default class ErrorPage extends Block<ErrorContext> {
             BackLink: new Link({
                 'theme-default': true,
                 label: 'Назад к чатам',
-                href: '#',
+                to: PageNames.CHAT,
             }) as Block,
         });
     }

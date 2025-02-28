@@ -1,5 +1,6 @@
 import { Link } from '../../../components';
 import { Block } from '../../../core';
+import { PageNames } from '../../../types/page-names';
 import styles from '../styles.module.css';
 import SignInForm from './sign-in-form';
 
@@ -15,7 +16,7 @@ export default class PanelInner extends Block {
                 LoginLink: new Link({
                     'theme-default': true,
                     label: 'Войти',
-                    href: '#',
+                    to: PageNames.LOGIN,
                 }) as Block,
             },
         );
