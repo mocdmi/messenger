@@ -5,27 +5,46 @@ import * as Pages from './pages';
 import './assets/styles/styles.css';
 import { PageNames } from './types/page-names';
 
+type PageComponent = new (context?: object) => Block;
+
 type PagesConfig = Record<
     PageNames,
     {
-        component: (typeof Pages)[keyof typeof Pages];
+        component: PageComponent;
         context?: object;
     }
 >;
 
 const pages: PagesConfig = {
-    [PageNames.CHAT]: { component: Pages.ChatPage, context: context.chatContext },
+    [PageNames.LOGIN]: { component: Pages.LoginPage as PageComponent },
+    [PageNames.LIST]: { component: Pages.ListPage as PageComponent },
+    [PageNames.CHAT]: { component: Pages.ChatPage as PageComponent, context: context.chatContext },
+    [PageNames.SIGN_IN]: { component: Pages.SignInPage },
+
     [PageNames.EDIT_PASSWORD]: {
-        component: Pages.EditPasswordPage,
+        component: Pages.EditPasswordPage as PageComponent,
         context: context.profileContext,
     },
-    [PageNames.EDIT_PROFILE]: { component: Pages.EditProfilePage, context: context.profileContext },
-    [PageNames.LOGIN]: { component: Pages.LoginPage },
-    [PageNames.LIST]: { component: Pages.ListPage },
-    [PageNames.PROFILE]: { component: Pages.ProfilePage, context: context.profileContext },
-    [PageNames.SIGN_IN]: { component: Pages.SignInPage },
-    [PageNames.SERVER_ERROR]: { component: Pages.ErrorPage, context: context.errorServerContext },
-    [PageNames.NOT_FOUND]: { component: Pages.ErrorPage, context: context.errorNotFoundContext },
+
+    [PageNames.EDIT_PROFILE]: {
+        component: Pages.EditProfilePage as PageComponent,
+        context: context.profileContext,
+    },
+
+    [PageNames.PROFILE]: {
+        component: Pages.ProfilePage as PageComponent,
+        context: context.profileContext,
+    },
+
+    [PageNames.SERVER_ERROR]: {
+        component: Pages.ErrorPage as PageComponent,
+        context: context.errorServerContext,
+    },
+
+    [PageNames.NOT_FOUND]: {
+        component: Pages.ErrorPage as PageComponent,
+        context: context.errorNotFoundContext,
+    },
 };
 
 function navigate(page: PageNames): void {
@@ -33,7 +52,7 @@ function navigate(page: PageNames): void {
     const container = document.getElementById('app');
 
     if (container) {
-        renderDom(new component(context) as Block); // TODO: Решить проблему с типом
+        renderDom(new component(context) as Block);
     }
 }
 
