@@ -44,10 +44,6 @@ export default class UploadForm extends Block {
             <div class="${styles.actionSubmit}">
                 {{{SendButton}}}
             </div>
-            <div class="${styles.label}">
-                Выбрать файл на<br />
-                компьютере
-            </div>
         `;
     }
 }

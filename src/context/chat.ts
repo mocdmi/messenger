@@ -26,9 +26,6 @@ const contacts: Contact[] = [
 ];
 
 const chatContext: ChatContext = {
-    showActions: false,
-    showAddAction: false,
-    showRemoveAction: false,
     contacts,
 };
 

@@ -10,10 +10,16 @@ export default class Popup extends Block<PopupProps> {
             'div',
             {
                 ...props,
-                className: `
-                    ${styles.popup}
-                    ${props.active ? styles.active : ''}
-                `,
+                className: styles.popup,
+                events: {
+                    click: (e) => {
+                        const el = e.target as HTMLElement;
+
+                        if (!el.classList.contains(styles.inner)) {
+                            props.handlerHidePopup();
+                        }
+                    },
+                },
             },
             {
                 Body: new Panel({

@@ -7,8 +7,5 @@ export interface Contact {
 }
 
 export interface ChatContext {
-    showActions: boolean;
-    showAddAction: boolean;
-    showRemoveAction: boolean;
     contacts: Contact[];
 }

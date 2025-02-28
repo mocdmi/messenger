@@ -7,6 +7,7 @@ import noPhoto from '../../assets/images/no-photo.svg';
 
 interface ProfileAvatarProps {
     name?: string;
+    popupShow?: boolean;
 }
 
 export default class ProfileAvatar extends Block<ProfileAvatarProps> {
@@ -21,11 +22,23 @@ export default class ProfileAvatar extends Block<ProfileAvatarProps> {
                 UploadForm: new Popup({
                     title: 'Загрузите файл',
                     Children: new UploadForm() as Block,
+                    handlerHidePopup: () => {
+                        this.setProps({
+                            ...props,
+                            popupShow: false,
+                        });
+                    },
                 }) as Block,
                 OpenPopupButton: new Button({
                     'theme-blank-light': true,
                     label: 'Поменять аватар',
                     type: 'submit',
+                    onClick: () => {
+                        this.setProps({
+                            ...props,
+                            popupShow: true,
+                        });
+                    },
                 }) as Block,
             },
         );
@@ -40,8 +53,9 @@ export default class ProfileAvatar extends Block<ProfileAvatarProps> {
                     {{{OpenPopupButton}}}
                 </div>
             </div>
-            {{#if name}}<h2 class="${styles.name}">{{name}}</h2>{{/if}}
-            {{{UploadForm}}}
+            {{#if popupShow}}
+                {{{UploadForm}}}
+            {{/if}}
         `;
     }
 }

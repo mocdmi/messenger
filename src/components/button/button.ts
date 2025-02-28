@@ -15,6 +15,7 @@ interface ButtonProps extends ButtonAttrs {
     active?: boolean;
     icon?: string;
     label?: string;
+    onClick?: (e: Event) => void;
 }
 
 export default class Button extends Block<ButtonProps, ButtonAttrs> {
@@ -31,6 +32,9 @@ export default class Button extends Block<ButtonProps, ButtonAttrs> {
             `,
             attrs: {
                 type: props.type,
+            },
+            events: {
+                ...(props.onClick ? { click: props.onClick } : {}),
             },
         });
     }

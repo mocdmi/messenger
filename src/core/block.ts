@@ -26,7 +26,7 @@ export abstract class Block<T extends object = object, P extends object = object
     };
     private readonly eventBus: EventBus = new EventBus();
     private readonly children: Children;
-    private readonly props: T & Attributes<P>;
+    readonly props: T & Attributes<P>;
     readonly id = crypto.randomUUID();
 
     protected constructor(

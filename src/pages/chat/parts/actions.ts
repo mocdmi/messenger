@@ -2,11 +2,17 @@ import { Button } from '../../../components';
 import { Block } from '../../../core';
 import styles from '../styles.module.css';
 
-export default class Actions extends Block {
-    constructor() {
+interface ActionsProps {
+    handlerShowAddAction: () => void;
+    handlerShowRemoveAction: () => void;
+}
+
+export default class Actions extends Block<ActionsProps> {
+    constructor(props: ActionsProps) {
         super(
             'div',
             {
+                ...props,
                 className: styles.actions,
             },
             {
@@ -14,11 +20,13 @@ export default class Actions extends Block {
                     icon: 'add',
                     label: 'Добавить пользователя',
                     type: 'button',
+                    onClick: props.handlerShowAddAction,
                 }) as Block,
                 RemoveButton: new Button({
-                    icon: 'add',
+                    icon: 'remove',
                     label: 'Удалить пользователя',
                     type: 'button',
+                    onClick: props.handlerShowRemoveAction,
                 }) as Block,
             },
         );

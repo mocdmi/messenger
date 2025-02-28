@@ -7,29 +7,64 @@ import MessageForm from './parts/message-form';
 import RemoveContactForm from './parts/remove-contact-form';
 import styles from './styles.module.css';
 
-export default class Chat extends Block<ChatContext> {
-    constructor(props: ChatContext) {
+interface ChatProps extends ChatContext {
+    showActions: boolean;
+    showAddAction: boolean;
+    showRemoveAction: boolean;
+}
+
+export default class Chat extends Block<ChatProps> {
+    constructor(props: ChatProps) {
         super('div', props, {
             ShowActionsButton: new Button({
                 'theme-blank': true,
                 rounded: true,
-                active: props.showActions,
+                active: props.showActions, // TODO: Не работает фон
                 icon: 'settings',
                 type: 'button',
+                onClick: () => {
+                    this.setProps({
+                        ...props,
+                        showActions: !this.props.showActions,
+                    });
+                },
             }) as Block,
             ActionsPanel: new Panel({
-                Children: new Actions() as Block,
+                Children: new Actions({
+                    handlerShowAddAction: () => {
+                        this.setProps({
+                            ...props,
+                            showAddAction: true,
+                        });
+                    },
+                    handlerShowRemoveAction: () => {
+                        this.setProps({
+                            ...props,
+                            showRemoveAction: true,
+                        });
+                    },
+                }) as Block,
             }) as Block,
             Contacts: new Contacts(props) as Block,
             PopupAddContact: new Popup({
                 title: 'Добавить пользователя',
-                active: props.showAddAction,
                 Children: new AddContactForm() as Block,
+                handlerHidePopup: () => {
+                    this.setProps({
+                        ...props,
+                        showAddAction: false,
+                    });
+                },
             }) as Block,
             PopupRemoveContact: new Popup({
                 title: 'Удалить пользователя',
-                active: props.showRemoveAction,
                 Children: new RemoveContactForm() as Block,
+                handlerHidePopup: () => {
+                    this.setProps({
+                        ...props,
+                        showRemoveAction: false,
+                    });
+                },
             }) as Block,
             MessageForm: new MessageForm(),
         });
@@ -58,8 +93,12 @@ export default class Chat extends Block<ChatContext> {
                     {{{Contacts}}}
                 </div>
                 {{{MessageForm}}}
-                {{{PopupAddContact}}}
-                {{{PopupRemoveContact}}}
+                {{#if showAddAction}}
+                    {{{PopupAddContact}}}
+                {{/if}}
+                {{#if showRemoveAction}}
+                    {{{PopupRemoveContact}}}
+                {{/if}}
             </div>
         `;
     }
