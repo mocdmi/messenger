@@ -25,9 +25,9 @@ export abstract class Block<T extends object = object, P extends object = object
         props: T & Attributes<P>;
     };
     private readonly eventBus: EventBus = new EventBus();
-    private readonly children: Children;
-    readonly props: T & Attributes<P>;
-    readonly id = crypto.randomUUID();
+    protected readonly children: Children;
+    protected readonly props: T & Attributes<P>;
+    protected readonly id = crypto.randomUUID();
 
     protected constructor(
         tagName: string = 'div',

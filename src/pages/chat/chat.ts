@@ -19,7 +19,7 @@ export default class Chat extends Block<ChatProps> {
             ShowActionsButton: new Button({
                 'theme-blank': true,
                 rounded: true,
-                active: props.showActions, // TODO: Не работает фон
+                active: false, // TODO: Не работает фон
                 icon: 'settings',
                 type: 'button',
                 onClick: () => {
