@@ -1,29 +1,47 @@
+import { Block } from '../../core';
+import { Button } from '../button';
+import { Popup } from '../popup';
+import UploadForm from './parts/upload-form';
 import styles from './styles.module.css';
 import noPhoto from '../../assets/images/no-photo.svg';
 
-// language=Handlebars
-export default `
-<div class="${styles.avatar}">
-    <div class="${styles.photoWrap}">
-        <img src="${noPhoto}" class="${styles.photo}" alt="{{name}}" />
-        <div class="${styles.editAvatar}">
-            {{> Button type="submit" theme-blank-light=true label="Поменять аватар"}}
-        </div>
-    </div>
-    {{#if name}}<h2 class="${styles.name}">{{name}}</h2>{{/if}}
-    {{#> Popup title="Загрузите файл" active=showEditAvatar}}
-        <form action="#" method="post">
-            <label class="${styles.uploadAvatar}">
-                <div class="${styles.label}">
-                    Выбрать файл на<br />
-                    компьютере
+interface ProfileAvatarProps {
+    name?: string;
+}
+
+export default class ProfileAvatar extends Block<ProfileAvatarProps> {
+    constructor(props: ProfileAvatarProps) {
+        super(
+            'div',
+            {
+                ...props,
+                className: styles.avatar,
+            },
+            {
+                UploadForm: new Popup({
+                    title: 'Загрузите файл',
+                    Children: new UploadForm() as Block,
+                }) as Block,
+                OpenPopupButton: new Button({
+                    'theme-blank-light': true,
+                    label: 'Поменять аватар',
+                    type: 'submit',
+                }) as Block,
+            },
+        );
+    }
+
+    // language=Handlebars
+    render(): string {
+        return `
+            <div class="${styles.photoWrap}">
+                <img src="${noPhoto}" class="${styles.photo}" alt="{{name}}" />
+                <div class="${styles.editAvatar}">
+                    {{{OpenPopupButton}}}
                 </div>
-                <input type="file" name="avatar" accept="image/*" class="${styles.input}" />
-            </label>
-            <div class="${styles.actionSubmit}">
-                {{> Button type="submit" theme-default=true label="Поменять"}}
             </div>
-        </form>
-    {{/Popup}}
-</div>
-`;
+            {{#if name}}<h2 class="${styles.name}">{{name}}</h2>{{/if}}
+            {{{UploadForm}}}
+        `;
+    }
+}

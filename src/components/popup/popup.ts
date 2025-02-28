@@ -1,16 +1,33 @@
+import { Block } from '../../core';
+import { Panel } from '../panel';
+import { PopupProps } from './types';
+import Inner from './parts/inner';
 import styles from './styles.module.css';
 
-// language=Handlebars
-export default `
-{{#if active}}
-    <div class="${styles.popup}">
-        {{#> Panel}}
-            <div class="${styles.inner}">
-                <h2 class="${styles.title}">{{title}}</h2>
-                {{> @partial-block }}
-            </div>
-        {{/Panel}}
-        <div class="${styles.substrate}"></div>
-    </div>
-{{/if}}
-`;
+export default class Popup extends Block<PopupProps> {
+    constructor(props: PopupProps) {
+        super(
+            'div',
+            {
+                ...props,
+                className: `
+                    ${styles.popup}
+                    ${props.active ? styles.active : ''}
+                `,
+            },
+            {
+                Body: new Panel({
+                    Children: new Inner(props) as Block,
+                }) as Block,
+            },
+        );
+    }
+
+    // language=Handlebars
+    render(): string {
+        return `
+            {{{Body}}}
+            <div class="${styles.substrate}"></div>
+        `;
+    }
+}

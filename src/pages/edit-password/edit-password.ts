@@ -1,53 +1,76 @@
+import { Button, LabelInput, Form, ProfileRow, Wrapper } from '../../components';
+import { ProfileContext } from '../../context/types/ProfileContext';
+import { Block } from '../../core';
+import { Profile } from '../../components/profile';
 import styles from './styles.module.css';
 
-// language=Handlebars
-export default `
-{{#> Profile name=false}}
-<form action="#" method="post">
-    <div class="${styles.detail}">
-        <div class="${styles.row}">
-            <div class="${styles.label}">Старый пароль</div>
-            <div class="${styles.value}">
-                {{> Input
-                        type="password"
-                        name="oldPassword"
-                        value=password
-                        theme-blank=true
-                        align-right=true
-                        placeholder-right=true
-                        required=required }}
-            </div>
-        </div>
-        <div class="${styles.row}">
-            <div class="${styles.label}">Новый пароль</div>
-            <div class="${styles.value}">
-                {{> Input
-                        type="password"
-                        name="newPassword"
-                        value=""
-                        theme-blank=true
-                        align-right=true
-                        placeholder-right=true
-                        required=required }}
-            </div>
-        </div>
-        <div class="${styles.row}">
-            <div class="${styles.label}">Повторите новый пароль</div>
-            <div class="${styles.value}">
-                {{> Input
-                        type="password"
-                        name="newPasswordConfirm"
-                        value=""
-                        theme-blank=true
-                        align-right=true
-                        placeholder-right="true"
-                        required=required }}
-            </div>
-        </div>
-    </div>
-    <div class="${styles.save}">
-        {{> Button type="submit" theme-default=true label="Сохранить"}}
-    </div>
-</form>
-{{/Profile}}
-`;
+export default class EditPasswordPage extends Block<ProfileContext> {
+    constructor(props: ProfileContext) {
+        super('div', props, {
+            EditPassword: new Profile({
+                Children: new Form({
+                    action: '#',
+                    method: 'POST',
+                    Children: [
+                        new Wrapper({
+                            tagName: 'div',
+                            className: styles.detail,
+                            Children: [
+                                new ProfileRow({
+                                    label: 'Старый пароль',
+                                    Children: new LabelInput({
+                                        'theme-blank': true,
+                                        'align-right': true,
+                                        'placeholder-right': true,
+                                        type: 'password',
+                                        name: 'oldPassword',
+                                        value: props.password,
+                                        required: true,
+                                    }) as Block,
+                                }) as Block,
+                                new ProfileRow({
+                                    label: 'Новый пароль',
+                                    Children: new LabelInput({
+                                        'theme-blank': true,
+                                        'align-right': true,
+                                        'placeholder-right': true,
+                                        type: 'password',
+                                        name: 'newPassword',
+                                        value: '',
+                                        required: true,
+                                    }) as Block,
+                                }) as Block,
+                                new ProfileRow({
+                                    label: 'Повторите новый пароль',
+                                    Children: new LabelInput({
+                                        'theme-blank': true,
+                                        'align-right': true,
+                                        'placeholder-right': true,
+                                        type: 'password',
+                                        name: 'newPassword',
+                                        value: '',
+                                        required: true,
+                                    }) as Block,
+                                }) as Block,
+                            ],
+                        }) as Block,
+                        new Wrapper({
+                            tagName: 'div',
+                            className: styles.save,
+                            Children: new Button({
+                                'theme-default': true,
+                                label: 'Сохранить',
+                                type: 'submit',
+                            }) as Block,
+                        }) as Block,
+                    ],
+                }) as Block,
+            }) as Block,
+        });
+    }
+
+    // language=Handlebars
+    render(): string {
+        return '{{{EditPassword}}}';
+    }
+}

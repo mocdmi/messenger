@@ -1,15 +1,47 @@
+import { Block } from '../../core';
 import styles from './styles.module.css';
 
-// language=Handlebars
-export default `
-<button class="${styles.button}
-                {{#if rounded}}${styles.rounded}{{/if}}
-                {{#if theme-default}}${styles.themeDefault}{{/if}}
-                {{#if theme-blank}}${styles.themeBlank}{{/if}}
-                {{#if theme-blank-light}}${styles.themeBlankLight}{{/if}}
-                {{#if active}}${styles.active}{{/if}}"
-        type="{{type}}">
-    {{#if icon}}<div class="${styles.icon} {{#if label}}${styles.iconOffset}{{/if}}" data-icon="{{icon}}"></div>{{/if}}
-    {{label}}
-</button>
-`;
+type ButtonType = 'button' | 'submit' | 'reset';
+
+interface ButtonAttrs {
+    type: ButtonType;
+}
+
+interface ButtonProps extends ButtonAttrs {
+    'theme-default'?: boolean;
+    'theme-blank'?: boolean;
+    'theme-blank-light'?: boolean;
+    rounded?: boolean;
+    active?: boolean;
+    icon?: string;
+    label?: string;
+}
+
+export default class Button extends Block<ButtonProps, ButtonAttrs> {
+    constructor(props: ButtonProps) {
+        super('button', {
+            ...props,
+            className: `
+                ${styles.button}
+                ${props['theme-default'] ? styles.themeDefault : ''}
+                ${props['theme-blank'] ? styles.themeBlank : ''}
+                ${props['theme-blank-light'] ? styles.themeBlankLight : ''}
+                ${props.active ? styles.active : ''}
+                ${props.rounded ? styles.rounded : ''}
+            `,
+            attrs: {
+                type: props.type,
+            },
+        });
+    }
+
+    // language=Handlebars
+    render(): string {
+        return `
+            {{#if icon}}
+                <span class="${styles.icon} {{#if label}}${styles.iconOffset}{{/if}}" data-icon="{{icon}}"></span>
+            {{/if}}
+            {{label}}
+        `;
+    }
+}

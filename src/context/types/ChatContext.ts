@@ -2,7 +2,7 @@ export interface Contact {
     name: string;
     lastMessage: string;
     date: string;
-    newCount?: number;
+    newMessagesNum?: number;
     active?: boolean;
 }
 
