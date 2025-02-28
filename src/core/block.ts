@@ -6,6 +6,9 @@ type Children = Record<string, Block | Block[]>;
 type Attributes<T> = {
     className?: string;
     attrs?: T;
+    events?: {
+        [key: string]: (e: Event) => void;
+    };
 };
 
 export abstract class Block<T extends object = object, P extends object = object> {
@@ -23,7 +26,7 @@ export abstract class Block<T extends object = object, P extends object = object
     };
     private readonly eventBus: EventBus = new EventBus();
     private readonly children: Children;
-    private readonly props: T;
+    private readonly props: T & Attributes<P>;
     readonly id = crypto.randomUUID();
 
     protected constructor(
@@ -35,7 +38,7 @@ export abstract class Block<T extends object = object, P extends object = object
 
         this.meta = {
             tagName,
-            props: { className: '', attrs: {}, ...props },
+            props: { className: '', attrs: {}, events: {}, ...props },
         };
 
         this.props = this.makePropsProxy(props);
@@ -151,6 +154,8 @@ export abstract class Block<T extends object = object, P extends object = object
     }
 
     private _render(): void {
+        this.removeEvents();
+
         const block: DocumentFragment = this.compile();
 
         if (this.element.children.length === 0) {
@@ -158,6 +163,8 @@ export abstract class Block<T extends object = object, P extends object = object
         } else {
             this.element.replaceChildren(block);
         }
+
+        this.addEvents();
     }
 
     abstract render(): string;
@@ -188,6 +195,22 @@ export abstract class Block<T extends object = object, P extends object = object
             deleteProperty: (): never => {
                 throw new Error('Нет доступа');
             },
+        });
+    }
+
+    private addEvents() {
+        const { events = {} } = this.props;
+
+        Object.keys(events).forEach((eventName) => {
+            this.element.addEventListener(eventName, events[eventName]);
+        });
+    }
+
+    private removeEvents() {
+        const { events = {} } = this.props;
+
+        Object.keys(events).forEach((eventName) => {
+            this.element.removeEventListener(eventName, events[eventName]);
         });
     }
 
