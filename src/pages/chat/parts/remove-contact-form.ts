@@ -62,7 +62,7 @@ export default class RemoveContactForm extends Block<RemoveContactFormProps> {
                 {{{LoginInput}}}
             </div>
             <div class="${styles.actionSubmit}">
-                {{{AddButton}}}
+                {{{RemoveButton}}}
             </div>
         `;
     }

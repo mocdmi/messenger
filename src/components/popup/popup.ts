@@ -15,7 +15,7 @@ export default class Popup extends Block<PopupProps> {
                     click: (e) => {
                         const el = e.target as HTMLElement;
 
-                        if (!el.classList.contains(styles.inner)) {
+                        if (el.classList.contains(styles.substrate)) {
                             props.handlerHidePopup();
                         }
                     },
