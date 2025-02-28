@@ -1,54 +1,13 @@
-import { Link, Profile, ProfileRow, Wrapper } from '../../components';
+import { Profile } from '../../components';
 import { ProfileContext } from '../../context/types/ProfileContext';
 import { Block } from '../../core';
-import styles from './styles.module.css';
-
-const links = [
-    {
-        label: 'Изменить данные',
-        href: '#',
-        theme: 'theme-default',
-    },
-    {
-        label: 'Изменить пароль',
-        href: '#',
-        theme: 'theme-default',
-    },
-    {
-        label: 'Выйти',
-        href: '#',
-        theme: 'theme-danger',
-    },
-];
+import ProfileInner from './parts/profile-inner';
 
 export default class ProfilePage extends Block<ProfileContext> {
     constructor(props: ProfileContext) {
         super('div', props, {
             Profile: new Profile({
-                Children: [
-                    new Wrapper({
-                        tagName: 'div',
-                        className: styles.detail,
-                        Children: props.detail.map((props) => {
-                            return new ProfileRow(props);
-                        }) as Block[],
-                    }) as Block,
-                    new Wrapper({
-                        tagName: 'nav',
-                        className: styles.save,
-                        Children: links.map(({ label, href, theme }) => {
-                            return new Wrapper({
-                                tagName: 'div',
-                                className: styles.row,
-                                Children: new Link({
-                                    [theme]: true,
-                                    label,
-                                    href,
-                                }) as Block,
-                            });
-                        }) as Block[],
-                    }) as Block,
-                ],
+                Children: new ProfileInner(props) as Block,
             }) as Block,
         });
     }
