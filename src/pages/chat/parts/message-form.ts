@@ -20,7 +20,9 @@ export default class MessageForm extends Block<MessageFormProps> {
                 events: {
                     submit: (e) => {
                         e.preventDefault();
+                        const el = e.target as HTMLFormElement;
                         console.log(this.props.formState);
+                        el.reset();
                     },
                 },
             },

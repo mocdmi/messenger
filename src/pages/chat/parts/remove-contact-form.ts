@@ -23,7 +23,9 @@ export default class RemoveContactForm extends Block<RemoveContactFormProps> {
                 events: {
                     submit: (e) => {
                         e.preventDefault();
+                        const el = e.target as HTMLFormElement;
                         console.log(this.props.formState);
+                        el.reset();
                     },
                 },
             },

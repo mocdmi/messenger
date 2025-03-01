@@ -19,7 +19,6 @@ export default class Chat extends Block<ChatProps> {
             ShowActionsButton: new Button({
                 'theme-blank': true,
                 rounded: true,
-                active: false, // TODO: Не работает фон
                 icon: 'settings',
                 type: 'button',
                 onClick: () => {
@@ -79,7 +78,9 @@ export default class Chat extends Block<ChatProps> {
                         <div class="${styles.avatar}"></div>
                         <h2 class="${styles.name}">Вадим</h2>
                     </div>
-                    {{{ShowActionsButton}}}
+                    <div class="{{#if showActions}}${styles.showActionsButtonActive}{{/if}}">
+                        {{{ShowActionsButton}}}
+                    </div>
                     {{#if showActions}}
                         <div class="${styles.actionsPopup}">
                             {{{ActionsPanel}}}

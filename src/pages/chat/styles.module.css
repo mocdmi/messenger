@@ -105,3 +105,9 @@
 .actionSubmit {
     margin-top: 33px;
 }
+
+.showActionsButtonActive {
+    button {
+        background-color: var(--gray-color);
+    }
+}

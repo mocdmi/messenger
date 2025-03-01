@@ -12,7 +12,6 @@ interface ButtonProps extends ButtonAttrs {
     'theme-blank'?: boolean;
     'theme-blank-light'?: boolean;
     rounded?: boolean;
-    active?: boolean;
     icon?: string;
     label?: string;
     onClick?: (e: Event) => void;
@@ -27,7 +26,6 @@ export default class Button extends Block<ButtonProps, ButtonAttrs> {
                 ${props['theme-default'] ? styles.themeDefault : ''}
                 ${props['theme-blank'] ? styles.themeBlank : ''}
                 ${props['theme-blank-light'] ? styles.themeBlankLight : ''}
-                ${props.active ? styles.active : ''}
                 ${props.rounded ? styles.rounded : ''}
             `,
             attrs: {

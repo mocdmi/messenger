@@ -26,12 +26,6 @@
     border-radius: 8px;
 }
 
-.themeBlank {
-    &.active {
-        background-color: var(--gray-color);
-    }
-}
-
 .themeBlankLight {
     color: var(--light-color);
 }

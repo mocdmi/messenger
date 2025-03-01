@@ -24,7 +24,9 @@ export default class SearchForm extends Block<SearchFormProps> {
                 events: {
                     submit: (e) => {
                         e.preventDefault();
+                        const el = e.target as HTMLFormElement;
                         console.log(this.props.formState);
+                        el.reset();
                     },
                 },
             },
