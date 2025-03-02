@@ -14,7 +14,7 @@
     text-decoration: none;
     font-size: var(--font-size-s);
 
-    &:after {
+    &::after {
         content: '';
         display: inline-block;
         background: url('../../assets/images/arrow-left.svg') no-repeat center center;
