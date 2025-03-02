@@ -14,7 +14,7 @@ export default class Validator {
 
     static isMatch(regexp: RegExp, errorMessage?: string) {
         if (!this.testMatch(regexp)) {
-            this.errors.push(errorMessage || 'Вы ввели не допустимые символы.');
+            this.errors.push(errorMessage ?? 'Вы ввели не допустимые символы.');
         }
 
         return this;

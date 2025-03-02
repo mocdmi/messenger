@@ -12,7 +12,7 @@ type Attributes<T> = {
 };
 
 export abstract class Block<T extends object = object, P extends object = object> {
-    static EVENTS = {
+    private static EVENTS = {
         INIT: 'init',
         FLOW_CDM: 'flow:component-did-mount',
         FLOW_CDU: 'flow:component-did-update',
