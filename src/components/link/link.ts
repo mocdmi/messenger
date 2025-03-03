@@ -37,6 +37,6 @@ export default class Link extends Block<LinkProps, LinkAttrs> {
 
     // language=Handlebars
     render(): string {
-        return `{{label}}`;
+        return '{{label}}';
     }
 }
