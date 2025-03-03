@@ -20,7 +20,6 @@ export default class UploadForm extends Block {
                     accept: 'image/*',
                     name: 'avatar',
                     value: '',
-                    required: true,
                 }) as Block,
                 SendButton: new Button({
                     'theme-default': true,

@@ -7,6 +7,7 @@ export default class EditProfilePage extends Block<ProfileContext> {
     constructor(props: ProfileContext) {
         super('div', props, {
             EditProfile: new Profile({
+                name: props.name,
                 Children: new EditForm(props) as Block,
             }) as Block,
         });

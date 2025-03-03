@@ -7,17 +7,15 @@ import { isErrorsEmpty } from '../../../helpers/is-errors-empty';
 import { validateOnSubmit } from '../../../helpers/validate-on-submit';
 import styles from '../styles.module.css';
 
-type FormInputs = {
-    email: string;
-    login: string;
-    first_name: string;
-    second_name: string;
-    display_name: string;
-    phone: string;
-};
-
 interface EditFormProps extends ProfileContext {
-    formState: FormInputs;
+    formState: {
+        email: string;
+        login: string;
+        first_name: string;
+        second_name: string;
+        display_name: string;
+        phone: string;
+    };
     errors: {
         email: string;
         login: string;
@@ -47,12 +45,12 @@ export default class EditForm extends Block<EditFormProps> {
             {
                 ...props,
                 formState: {
-                    email: '',
-                    login: '',
-                    first_name: '',
-                    second_name: '',
-                    display_name: '',
-                    phone: '',
+                    email: inputValues.email,
+                    login: inputValues.login,
+                    first_name: inputValues.first_name,
+                    second_name: inputValues.second_name,
+                    display_name: inputValues.display_name,
+                    phone: inputValues.phone,
                 },
                 errors: {
                     email: '',
@@ -69,8 +67,6 @@ export default class EditForm extends Block<EditFormProps> {
                 events: {
                     submit: (e) => {
                         e.preventDefault();
-                        const el = e.target as HTMLFormElement;
-
                         validateOnSubmit(
                             validators,
                             this.props.formState,
@@ -89,7 +85,6 @@ export default class EditForm extends Block<EditFormProps> {
 
                         if (isErrorsEmpty(this.props.errors)) {
                             console.log(this.props.formState);
-                            el.reset();
                         }
                     },
                 },

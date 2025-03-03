@@ -53,6 +53,7 @@ export default class ProfileAvatar extends Block<ProfileAvatarProps> {
                     {{{OpenPopupButton}}}
                 </div>
             </div>
+            {{#if name}}<h2 class="${styles.name}">{{name}}</h2>{{/if}}
             {{#if popupShow}}
                 {{{UploadForm}}}
             {{/if}}

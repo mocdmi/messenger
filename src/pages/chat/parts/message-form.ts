@@ -1,12 +1,22 @@
 import { Button, LabelInput } from '../../../components';
 import { Block } from '../../../core';
+import Validator from '../../../core/validator';
+import { isErrorsEmpty } from '../../../helpers/is-errors-empty';
+import { validateOnSubmit } from '../../../helpers/validate-on-submit';
 import styles from '../styles.module.css';
 
 interface MessageFormProps {
     formState: {
         message: string;
     };
+    errors: {
+        message: string;
+    };
 }
+
+const validators: ((value: string) => string)[] = [
+    (value: string) => Validator.validate(value).isRequired(),
+];
 
 export default class MessageForm extends Block<MessageFormProps> {
     constructor() {
@@ -16,13 +26,35 @@ export default class MessageForm extends Block<MessageFormProps> {
                 formState: {
                     message: '',
                 },
+                errors: {
+                    message: '',
+                },
                 className: styles.message,
                 events: {
                     submit: (e) => {
                         e.preventDefault();
                         const el = e.target as HTMLFormElement;
-                        console.log(this.props.formState);
-                        el.reset();
+
+                        validateOnSubmit(
+                            validators,
+                            this.props.formState,
+                            this.props.errors,
+                            this.children,
+                            (name: string, error: string) => {
+                                this.setProps({
+                                    ...this.props,
+                                    errors: {
+                                        ...this.props.errors,
+                                        [name]: error,
+                                    },
+                                });
+                            },
+                        );
+
+                        if (isErrorsEmpty(this.props.errors)) {
+                            console.log(this.props.formState);
+                            el.reset();
+                        }
                     },
                 },
             },
@@ -42,6 +74,21 @@ export default class MessageForm extends Block<MessageFormProps> {
                             formState: {
                                 ...this.props.formState,
                                 message: el.value,
+                            },
+                        });
+                    },
+                    onBlur: (e: Event) => {
+                        const el = e.target as HTMLInputElement;
+                        const input = this.children.MessageInput as LabelInput;
+                        const error = Validator.validate(el.value).isRequired();
+
+                        input.setProps({ ...input.props, error: error });
+
+                        this.setProps({
+                            ...this.props,
+                            errors: {
+                                ...this.props.errors,
+                                message: error,
                             },
                         });
                     },
