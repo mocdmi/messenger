@@ -23,7 +23,8 @@ export default class Link extends Block<LinkProps, LinkAttrs> {
                 ${styles.link}
                 ${props['theme-default'] ? styles.themeDefault : ''}
                 ${props['theme-danger'] ? styles.themeDanger : ''}
-                ${props.modificator ? props.modificator : ''}`,
+                ${props.modificator ? props.modificator : ''}
+            `,
             attrs: (() => {
                 if (props.to) {
                     return { 'data-to': props.to, href: `#${props.to}` };

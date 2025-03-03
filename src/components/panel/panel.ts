@@ -2,7 +2,8 @@ import { Block } from '../../core';
 import styles from './styles.module.css';
 
 interface PanelProps {
-    Children: Block;
+    'inner-class'?: string;
+    Children: Block | Block[];
 }
 
 export default class Panel extends Block<PanelProps> {
@@ -22,9 +23,11 @@ export default class Panel extends Block<PanelProps> {
     // language=Handlebars
     render(): string {
         return `
-            {{#each Body}}
-                {{{this}}}
-            {{/each}}
+            <div class="{{inner-class}}">
+                {{#each Body}}
+                    {{{this}}}
+                {{/each}}
+            </div>
         `;
     }
 }

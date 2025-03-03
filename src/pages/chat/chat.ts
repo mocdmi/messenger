@@ -1,4 +1,4 @@
-import { Button, Contacts, Panel, Popup } from '../../components';
+import { Contacts, Popup } from '../../components';
 import { ChatContext } from '../../context/types/ChatContext';
 import { Block } from '../../core';
 import Actions from './parts/actions';
@@ -16,34 +16,6 @@ interface ChatProps extends ChatContext {
 export default class Chat extends Block<ChatProps> {
     constructor(props: ChatProps) {
         super('div', props, {
-            ShowActionsButton: new Button({
-                'theme-blank': true,
-                rounded: true,
-                icon: 'settings',
-                type: 'button',
-                onClick: () => {
-                    this.setProps({
-                        ...props,
-                        showActions: !this.props.showActions,
-                    });
-                },
-            }) as Block,
-            ActionsPanel: new Panel({
-                Children: new Actions({
-                    handlerShowAddAction: () => {
-                        this.setProps({
-                            ...props,
-                            showAddAction: true,
-                        });
-                    },
-                    handlerShowRemoveAction: () => {
-                        this.setProps({
-                            ...props,
-                            showRemoveAction: true,
-                        });
-                    },
-                }) as Block,
-            }) as Block,
             Contacts: new Contacts(props) as Block,
             PopupAddContact: new Popup({
                 title: 'Добавить пользователя',
@@ -66,6 +38,21 @@ export default class Chat extends Block<ChatProps> {
                 },
             }) as Block,
             MessageForm: new MessageForm() as Block,
+            Actions: new Actions({
+                showActions: props.showActions,
+                handlerShowAddAction: () => {
+                    this.setProps({
+                        ...props,
+                        showAddAction: true,
+                    });
+                },
+                handlerShowRemoveAction: () => {
+                    this.setProps({
+                        ...props,
+                        showAddAction: true,
+                    });
+                },
+            }) as Block,
         });
     }
 
@@ -78,14 +65,7 @@ export default class Chat extends Block<ChatProps> {
                         <div class="${styles.avatar}"></div>
                         <h2 class="${styles.name}">Вадим</h2>
                     </div>
-                    <div class="{{#if showActions}}${styles.showActionsButtonActive}{{/if}}">
-                        {{{ShowActionsButton}}}
-                    </div>
-                    {{#if showActions}}
-                        <div class="${styles.actionsPopup}">
-                            {{{ActionsPanel}}}
-                        </div>
-                    {{/if}}
+                    {{{Actions}}}
                 </header>
                 <main class="${styles.chat}">
                     <div class="${styles.noMessages}">Выберите чат, чтобы отправить сообщение</div>
