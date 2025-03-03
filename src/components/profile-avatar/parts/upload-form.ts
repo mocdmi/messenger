@@ -12,6 +12,11 @@ export default class UploadForm extends Block {
                     method: 'POST',
                     action: '#',
                 },
+                events: {
+                    submit: (e) => {
+                        e.preventDefault();
+                    },
+                },
             },
             {
                 FileInput: new Input({
