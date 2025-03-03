@@ -31,7 +31,7 @@ const validators: ((value: string) => string)[] = [
     (value: string) => Validator.validate(value).isLogin(),
     (value: string) => Validator.validate(value).isName(),
     (value: string) => Validator.validate(value).isName(),
-    (_value: string) => '',
+    () => '',
     (value: string) => Validator.validate(value).isPhone(),
 ];
 
