@@ -29,7 +29,7 @@
 .message {
     grid-area: message;
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     border-top: 1px solid var(--gray-color);
     align-content: center;
     column-gap: 10px;
