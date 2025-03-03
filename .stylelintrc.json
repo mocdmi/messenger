@@ -8,6 +8,7 @@
         "no-descending-specificity": null
     },
     "ignoreFiles": [
-        "dist/*"
+        "dist/**/*",
+        "node_modules/**/*"
     ]
 }

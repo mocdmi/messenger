@@ -7,8 +7,8 @@ import globals from 'globals';
 
 export default [
     {
-        files: ['**/*.{js,ts}'],
-        ignores: ['/node_modules', '/dist'],
+        files: ['src/**/*.{js,ts}'],
+        ignores: ['/node_modules', '/dist', '**/*.d.ts'],
         languageOptions: {
             parser: tsParser,
             sourceType: 'module',

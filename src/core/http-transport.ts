@@ -7,13 +7,15 @@ interface Options extends Partial<XMLHttpRequest> {
     method?: string;
 }
 
+type HTTPMethod = (url: string, options?: Options) => Promise<XMLHttpRequest>;
+
 export default class HttpTransport {
-    private static METHODS = {
+    static METHODS = {
         GET: 'GET',
         PUT: 'PUT',
         POST: 'POST',
         DELETE: 'DELETE',
-    };
+    } as const;
 
     private queryStringify(data: Data): string {
         if (typeof data !== 'object' || data === null) {
@@ -23,49 +25,29 @@ export default class HttpTransport {
         const props: string[] = [];
 
         for (const prop in data) {
-            props.push(`${prop}=${data[prop]!.toString()}`);
+            if (data[prop] !== null && data[prop] !== undefined) {
+                props.push(`${prop}=${encodeURIComponent(data[prop].toString())}`);
+            }
         }
 
         return `?${props.join('&')}`;
     }
 
-    get(url: string, options: Options = {}): Promise<XMLHttpRequest> {
-        return this.request(
-            url,
-            { ...options, method: HttpTransport.METHODS.GET },
-            options.timeout,
-        );
+    private createMethod(
+        method: (typeof HttpTransport.METHODS)[keyof typeof HttpTransport.METHODS],
+    ): HTTPMethod {
+        return (url: string, options: Options = {}) => this.request(url, { ...options, method });
     }
 
-    put(url: string, options: Options = {}): Promise<XMLHttpRequest> {
-        return this.request(
-            url,
-            { ...options, method: HttpTransport.METHODS.PUT },
-            options.timeout,
-        );
-    }
+    get = this.createMethod(HttpTransport.METHODS.GET);
 
-    post(url: string, options: Options = {}): Promise<XMLHttpRequest> {
-        return this.request(
-            url,
-            { ...options, method: HttpTransport.METHODS.POST },
-            options.timeout,
-        );
-    }
+    put = this.createMethod(HttpTransport.METHODS.PUT);
 
-    delete(url: string, options: Options = {}): Promise<XMLHttpRequest> {
-        return this.request(
-            url,
-            { ...options, method: HttpTransport.METHODS.DELETE },
-            options.timeout,
-        );
-    }
+    post = this.createMethod(HttpTransport.METHODS.POST);
 
-    private request(
-        url: string,
-        options: Options = {},
-        timeout: number = 5000,
-    ): Promise<XMLHttpRequest> {
+    delete = this.createMethod(HttpTransport.METHODS.DELETE);
+
+    private request(url: string, options: Options = {}): Promise<XMLHttpRequest> {
         const { headers = {}, data, method = HttpTransport.METHODS.GET, ...xhrOptions } = options;
         const isGet: boolean = method === HttpTransport.METHODS.GET;
 
@@ -74,7 +56,7 @@ export default class HttpTransport {
 
             Object.assign(xhr, xhrOptions);
 
-            xhr.timeout = timeout;
+            xhr.timeout = options.timeout || 5000;
             xhr.open(method, isGet && !!data ? `${url}${this.queryStringify(data)}` : url);
 
             for (const prop in headers) {

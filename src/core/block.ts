@@ -17,7 +17,7 @@ export abstract class Block<T extends object = object, P extends object = object
         FLOW_CDM: 'flow:component-did-mount',
         FLOW_CDU: 'flow:component-did-update',
         FLOW_RENDER: 'flow:render',
-    };
+    } as const;
 
     private element: HTMLElement = document.createElement('div');
     private readonly meta: {

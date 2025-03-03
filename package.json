@@ -5,10 +5,12 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "npm run ts:lint && vite build",
+    "build": "npm run lint && vite build",
     "preview": "vite preview",
     "start": "npm run build && vite preview",
-    "ts:lint": "tsc --noEmit"
+    "eslint": "eslint .",
+    "stylelint": "stylelint \"src/**/*.css\"",
+    "lint": "tsc --noEmit && npm run stylelint && npm run eslint"
   },
   "devDependencies": {
     "@eslint/js": "^9.21.0",
