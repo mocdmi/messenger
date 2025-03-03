@@ -39,7 +39,6 @@ export default class SearchForm extends Block<SearchFormProps> {
                     type: 'text',
                     name: 'search',
                     value: '',
-                    required: true,
                     onChange: (e: Event) => {
                         const el = e.target as HTMLInputElement;
 
