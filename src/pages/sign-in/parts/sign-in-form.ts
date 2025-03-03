@@ -1,5 +1,8 @@
 import { Button, LabelInput } from '../../../components';
 import { Block } from '../../../core';
+import Validator from '../../../core/validator';
+import { isErrorsEmpty } from '../../../helpers/is-errors-empty';
+import { validateOnSubmit } from '../../../helpers/validate-on-submit';
 import styles from '../styles.module.css';
 
 interface SignInFormProps {
@@ -12,7 +15,26 @@ interface SignInFormProps {
         password: string;
         confirm_password: string;
     };
+    errors: {
+        email: string;
+        login: string;
+        firstName: string;
+        secondName: string;
+        phone: string;
+        password: string;
+        confirmPassword: string;
+    };
 }
+
+const validators: ((value: string) => string)[] = [
+    (value: string) => Validator.validate(value).isEmail(),
+    (value: string) => Validator.validate(value).isLogin(),
+    (value: string) => Validator.validate(value).isName(),
+    (value: string) => Validator.validate(value).isName(),
+    (value: string) => Validator.validate(value).isPhone(),
+    (value: string) => Validator.validate(value).isPassword(),
+    (value: string) => Validator.validate(value).isPassword(),
+];
 
 export default class SignInForm extends Block<SignInFormProps> {
     constructor() {
@@ -28,6 +50,15 @@ export default class SignInForm extends Block<SignInFormProps> {
                     password: '',
                     confirm_password: '',
                 },
+                errors: {
+                    email: '',
+                    login: '',
+                    firstName: '',
+                    secondName: '',
+                    phone: '',
+                    password: '',
+                    confirmPassword: '',
+                },
                 attrs: {
                     action: '#',
                     method: 'POST',
@@ -36,8 +67,27 @@ export default class SignInForm extends Block<SignInFormProps> {
                     submit: (e) => {
                         e.preventDefault();
                         const el = e.target as HTMLFormElement;
-                        console.log(this.props.formState);
-                        el.reset();
+
+                        validateOnSubmit(
+                            validators,
+                            this.props.formState,
+                            this.props.errors,
+                            this.children,
+                            (name: string, error: string) => {
+                                this.setProps({
+                                    ...this.props,
+                                    errors: {
+                                        ...this.props.errors,
+                                        [name]: error,
+                                    },
+                                });
+                            },
+                        );
+
+                        if (isErrorsEmpty(this.props.errors)) {
+                            console.log(this.props.formState);
+                            el.reset();
+                        }
                     },
                 },
             },
@@ -48,7 +98,6 @@ export default class SignInForm extends Block<SignInFormProps> {
                     type: 'email',
                     label: 'Почта',
                     'theme-default': true,
-                    required: true,
                     onChange: (e: Event) => {
                         const el = e.target as HTMLInputElement;
 
@@ -60,6 +109,21 @@ export default class SignInForm extends Block<SignInFormProps> {
                             },
                         });
                     },
+                    onBlur: (e: Event) => {
+                        const el = e.target as HTMLInputElement;
+                        const input = this.children.EmailInput as LabelInput;
+                        const error = Validator.validate(el.value).isEmail();
+
+                        input.setProps({ ...input.props, error: error });
+
+                        this.setProps({
+                            ...this.props,
+                            errors: {
+                                ...this.props.errors,
+                                email: error,
+                            },
+                        });
+                    },
                 }) as Block,
                 LoginInput: new LabelInput({
                     'theme-default': true,
@@ -67,7 +131,6 @@ export default class SignInForm extends Block<SignInFormProps> {
                     value: '',
                     type: 'text',
                     label: 'Логин',
-                    required: true,
                     onChange: (e: Event) => {
                         const el = e.target as HTMLInputElement;
 
@@ -79,6 +142,21 @@ export default class SignInForm extends Block<SignInFormProps> {
                             },
                         });
                     },
+                    onBlur: (e: Event) => {
+                        const el = e.target as HTMLInputElement;
+                        const input = this.children.LoginInput as LabelInput;
+                        const error = Validator.validate(el.value).isLogin();
+
+                        input.setProps({ ...input.props, error: error });
+
+                        this.setProps({
+                            ...this.props,
+                            errors: {
+                                ...this.props.errors,
+                                login: error,
+                            },
+                        });
+                    },
                 }) as Block,
                 FirstNameInput: new LabelInput({
                     'theme-default': true,
@@ -86,7 +164,6 @@ export default class SignInForm extends Block<SignInFormProps> {
                     value: '',
                     type: 'text',
                     label: 'Имя',
-                    required: true,
                     onChange: (e: Event) => {
                         const el = e.target as HTMLInputElement;
 
@@ -98,6 +175,21 @@ export default class SignInForm extends Block<SignInFormProps> {
                             },
                         });
                     },
+                    onBlur: (e: Event) => {
+                        const el = e.target as HTMLInputElement;
+                        const input = this.children.FirstNameInput as LabelInput;
+                        const error = Validator.validate(el.value).isName();
+
+                        input.setProps({ ...input.props, error: error });
+
+                        this.setProps({
+                            ...this.props,
+                            errors: {
+                                ...this.props.errors,
+                                firstName: error,
+                            },
+                        });
+                    },
                 }) as Block,
                 SecondNameInput: new LabelInput({
                     'theme-default': true,
@@ -105,7 +197,6 @@ export default class SignInForm extends Block<SignInFormProps> {
                     value: '',
                     type: 'text',
                     label: 'Фамилия',
-                    required: true,
                     onChange: (e: Event) => {
                         const el = e.target as HTMLInputElement;
 
@@ -117,6 +208,21 @@ export default class SignInForm extends Block<SignInFormProps> {
                             },
                         });
                     },
+                    onBlur: (e: Event) => {
+                        const el = e.target as HTMLInputElement;
+                        const input = this.children.SecondNameInput as LabelInput;
+                        const error = Validator.validate(el.value).isName();
+
+                        input.setProps({ ...input.props, error: error });
+
+                        this.setProps({
+                            ...this.props,
+                            errors: {
+                                ...this.props.errors,
+                                secondName: error,
+                            },
+                        });
+                    },
                 }) as Block,
                 PhoneInput: new LabelInput({
                     'theme-default': true,
@@ -124,7 +230,6 @@ export default class SignInForm extends Block<SignInFormProps> {
                     value: '',
                     type: 'text',
                     label: 'Телефон',
-                    required: true,
                     onChange: (e: Event) => {
                         const el = e.target as HTMLInputElement;
 
@@ -136,6 +241,21 @@ export default class SignInForm extends Block<SignInFormProps> {
                             },
                         });
                     },
+                    onBlur: (e: Event) => {
+                        const el = e.target as HTMLInputElement;
+                        const input = this.children.PhoneInput as LabelInput;
+                        const error = Validator.validate(el.value).isPhone();
+
+                        input.setProps({ ...input.props, error: error });
+
+                        this.setProps({
+                            ...this.props,
+                            errors: {
+                                ...this.props.errors,
+                                phone: error,
+                            },
+                        });
+                    },
                 }) as Block,
                 PasswordInput: new LabelInput({
                     'theme-default': true,
@@ -143,7 +263,6 @@ export default class SignInForm extends Block<SignInFormProps> {
                     value: '',
                     type: 'password',
                     label: 'Пароль',
-                    required: true,
                     onChange: (e: Event) => {
                         const el = e.target as HTMLInputElement;
 
@@ -155,6 +274,21 @@ export default class SignInForm extends Block<SignInFormProps> {
                             },
                         });
                     },
+                    onBlur: (e: Event) => {
+                        const el = e.target as HTMLInputElement;
+                        const input = this.children.PasswordInput as LabelInput;
+                        const error = Validator.validate(el.value).isPassword();
+
+                        input.setProps({ ...input.props, error: error });
+
+                        this.setProps({
+                            ...this.props,
+                            errors: {
+                                ...this.props.errors,
+                                password: error,
+                            },
+                        });
+                    },
                 }) as Block,
                 ConfirmPasswordInput: new LabelInput({
                     'theme-default': true,
@@ -162,7 +296,6 @@ export default class SignInForm extends Block<SignInFormProps> {
                     value: '',
                     type: 'password',
                     label: 'Пароль (ещё раз)',
-                    required: true,
                     onChange: (e: Event) => {
                         const el = e.target as HTMLInputElement;
 
@@ -171,6 +304,21 @@ export default class SignInForm extends Block<SignInFormProps> {
                             formState: {
                                 ...this.props.formState,
                                 confirm_password: el.value,
+                            },
+                        });
+                    },
+                    onBlur: (e: Event) => {
+                        const el = e.target as HTMLInputElement;
+                        const input = this.children.ConfirmPasswordInput as LabelInput;
+                        const error = Validator.validate(el.value).isPassword();
+
+                        input.setProps({ ...input.props, error: error });
+
+                        this.setProps({
+                            ...this.props,
+                            errors: {
+                                ...this.props.errors,
+                                confirmPassword: error,
                             },
                         });
                     },

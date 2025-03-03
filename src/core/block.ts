@@ -98,9 +98,7 @@ export abstract class Block<T extends object = object, P extends object = object
         this.eventBus.emit(Block.EVENTS.FLOW_RENDER);
     }
 
-    componentDidUpdate(oldProps: T, newProps: T): boolean {
-        void oldProps;
-        void newProps;
+    componentDidUpdate(_oldProps: T, _newProps: T): boolean {
         return true;
     }
 
@@ -198,7 +196,7 @@ export abstract class Block<T extends object = object, P extends object = object
         });
     }
 
-    private addEvents() {
+    private addEvents(): void {
         const { events = {} } = this.props;
 
         Object.keys(events).forEach((eventName) => {
@@ -206,7 +204,7 @@ export abstract class Block<T extends object = object, P extends object = object
         });
     }
 
-    private removeEvents() {
+    private removeEvents(): void {
         const { events = {} } = this.props;
 
         Object.keys(events).forEach((eventName) => {

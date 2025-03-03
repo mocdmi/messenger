@@ -8,11 +8,12 @@ interface InputAttrs {
     accept?: string;
     placeholder?: string;
     required?: boolean;
-    onChange?: (e: Event) => void;
 }
 
 interface InputProps extends InputAttrs {
     className?: string;
+    onChange?: (e: Event) => void;
+    onBlur?: (e: Event) => void;
 }
 
 export default class Input extends Block<InputProps, InputAttrs> {
@@ -36,6 +37,7 @@ export default class Input extends Block<InputProps, InputAttrs> {
             })(),
             events: {
                 ...(props.onChange ? { change: props.onChange } : {}),
+                ...(props.onBlur ? { blur: props.onBlur } : {}),
             },
         });
     }

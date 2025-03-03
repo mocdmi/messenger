@@ -1,6 +1,9 @@
 import { Button, LabelInput } from '../../../components';
 import { ProfileContext } from '../../../context/types/ProfileContext';
 import { Block } from '../../../core';
+import Validator from '../../../core/validator';
+import { isErrorsEmpty } from '../../../helpers/is-errors-empty';
+import { validateOnSubmit } from '../../../helpers/validate-on-submit';
 import styles from '../styles.module.css';
 
 interface EditFormProps extends ProfileContext {
@@ -9,7 +12,18 @@ interface EditFormProps extends ProfileContext {
         newPassword: string;
         newPasswordConfirm: string;
     };
+    errors: {
+        oldPassword: string;
+        newPassword: string;
+        newPasswordConfirm: string;
+    };
 }
+
+const validators: ((value: string) => string)[] = [
+    (value: string) => Validator.validate(value).isPassword(),
+    (value: string) => Validator.validate(value).isPassword(),
+    (value: string) => Validator.validate(value).isPassword(),
+];
 
 export default class EditForm extends Block<EditFormProps> {
     constructor(props: ProfileContext) {
@@ -22,6 +36,11 @@ export default class EditForm extends Block<EditFormProps> {
                     newPassword: '',
                     newPasswordConfirm: '',
                 },
+                errors: {
+                    oldPassword: '',
+                    newPassword: '',
+                    newPasswordConfirm: '',
+                },
                 attrs: {
                     action: '#',
                     method: 'POST',
@@ -30,20 +49,38 @@ export default class EditForm extends Block<EditFormProps> {
                     submit: (e) => {
                         e.preventDefault();
                         const el = e.target as HTMLFormElement;
-                        console.log(this.props.formState);
-                        el.reset();
+
+                        validateOnSubmit(
+                            validators,
+                            this.props.formState,
+                            this.props.errors,
+                            this.children,
+                            (name: string, error: string) => {
+                                this.setProps({
+                                    ...this.props,
+                                    errors: {
+                                        ...this.props.errors,
+                                        [name]: error,
+                                    },
+                                });
+                            },
+                        );
+
+                        if (isErrorsEmpty(this.props.errors)) {
+                            console.log(this.props.formState);
+                            el.reset();
+                        }
                     },
                 },
             },
             {
-                PasswordInput: new LabelInput({
+                OldPasswordInput: new LabelInput({
                     'theme-blank': true,
                     'align-right': true,
                     'placeholder-right': true,
                     type: 'password',
                     name: 'oldPassword',
                     value: props.password,
-                    required: true,
                     onChange: (e: Event) => {
                         const el = e.target as HTMLInputElement;
 
@@ -55,6 +92,21 @@ export default class EditForm extends Block<EditFormProps> {
                             },
                         });
                     },
+                    onBlur: (e: Event) => {
+                        const el = e.target as HTMLInputElement;
+                        const input = this.children.OldPasswordInput as LabelInput;
+                        const error = Validator.validate(el.value).isPassword();
+
+                        input.setProps({ ...input.props, error: error });
+
+                        this.setProps({
+                            ...this.props,
+                            errors: {
+                                ...this.props.errors,
+                                oldPassword: error,
+                            },
+                        });
+                    },
                 }) as Block,
                 NewPasswordInput: new LabelInput({
                     'theme-blank': true,
@@ -63,7 +115,6 @@ export default class EditForm extends Block<EditFormProps> {
                     type: 'password',
                     name: 'newPassword',
                     value: '',
-                    required: true,
                     onChange: (e: Event) => {
                         const el = e.target as HTMLInputElement;
 
@@ -75,6 +126,21 @@ export default class EditForm extends Block<EditFormProps> {
                             },
                         });
                     },
+                    onBlur: (e: Event) => {
+                        const el = e.target as HTMLInputElement;
+                        const input = this.children.NewPasswordInput as LabelInput;
+                        const error = Validator.validate(el.value).isPassword();
+
+                        input.setProps({ ...input.props, error: error });
+
+                        this.setProps({
+                            ...this.props,
+                            errors: {
+                                ...this.props.errors,
+                                newPassword: error,
+                            },
+                        });
+                    },
                 }) as Block,
                 NewPasswordConfirmInput: new LabelInput({
                     'theme-blank': true,
@@ -83,7 +149,6 @@ export default class EditForm extends Block<EditFormProps> {
                     type: 'password',
                     name: 'newPasswordConfirm',
                     value: '',
-                    required: true,
                     onChange: (e: Event) => {
                         const el = e.target as HTMLInputElement;
 
@@ -92,6 +157,21 @@ export default class EditForm extends Block<EditFormProps> {
                             formState: {
                                 ...this.props.formState,
                                 newPasswordConfirm: el.value,
+                            },
+                        });
+                    },
+                    onBlur: (e: Event) => {
+                        const el = e.target as HTMLInputElement;
+                        const input = this.children.NewPasswordConfirmInput as LabelInput;
+                        const error = Validator.validate(el.value).isPassword();
+
+                        input.setProps({ ...input.props, error: error });
+
+                        this.setProps({
+                            ...this.props,
+                            errors: {
+                                ...this.props.errors,
+                                newPasswordConfirm: error,
                             },
                         });
                     },
@@ -112,7 +192,7 @@ export default class EditForm extends Block<EditFormProps> {
                 <div class="${styles.row}">
                     <div class="${styles.label}">Старый пароль</div>
                     <div class="${styles.value}">
-                        {{{PasswordInput}}}
+                        {{{OldPasswordInput}}}
                     </div>
                 </div>
                 <div class="${styles.row}">

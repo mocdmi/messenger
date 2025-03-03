@@ -1,90 +1,65 @@
 export default class Validator {
-    private static errors: string[];
+    private static error: string;
     private static value: string;
 
     static validate(value: string) {
-        this.errors = [];
+        this.error = '';
         this.value = value;
         return this;
     }
 
-    private static testMatch(regexp: RegExp): boolean {
+    private static isMatch(regexp: RegExp): boolean {
         return regexp.test(this.value);
     }
 
-    static isMatch(regexp: RegExp, errorMessage?: string) {
-        if (!this.testMatch(regexp)) {
-            this.errors.push(errorMessage ?? 'Вы ввели не допустимые символы.');
-        }
-
-        return this;
-    }
-
-    static isLength(min: number, max?: number) {
-        if (this.value.length < min || (max && this.value.length > max)) {
-            this.errors.push(`Поле должно содержать от ${min} до ${max} символов.`);
-        }
-
-        return this;
-    }
-
     static isName() {
-        if (!this.testMatch(/^[A-ZА-Я][a-zа-я-]*$/)) {
-            this.errors.push(
-                `Должно быть на латинице или кириллице, первая буква должна быть заглавной, без пробелов
-                и без цифр, без спецсимволов (допустим только дефис).`,
-            );
+        if (!this.isMatch(/^[A-ZА-Я][a-zа-я-]+$/)) {
+            this.error =
+                'Должно быть на латинице или кириллице, первая буква должна быть заглавной, без пробелов и без цифр, без спецсимволов (допустим только дефис).';
         }
 
-        return this;
+        return this.error;
     }
 
     static isEmail() {
-        if (!this.testMatch(/^[a-zA-Z0-9._%+-]+@[a-zA-Z]+\.[a-zA-Z]+$/)) {
-            this.errors.push('Не верный формат электронной почты.');
+        if (!this.isMatch(/^[a-zA-Z0-9._%+-]+@[a-zA-Z]+\.[a-zA-Z]+$/)) {
+            this.error = 'Не верный формат электронной почты.';
         }
 
-        return this;
+        return this.error;
     }
 
     static isPhone() {
-        if (!this.testMatch(/^\+?[0-9]*$/)) {
-            this.errors.push('Должно состоять из цифр, может начинается с плюса.');
+        if (!this.isMatch(/^\+?[0-9]{10,15}$/)) {
+            this.error = 'Должно состоять из цифр, может начинается с плюса. 10-15 символов.';
         }
 
-        return this;
+        return this.error;
     }
 
     static isLogin() {
-        if (!this.testMatch(/^[a-zA-Z0-9-_]*$/)) {
-            this.errors.push(
-                `Должно быть на латинице и включать цифры, без пробелов, без спецсимволов (допустимы дефис и
-                нижнее подчёркивание).`,
-            );
+        if (!this.isMatch(/^(?!\d+$)[A-Za-z0-9_-]{3,20}$/)) {
+            this.error =
+                'Должно быть на латинице, может включать цифры, но не состоять из них, без пробелов, без спецсимволов (допустимы дефис и нижнее подчёркивание). 3-20 символов.';
         }
 
-        return this;
+        return this.error;
     }
 
     static isPassword() {
-        if (!this.testMatch(/^(?=.*\d)[a-zA-Z0-9]*$/)) {
-            this.errors.push(
-                'Должен быть на латинице и включать хотя бы одна заглавную букву и цифру.',
-            );
+        if (!this.isMatch(/^(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,40}$/)) {
+            this.error =
+                'Должно быть на латинице и включать хотя бы одну заглавную букву и цифру. 8-40 символов.';
         }
 
-        return this;
+        return this.error;
     }
 
     static isRequired() {
         if (this.value.length === 0) {
-            this.errors.push('Поле обязательно для заполнения');
+            this.error = 'Поле обязательно для заполнения';
         }
 
-        return this;
-    }
-
-    static exec() {
-        return this.errors;
+        return this.error;
     }
 }

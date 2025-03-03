@@ -127,3 +127,9 @@
         height: 20px;
     }
 }
+
+.errorMessage {
+    font-size: var(--font-size-xs);
+    color: var(--danger-color);
+    margin-top: 10px;
+}

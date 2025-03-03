@@ -18,7 +18,9 @@ export interface LabelInputProps {
     name: string;
     value: string;
     required?: boolean;
+    error?: string;
     onChange?: (e: Event) => void;
+    onBlur?: (e: Event) => void;
 }
 
 export default class LabelInput extends Block<LabelInputProps> {
@@ -48,6 +50,7 @@ export default class LabelInput extends Block<LabelInputProps> {
                     placeholder: '',
                     required: props.required,
                     onChange: props.onChange,
+                    onBlur: props.onBlur,
                 }) as Block,
             },
         );
@@ -68,6 +71,9 @@ export default class LabelInput extends Block<LabelInputProps> {
                     </span>
                 {{/if}}
             </span>
+            {{#if error}}
+                <div class=${styles.errorMessage}>{{error}}</div>
+            {{/if}}
         `;
     }
 }

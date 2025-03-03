@@ -34,11 +34,11 @@ export default class MessageForm extends Block<MessageFormProps> {
                     placeholder: 'Сообщение',
                     rounded: true,
                     value: '',
-                    required: true,
                     onChange: (e: Event) => {
                         const el = e.target as HTMLInputElement;
 
                         this.setProps({
+                            ...this.props,
                             formState: {
                                 ...this.props.formState,
                                 message: el.value,

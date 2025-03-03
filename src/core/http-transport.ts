@@ -1,7 +1,7 @@
-type Data = { [key: string]: unknown };
+type Data = Record<string, unknown>;
 
 interface Options extends Partial<XMLHttpRequest> {
-    headers?: { [key: string]: string };
+    headers?: Record<string, string>;
     timeout?: number;
     data?: Data;
     method?: string;
