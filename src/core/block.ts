@@ -1,5 +1,5 @@
 import Handlebars from 'handlebars';
-import { EventBus } from './event-bus';
+import { EventBus } from '../core';
 
 type Children = Record<string, Block | Block[]>;
 
@@ -11,7 +11,7 @@ type Attributes<T> = {
     };
 };
 
-export abstract class Block<T extends object = object, P extends object = object> {
+export default abstract class Block<T extends object = object, P extends object = object> {
     private static EVENTS = {
         INIT: 'init',
         FLOW_CDM: 'flow:component-did-mount',

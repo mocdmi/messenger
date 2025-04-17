@@ -20,7 +20,7 @@ export default class Contacts extends Block<ChatContext> {
                 ProfileLink: new Link({
                     'theme-default': true,
                     label: 'Профиль',
-                    to: 'profile',
+                    href: '/profile',
                     modificator: styles.link,
                 }) as Block,
                 SearchForm: new SearchForm() as Block,
