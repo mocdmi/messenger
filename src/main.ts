@@ -1,5 +1,6 @@
 import * as context from './context';
-import { Router } from './core/router';
+import { ChatContext } from './context/types/ChatContext';
+import { BlockConstructor, Router } from './core/router';
 import * as Pages from './pages';
 import './assets/styles/styles.css';
 

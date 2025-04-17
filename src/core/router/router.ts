@@ -1,10 +1,9 @@
 import { Block } from '../../core';
-import { Route } from '../router';
-import { BlockConstructor, Props } from '../router';
+import { Route, BlockConstructor, Props } from '../router';
 
 export default class Router {
     private static instance: Router;
-    private routes: Route<Block>[] = [];
+    private routes: Route[] = [];
     private currentRoute: Route<Block> | null = null;
     private rootQuery = '';
 
@@ -45,8 +44,15 @@ export default class Router {
         this.currentRoute = route;
     }
 
-    use<T extends Block>(path: string, block: BlockConstructor<T>, props: Props = {}): Router {
-        const route = new Route(path, block, { ...props, rootQuery: this.rootQuery });
+    use<P extends object>(
+        path: string,
+        block: BlockConstructor<P>,
+        props?: P & { rootQuery: string },
+    ): Router {
+        const route = new Route(path, block, {
+            ...(props ?? {}),
+            rootQuery: this.rootQuery,
+        });
         this.routes.push(route);
         return this;
     }

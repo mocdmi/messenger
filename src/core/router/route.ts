@@ -1,19 +1,19 @@
 import { Block } from '../../core';
 import { BlockConstructor, Props } from '../router';
 
-export default class Route<T extends Block> {
+export default class Route<P extends object = {}> {
     private readonly path: string;
     private readonly rootQuery: string;
-    private block: T | null;
-    private readonly context: Record<string, unknown>;
-    private readonly BlockClass: new (props: Props) => T;
+    private block: Block<P> | null;
+    private readonly context: P;
+    private readonly BlockClass: BlockConstructor<P>;
 
-    constructor(path: string, BlockClass: BlockConstructor<T>, props: Props = {}) {
+    constructor(path: string, BlockClass: BlockConstructor<P>, props: Props = {}) {
         const { rootQuery, ...context } = props;
 
         this.path = path;
         this.rootQuery = rootQuery as string;
-        this.context = context;
+        this.context = context as P;
         this.block = null;
         this.BlockClass = BlockClass;
     }
@@ -28,7 +28,7 @@ export default class Route<T extends Block> {
         return path === this.path;
     }
 
-    private renderDom(selector: string, block: T) {
+    private renderDom(selector: string, block: Block<P>) {
         const root = document.querySelector(selector);
 
         if (!root) {
