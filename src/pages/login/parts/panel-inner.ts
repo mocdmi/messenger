@@ -13,7 +13,7 @@ export default class PanelInner extends Block {
             },
             {
                 LoginForm: new LoginForm() as Block,
-                SignInLink: new Link({
+                SignUpLink: new Link({
                     'theme-default': true,
                     label: 'Нет аккаунта?',
                     to: ROUTER.signUp,
@@ -27,8 +27,8 @@ export default class PanelInner extends Block {
         return `
             <h2 class="${styles.title}">Вход</h2>
             {{{LoginForm}}}
-            <div class="${styles.signIn}">
-                {{{SignInLink}}}
+            <div class="${styles.signUp}">
+                {{{SignUpLink}}}
             </div>
         `;
     }

@@ -1,5 +1,5 @@
 import { Block, Router } from '../../core';
-import withRouter from '../../helpers/withRouter';
+import { withRouter } from '../../helpers';
 import { Link } from '../link';
 import { ProfileAvatar } from '../profile-avatar';
 import styles from './styles.module.css';
@@ -7,7 +7,7 @@ import styles from './styles.module.css';
 interface ProfileProps {
     name?: string;
     Children: Block | Block[];
-    router: Router;
+    router?: Router;
 }
 
 class Profile extends Block<ProfileProps> {
@@ -23,11 +23,11 @@ class Profile extends Block<ProfileProps> {
                 Body: Array.isArray(props.Children) ? props.Children : [props.Children],
                 BackButton: new Link({
                     label: 'Back',
-                    href: '#',
+                    href: '/',
                     modificator: styles.backLink,
                     onClick: (e: Event) => {
                         e.preventDefault();
-                        props.router.back();
+                        props.router?.back();
                     },
                 }) as Block,
             },
