@@ -1,4 +1,5 @@
 import { Link } from '../../../components';
+import { ROUTER } from '../../../const';
 import { ProfileContext } from '../../../context/types/ProfileContext';
 import { Block } from '../../../core';
 import styles from '../styles.module.css';
@@ -9,17 +10,17 @@ export default class ProfileInner extends Block<ProfileContext> {
             EditLink: new Link({
                 'theme-default': true,
                 label: 'Изменить данные',
-                href: '/edit-profile',
+                to: ROUTER.editProfile,
             }) as Block,
             EditPasswordLink: new Link({
                 'theme-default': true,
                 label: 'Изменить пароль',
-                href: '/edit-password',
+                to: ROUTER.editPassword,
             }) as Block,
             LogoutLink: new Link({
                 'theme-danger': true,
                 label: 'Выйти',
-                href: '#',
+                to: '#',
             }) as Block,
         });
     }

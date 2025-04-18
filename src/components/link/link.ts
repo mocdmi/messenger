@@ -26,13 +26,22 @@ export default class Link extends Block<LinkProps, LinkAttrs> {
                 ${props['theme-danger'] ? styles.themeDanger : ''}
                 ${props.modificator ? props.modificator : ''}
             `,
-            attrs: (() => {
-                if (props.to) {
-                    return { 'data-to': props.to, href: `#${props.to}` };
-                } else {
-                    return { href: props.href };
-                }
-            })(),
+            attrs: {
+                href: props.href,
+            },
+            events: {
+                click: (e: Event) => {
+                    if (props.onClick) {
+                        props.onClick(e);
+                        return;
+                    }
+
+                    if (props.to) {
+                        e.preventDefault();
+                        window.router.go(props.to);
+                    }
+                },
+            },
         });
     }
 

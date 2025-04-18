@@ -32,10 +32,9 @@ export default class Route {
             throw new Error(`Element with selector "${selector}" not found`);
         }
 
-        console.log(block.getContent());
-
         root.innerHTML = '';
         root.append(block.getContent());
+        block.show();
     }
 
     render() {
