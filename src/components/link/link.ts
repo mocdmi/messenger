@@ -13,6 +13,7 @@ interface LinkProps extends LinkAttrs {
     to?: string;
     href?: string;
     modificator?: string;
+    onClick?: (e: Event) => void;
 }
 
 export default class Link extends Block<LinkProps, LinkAttrs> {

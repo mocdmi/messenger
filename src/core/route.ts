@@ -1,19 +1,16 @@
-import { Block } from '../../core';
-import { BlockConstructor, Props } from '../router';
+import { Block, BlockConstructor } from '../core';
 
-export default class Route<P extends object = {}> {
+export default class Route {
     private readonly path: string;
     private readonly rootQuery: string;
-    private block: Block<P> | null;
-    private readonly context: P;
-    private readonly BlockClass: BlockConstructor<P>;
+    private block: Block | null;
+    private readonly context: object;
+    private readonly BlockClass: BlockConstructor;
 
-    constructor(path: string, BlockClass: BlockConstructor<P>, props: Props = {}) {
-        const { rootQuery, ...context } = props;
-
+    constructor(path: string, BlockClass: BlockConstructor, props: object = {}, rootQuery: string) {
         this.path = path;
-        this.rootQuery = rootQuery as string;
-        this.context = context as P;
+        this.rootQuery = rootQuery;
+        this.context = props;
         this.block = null;
         this.BlockClass = BlockClass;
     }
@@ -28,12 +25,14 @@ export default class Route<P extends object = {}> {
         return path === this.path;
     }
 
-    private renderDom(selector: string, block: Block<P>) {
+    private renderDom(selector: string, block: Block) {
         const root = document.querySelector(selector);
 
         if (!root) {
             throw new Error(`Element with selector "${selector}" not found`);
         }
+
+        console.log(block.getContent());
 
         root.innerHTML = '';
         root.append(block.getContent());

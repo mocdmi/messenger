@@ -1,15 +1,7 @@
 import Handlebars from 'handlebars';
-import { EventBus } from '../core';
+import { Attributes, EventBus } from '../core';
 
 type Children = Record<string, Block | Block[]>;
-
-type Attributes<T> = {
-    className?: string;
-    attrs?: T;
-    events?: {
-        [key: string]: (e: Event) => void;
-    };
-};
 
 export default abstract class Block<T extends object = object, P extends object = object> {
     private static EVENTS = {

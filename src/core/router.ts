@@ -1,11 +1,10 @@
-import { Block } from '../../core';
-import { Route, BlockConstructor, Props } from '../router';
+import { Route, BlockConstructor } from '../core';
 
 export default class Router {
     private static instance: Router;
     private routes: Route[] = [];
-    private currentRoute: Route<Block> | null = null;
-    private rootQuery = '';
+    private currentRoute: Route | null = null;
+    private readonly rootQuery: string;
 
     constructor(rootQuery: string) {
         if (!Router.instance) {
@@ -16,17 +15,16 @@ export default class Router {
     }
 
     start() {
-        const path = window.location.pathname;
-
-        window.onpopstate = () => {
+        window.onpopstate = (event) => {
             try {
+                const path = (event.currentTarget as Window)?.location.pathname;
                 this.onRoute(path);
             } catch (error) {
                 console.error(error);
             }
         };
 
-        this.onRoute(path);
+        this.onRoute(window.location.pathname);
     }
 
     private onRoute(path: string) {
@@ -40,19 +38,12 @@ export default class Router {
             this.currentRoute.leave();
         }
 
-        route.render();
         this.currentRoute = route;
+        route.render();
     }
 
-    use<P extends object>(
-        path: string,
-        block: BlockConstructor<P>,
-        props?: P & { rootQuery: string },
-    ): Router {
-        const route = new Route(path, block, {
-            ...(props ?? {}),
-            rootQuery: this.rootQuery,
-        });
+    use(path: string, block: unknown, props?: object): Router {
+        const route = new Route(path, block as BlockConstructor, props, this.rootQuery);
         this.routes.push(route);
         return this;
     }
@@ -65,7 +56,7 @@ export default class Router {
         history.back();
     }
 
-    push(path: string) {
+    go(path: string) {
         try {
             history.pushState({}, '', path);
             this.onRoute(path);
@@ -74,7 +65,7 @@ export default class Router {
         }
     }
 
-    private getBlockByPath(path: string): Route<Block> | undefined {
-        return this.routes.find((route: Route<Block>) => route.match(path));
+    private getBlockByPath(path: string) {
+        return this.routes.find((route) => route.match(path));
     }
 }
