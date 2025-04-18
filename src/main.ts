@@ -12,7 +12,7 @@ window.router
     .use(ROUTER.editProfile, Pages.EditProfilePage, context.profileContext)
     .use(ROUTER.login, Pages.LoginPage)
     .use(ROUTER.settings, Pages.ProfilePage, context.profileContext)
-    .use(ROUTER.signUp, Pages.SignInPage)
+    .use(ROUTER.signUp, Pages.SignUpPage)
     .use('/404', Pages.ErrorPage, context.errorNotFoundContext)
     .use('/500', Pages.ErrorPage, context.errorServerContext)
     .start();

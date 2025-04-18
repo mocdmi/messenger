@@ -25,7 +25,7 @@ export default class PanelInner extends Block {
     // language=Handlebars
     render(): string {
         return `
-            <h2 class="${styles.title}">Вход</h2>
+            <h2 class="${styles.title}">Регистрация</h2>
             {{{SignInForm}}}
             <div class="${styles.login}">
                 {{{LoginLink}}}
