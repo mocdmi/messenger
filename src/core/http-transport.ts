@@ -1,15 +1,26 @@
-type Data = Record<string, unknown>;
+import { API_URL } from '../const';
 
-interface Options extends Partial<XMLHttpRequest> {
+interface Options<T> extends Partial<XMLHttpRequest> {
     headers?: Record<string, string>;
     timeout?: number;
-    data?: Data;
+    data?: T;
     method?: string;
 }
 
-type HTTPMethod = (url: string, options?: Options) => Promise<XMLHttpRequest>;
+interface Response<P> {
+    headers: Record<string, string>;
+    status: number;
+    statusText: string;
+    response: P;
+}
+
+type Body = string | Blob | ArrayBuffer | ArrayBufferView | FormData | URLSearchParams | null;
+
+type HTTPMethod = <T, P>(url: string, options?: Options<T>) => Promise<Response<P>>;
 
 export default class HttpTransport {
+    private readonly baseUrl: string;
+
     static METHODS = {
         GET: 'GET',
         PUT: 'PUT',
@@ -17,7 +28,11 @@ export default class HttpTransport {
         DELETE: 'DELETE',
     } as const;
 
-    private queryStringify(data: Data): string {
+    constructor(baseUrl: string) {
+        this.baseUrl = API_URL + baseUrl;
+    }
+
+    private queryStringify<T>(data: T): string {
         if (typeof data !== 'object' || data === null) {
             throw new Error('Должно быть объектом');
         }
@@ -36,7 +51,8 @@ export default class HttpTransport {
     private createMethod(
         method: (typeof HttpTransport.METHODS)[keyof typeof HttpTransport.METHODS],
     ): HTTPMethod {
-        return (url: string, options: Options = {}) => this.request(url, { ...options, method });
+        return <T, P>(url: string, options: Options<T> = {}) =>
+            this.request<T, P>(url, { ...options, method });
     }
 
     get = this.createMethod(HttpTransport.METHODS.GET);
@@ -47,9 +63,10 @@ export default class HttpTransport {
 
     delete = this.createMethod(HttpTransport.METHODS.DELETE);
 
-    private request(url: string, options: Options = {}): Promise<XMLHttpRequest> {
+    private request<T, P>(url: string, options: Options<T> = {}): Promise<Response<P>> {
         const { headers = {}, data, method = HttpTransport.METHODS.GET, ...xhrOptions } = options;
         const isGet: boolean = method === HttpTransport.METHODS.GET;
+        const fullUrl = `${this.baseUrl}${url}`;
 
         return new Promise((resolve, reject): void => {
             const xhr = new XMLHttpRequest();
@@ -57,21 +74,59 @@ export default class HttpTransport {
             Object.assign(xhr, xhrOptions);
 
             xhr.timeout = options.timeout || 5000;
-            xhr.open(method, isGet && !!data ? `${url}${this.queryStringify(data)}` : url);
+            xhr.open(
+                method,
+                isGet && !!data ? `${fullUrl}${this.queryStringify<T>(data)}` : fullUrl,
+            );
 
-            for (const prop in headers) {
-                xhr.setRequestHeader(prop, headers[prop]);
+            const updatedHeaders =
+                typeof data === 'object'
+                    ? { ...headers, 'Content-Type': 'application/json' }
+                    : headers;
+
+            for (const prop in updatedHeaders) {
+                xhr.setRequestHeader(prop, updatedHeaders[prop]);
             }
 
             if (isGet || !data) {
                 xhr.send();
             } else {
-                const body = data && typeof data === 'object' ? JSON.stringify(data) : data;
+                const body:
+                    | string
+                    | Blob
+                    | ArrayBuffer
+                    | ArrayBufferView
+                    | FormData
+                    | URLSearchParams
+                    | null =
+                    typeof data === 'object' && !(data instanceof Document)
+                        ? JSON.stringify(data)
+                        : (data as Body);
+
                 xhr.send(body);
             }
 
             xhr.onload = () => {
-                resolve(xhr);
+                let parsedResponse = xhr.response;
+
+                if (xhr.getResponseHeader('Content-Type')?.includes('application/json')) {
+                    parsedResponse = JSON.parse(parsedResponse);
+                }
+
+                resolve({
+                    headers: xhr
+                        .getAllResponseHeaders()
+                        .trim()
+                        .split(/\r\n/)
+                        .reduce((acc: Record<string, string>, item) => {
+                            const [key, value] = item.split(': ');
+                            acc[key] = value;
+                            return acc;
+                        }, {}),
+                    status: xhr.status,
+                    statusText: xhr.statusText,
+                    response: parsedResponse as P,
+                });
             };
 
             xhr.onerror = () => reject('Ошибка соединения');

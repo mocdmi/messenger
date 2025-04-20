@@ -1,10 +1,10 @@
 import { Button, LabelInput } from '../../../components';
-import { Block } from '../../../core';
-import Validator from '../../../core/validator';
+import { Block, Validator } from '../../../core';
 import { isErrorsEmpty, validateOnSubmit } from '../../../helpers';
+import { authService } from '../../../services';
 import styles from '../styles.module.css';
 
-interface SignInFormProps {
+interface SignUpFormProps {
     formState: {
         email: string;
         login: string;
@@ -35,7 +35,7 @@ const validators: ((value: string) => string)[] = [
     (value: string) => Validator.validate(value).isPassword(),
 ];
 
-export default class SignInForm extends Block<SignInFormProps> {
+export default class SignUpForm extends Block<SignUpFormProps> {
     constructor() {
         super(
             'form',
@@ -85,6 +85,7 @@ export default class SignInForm extends Block<SignInFormProps> {
 
                         if (isErrorsEmpty(this.props.errors)) {
                             console.log(this.props.formState);
+                            authService.signUp(this.props.formState);
                             el.reset();
                         }
                     },

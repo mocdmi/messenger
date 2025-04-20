@@ -2,7 +2,7 @@ import { Link } from '../../../components';
 import { ROUTER } from '../../../const';
 import { Block } from '../../../core';
 import styles from '../styles.module.css';
-import SignInForm from './sign-in-form';
+import SignUpForm from './sign-up-form';
 
 export default class PanelInner extends Block {
     constructor() {
@@ -12,7 +12,7 @@ export default class PanelInner extends Block {
                 className: styles.inner,
             },
             {
-                SignInForm: new SignInForm() as Block,
+                SignUpForm: new SignUpForm() as Block,
                 LoginLink: new Link({
                     'theme-default': true,
                     label: 'Войти',
@@ -26,7 +26,7 @@ export default class PanelInner extends Block {
     render(): string {
         return `
             <h2 class="${styles.title}">Регистрация</h2>
-            {{{SignInForm}}}
+            {{{SignUpForm}}}
             <div class="${styles.login}">
                 {{{LoginLink}}}
             </div>

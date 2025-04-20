@@ -1,8 +1,7 @@
 import { Button, LabelInput } from '../../../components';
 import { profileContext } from '../../../context';
 import { ProfileContext } from '../../../context/types/ProfileContext';
-import { Block } from '../../../core';
-import Validator from '../../../core/validator';
+import { Block, Validator } from '../../../core';
 import { isErrorsEmpty, validateOnSubmit } from '../../../helpers';
 import styles from '../styles.module.css';
 

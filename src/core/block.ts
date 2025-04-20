@@ -90,9 +90,7 @@ export default abstract class Block<T extends object = object, P extends object 
         this.eventBus.emit(Block.EVENTS.FLOW_RENDER);
     }
 
-    componentDidUpdate(oldProps: T, newProps: T): boolean {
-        void oldProps;
-        void newProps;
+    componentDidUpdate(_oldProps: T, _newProps: T): boolean {
         return true;
     }
 
