@@ -1,4 +1,6 @@
-import { AuthApi, SignUpRequestDto } from '../api/auth';
+import { AuthApi, SignInRequestDto, SignUpRequestDto } from '../api/auth';
+import { ROUTER } from '../const';
+import { Router } from '../core';
 
 const authApi = new AuthApi();
 
@@ -8,10 +10,52 @@ export async function signUp(data: SignUpRequestDto) {
 
         if (status === 200) {
             return response;
-        } else {
-            throw new Error(`Error: ${status}`);
+        } else if ('reason' in response) {
+            throw new Error(response.reason);
         }
     } catch (error) {
-        console.error('Error during sign up:', error);
+        console.error(error);
+    }
+}
+
+export async function login(data: SignInRequestDto) {
+    try {
+        const { status, response } = await authApi.login(data);
+
+        if (status === 200) {
+            Router.getInstance().go(ROUTER.messenger);
+        } else if ('reason' in response) {
+            throw new Error(response.reason);
+        }
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+export async function me() {
+    try {
+        const { status, response } = await authApi.me();
+
+        if (status === 200) {
+            return response;
+        } else if ('reason' in response) {
+            throw new Error(response.reason);
+        }
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+export async function logout() {
+    try {
+        const { status } = await authApi.logout();
+
+        if (status === 200) {
+            Router.getInstance().go(ROUTER.login);
+        } else {
+            throw new Error(`Статус: ${status}`);
+        }
+    } catch (error) {
+        console.error(error);
     }
 }

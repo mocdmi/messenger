@@ -16,7 +16,10 @@ interface Response<P> {
 
 type Body = string | Blob | ArrayBuffer | ArrayBufferView | FormData | URLSearchParams | null;
 
-type HTTPMethod = <T, P>(url: string, options?: Options<T>) => Promise<Response<P>>;
+type HTTPMethod = <T extends unknown = void, P extends unknown = void>(
+    url: string,
+    options?: Options<T>,
+) => Promise<Response<P>>;
 
 export default class HttpTransport {
     private readonly baseUrl: string;
@@ -78,6 +81,8 @@ export default class HttpTransport {
                 method,
                 isGet && !!data ? `${fullUrl}${this.queryStringify<T>(data)}` : fullUrl,
             );
+
+            xhr.withCredentials = true;
 
             const updatedHeaders =
                 typeof data === 'object'

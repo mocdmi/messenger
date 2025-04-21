@@ -23,7 +23,7 @@ export default class EventBus {
 
     emit<T extends string, P extends unknown[]>(event: T, ...args: P): void {
         if (!this.listeners[event]) {
-            throw new Error(`Нет события: ${event}`);
+            return;
         }
 
         this.listeners[event].forEach(function (listener) {

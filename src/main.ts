@@ -1,12 +1,12 @@
 import { ROUTER } from './const';
 import * as context from './context';
-import { Router } from './core';
+import { Router, Store } from './core';
 import * as Pages from './pages';
 import './assets/styles/styles.css';
 
-window.router = new Router('#app');
+const router = Router.getInstance('#app');
 
-window.router
+router
     .use(ROUTER.messenger, Pages.ChatPage, context.chatContext)
     .use(ROUTER.editPassword, Pages.EditPasswordPage)
     .use(ROUTER.editProfile, Pages.EditProfilePage, context.profileContext)
@@ -16,3 +16,7 @@ window.router
     .use('/404', Pages.ErrorPage, context.errorNotFoundContext)
     .use('/500', Pages.ErrorPage, context.errorServerContext)
     .start();
+
+const store = Store.getInstance();
+
+store.set('user', { test: 'ok' });

@@ -12,3 +12,7 @@ export type BlockConstructor<P extends object = object, A extends object = objec
     props: P & Attributes<A>,
     children?: Record<string, Block | Block[]>,
 ) => Block<P, A>;
+
+export enum StoreEvents {
+    Updated = 'updated',
+}

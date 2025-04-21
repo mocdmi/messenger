@@ -10,12 +10,15 @@ interface BaseUserDto {
     phone: string;
 }
 
-export interface UserDto extends BaseUserDto {
+interface UserResponse extends BaseUserDto {
     id: number;
     display_name: string;
     avatar: string;
 }
 
+export type UserResponseDto = UserResponse | ErrorResponse;
+
+// Регистрация
 export interface SignUpRequestDto extends BaseUserDto {
     password: string;
 }
@@ -25,3 +28,11 @@ interface SignUpResponse {
 }
 
 export type SignUpResponseDto = SignUpResponse | ErrorResponse;
+
+// Логин
+export interface SignInRequestDto {
+    login: string;
+    password: string;
+}
+
+export type SignInResponseDto = {} | ErrorResponse;

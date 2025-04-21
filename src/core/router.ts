@@ -6,12 +6,20 @@ export default class Router {
     private currentRoute: Route | null = null;
     private readonly rootQuery: string;
 
-    constructor(rootQuery: string) {
+    private constructor(rootQuery: string) {
+        this.rootQuery = rootQuery;
+    }
+
+    static getInstance(rootQuery?: string) {
         if (!Router.instance) {
-            Router.instance = this;
+            if (!rootQuery) {
+                throw new Error('Root query is required to create Router instance');
+            }
+
+            Router.instance = new Router(rootQuery);
         }
 
-        this.rootQuery = rootQuery;
+        return Router.instance;
     }
 
     start() {

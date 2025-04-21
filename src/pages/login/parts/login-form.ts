@@ -1,6 +1,7 @@
 import { Button, LabelInput } from '../../../components';
 import { Block, Validator } from '../../../core';
 import { isErrorsEmpty, validateOnSubmit } from '../../../helpers';
+import { authService } from '../../../services';
 import styles from '../styles.module.css';
 
 interface LoginFormProps {
@@ -37,9 +38,8 @@ export default class LoginForm extends Block<LoginFormProps> {
                     method: 'POST',
                 },
                 events: {
-                    submit: (e) => {
+                    submit: async (e) => {
                         e.preventDefault();
-                        const el = e.target as HTMLFormElement;
 
                         validateOnSubmit(
                             validators,
@@ -58,8 +58,7 @@ export default class LoginForm extends Block<LoginFormProps> {
                         );
 
                         if (isErrorsEmpty(this.props.errors)) {
-                            console.log(this.props.formState);
-                            el.reset();
+                            await authService.login(this.props.formState);
                         }
                     },
                 },

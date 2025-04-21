@@ -1,7 +1,6 @@
 import { Button, LabelInput } from '../../../components';
 import { Block, Validator } from '../../../core';
 import { isErrorsEmpty, validateOnSubmit } from '../../../helpers';
-import { authService } from '../../../services';
 import styles from '../styles.module.css';
 
 interface SignUpFormProps {
@@ -63,7 +62,7 @@ export default class SignUpForm extends Block<SignUpFormProps> {
                     method: 'POST',
                 },
                 events: {
-                    submit: (e) => {
+                    submit: async (e) => {
                         e.preventDefault();
                         const el = e.target as HTMLFormElement;
 
@@ -85,7 +84,6 @@ export default class SignUpForm extends Block<SignUpFormProps> {
 
                         if (isErrorsEmpty(this.props.errors)) {
                             console.log(this.props.formState);
-                            authService.signUp(this.props.formState);
                             el.reset();
                         }
                     },

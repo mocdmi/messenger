@@ -4,5 +4,7 @@ export { default as Validator } from './validator';
 export { default as HTTPTransport } from './http-transport';
 export { default as Router } from './router';
 export { default as Route } from './route';
-export type { Attributes, BlockConstructor } from './types';
 export { default as BaseAPI } from './base-api';
+export { default as Store } from './store';
+export { StoreEvents } from './types';
+export type { Attributes, BlockConstructor } from './types';
