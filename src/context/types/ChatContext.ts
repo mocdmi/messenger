@@ -1,6 +1,6 @@
 import { Indexed } from '../../types';
 
-export interface Contact extends Indexed {
+export interface IChat extends Indexed {
     name: string;
     lastMessage: string;
     date: string;
@@ -9,5 +9,5 @@ export interface Contact extends Indexed {
 }
 
 export interface ChatContext extends Indexed {
-    contacts: Contact[];
+    chats: IChat[];
 }

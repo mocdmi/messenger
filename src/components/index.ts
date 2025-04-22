@@ -1,7 +1,7 @@
-export { Contacts } from './contacts';
+export { Sidebar } from './sidebar';
 export { LabelInput } from './label-input';
 export { Input } from './input';
-export { ContactCard } from './contact-card';
+export { Chat } from './chat';
 export { Button } from './button';
 export { ProfileAvatar } from './profile-avatar';
 export { Link } from './link';

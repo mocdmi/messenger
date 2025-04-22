@@ -1,12 +1,12 @@
 import { ROUTER } from '../../const';
-import { ChatContext, Contact } from '../../context/types/ChatContext';
+import { ChatContext, IChat } from '../../context/types/ChatContext';
 import { Block } from '../../core';
-import { ContactCard } from '../contact-card';
+import { Chat } from '../chat';
 import { Link } from '../link';
 import SearchForm from './parts/search-form';
 import styles from './styles.module.css';
 
-export default class Contacts extends Block<ChatContext> {
+export default class Sidebar extends Block<ChatContext> {
     constructor(props: ChatContext) {
         super(
             'nav',
@@ -15,8 +15,8 @@ export default class Contacts extends Block<ChatContext> {
                 className: styles.contacts,
             },
             {
-                Cards: props.contacts.map((contact: Contact) => {
-                    return new ContactCard(contact) as unknown as Block;
+                Chats: props.chats.map((contact: IChat) => {
+                    return new Chat(contact) as unknown as Block;
                 }),
                 ProfileLink: new Link({
                     'theme-default': true,
@@ -37,7 +37,7 @@ export default class Contacts extends Block<ChatContext> {
             </div>
             {{{SearchForm}}}
             <div>
-                {{#each Cards}}
+                {{#each Chats}}
                     {{{this}}}
                 {{/each}}
             </div>

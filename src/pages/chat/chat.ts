@@ -1,4 +1,4 @@
-import { Contacts, Popup } from '../../components';
+import { Sidebar, Popup } from '../../components';
 import { ChatContext } from '../../context/types/ChatContext';
 import { Block } from '../../core';
 import { Indexed } from '../../types';
@@ -12,13 +12,12 @@ interface ChatProps extends ChatContext, Indexed {
     showActions: boolean;
     showAddAction: boolean;
     showRemoveAction: boolean;
-    user: unknown;
 }
 
 export default class Chat extends Block<ChatProps> {
     constructor(props: ChatProps) {
         super('div', props, {
-            Contacts: new Contacts(props) as unknown as Block,
+            Sidebar: new Sidebar(props) as unknown as Block,
             PopupAddContact: new Popup({
                 title: 'Добавить пользователя',
                 Children: new AddContactForm() as unknown as Block,
@@ -65,15 +64,15 @@ export default class Chat extends Block<ChatProps> {
                 <header class="${styles.header}">
                     <div class="${styles.info}">
                         <div class="${styles.avatar}"></div>
-                        <h2 class="${styles.name}">{{user.first_name}}</h2>
+                        <h2 class="${styles.name}">Вадим</h2>
                     </div>
                     {{{Actions}}}
                 </header>
                 <main class="${styles.chat}">
                     <div class="${styles.noMessages}">Выберите чат, чтобы отправить сообщение</div>
                 </main>
-                <div class="${styles.contacts}">
-                    {{{Contacts}}}
+                <div class="${styles.sidebar}">
+                    {{{Sidebar}}}
                 </div>
                 {{{MessageForm}}}
                 {{#if showAddAction}}

@@ -35,4 +35,4 @@ export interface SignInRequestDto {
     password: string;
 }
 
-export type SignInResponseDto = {} | ErrorResponse;
+export type SignInResponseDto = object | ErrorResponse;

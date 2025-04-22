@@ -10,7 +10,7 @@ interface ContactCardProps extends Indexed {
     active?: boolean;
 }
 
-export default class ContactCard extends Block<ContactCardProps> {
+export default class Chat extends Block<ContactCardProps> {
     constructor(props: ContactCardProps) {
         super('section', {
             ...props,

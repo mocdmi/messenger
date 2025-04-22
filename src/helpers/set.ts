@@ -8,7 +8,7 @@ function isObject(value: unknown): value is Indexed {
 
 function merge(lhs: Indexed, rhs: Indexed): Indexed {
     for (const key in rhs) {
-        if (!rhs.hasOwnProperty(key)) continue;
+        if (!Object.prototype.hasOwnProperty.call(rhs, key)) continue;
 
         try {
             if (isObject(rhs[key])) {

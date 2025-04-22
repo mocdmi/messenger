@@ -1,25 +1,25 @@
 import { API_URL } from '../const';
 
-interface Options<T> extends Partial<XMLHttpRequest> {
+interface Options<TReq> extends Partial<XMLHttpRequest> {
     headers?: Record<string, string>;
     timeout?: number;
-    data?: T;
+    data?: TReq;
     method?: string;
 }
 
-interface Response<P> {
+interface Response<TResp> {
     headers: Record<string, string>;
     status: number;
     statusText: string;
-    response: P;
+    response: TResp;
 }
 
 type Body = string | Blob | ArrayBuffer | ArrayBufferView | FormData | URLSearchParams | null;
 
-type HTTPMethod = <T extends unknown = void, P extends unknown = void>(
+type HTTPMethod = <TReqData = void, TRespData = void>(
     url: string,
-    options?: Options<T>,
-) => Promise<Response<P>>;
+    options?: Options<TReqData>,
+) => Promise<Response<TRespData>>;
 
 export default class HttpTransport {
     private readonly baseUrl: string;
@@ -35,7 +35,7 @@ export default class HttpTransport {
         this.baseUrl = API_URL + baseUrl;
     }
 
-    private queryStringify<T>(data: T): string {
+    private queryStringify<TReq>(data: TReq): string {
         if (typeof data !== 'object' || data === null) {
             throw new Error('Должно быть объектом');
         }
@@ -54,8 +54,8 @@ export default class HttpTransport {
     private createMethod(
         method: (typeof HttpTransport.METHODS)[keyof typeof HttpTransport.METHODS],
     ): HTTPMethod {
-        return <T, P>(url: string, options: Options<T> = {}) =>
-            this.request<T, P>(url, { ...options, method });
+        return <TReq, TResp>(url: string, options: Options<TReq> = {}) =>
+            this.request<TReq, TResp>(url, { ...options, method });
     }
 
     get = this.createMethod(HttpTransport.METHODS.GET);
@@ -66,7 +66,10 @@ export default class HttpTransport {
 
     delete = this.createMethod(HttpTransport.METHODS.DELETE);
 
-    private request<T, P>(url: string, options: Options<T> = {}): Promise<Response<P>> {
+    private request<TReq, TResp>(
+        url: string,
+        options: Options<TReq> = {},
+    ): Promise<Response<TResp>> {
         const { headers = {}, data, method = HttpTransport.METHODS.GET, ...xhrOptions } = options;
         const isGet: boolean = method === HttpTransport.METHODS.GET;
         const fullUrl = `${this.baseUrl}${url}`;
@@ -79,7 +82,7 @@ export default class HttpTransport {
             xhr.timeout = options.timeout || 5000;
             xhr.open(
                 method,
-                isGet && !!data ? `${fullUrl}${this.queryStringify<T>(data)}` : fullUrl,
+                isGet && !!data ? `${fullUrl}${this.queryStringify<TReq>(data)}` : fullUrl,
             );
 
             xhr.withCredentials = true;
@@ -130,7 +133,7 @@ export default class HttpTransport {
                         }, {}),
                     status: xhr.status,
                     statusText: xhr.statusText,
-                    response: parsedResponse as P,
+                    response: parsedResponse as TResp,
                 });
             };
 
