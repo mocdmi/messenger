@@ -1,8 +1,9 @@
 import { Block } from '../../../core';
+import { Indexed } from '../../../types';
 import { LabelInput } from '../../label-input';
 import styles from '../styles.module.css';
 
-interface SearchFormProps {
+interface SearchFormProps extends Indexed {
     formState: {
         search: string;
     };
@@ -49,7 +50,7 @@ export default class SearchForm extends Block<SearchFormProps> {
                             },
                         });
                     },
-                }) as Block,
+                }) as unknown as Block,
             },
         );
     }

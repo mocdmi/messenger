@@ -16,15 +16,15 @@ export default class Contacts extends Block<ChatContext> {
             },
             {
                 Cards: props.contacts.map((contact: Contact) => {
-                    return new ContactCard(contact) as Block;
+                    return new ContactCard(contact) as unknown as Block;
                 }),
                 ProfileLink: new Link({
                     'theme-default': true,
                     label: 'Профиль',
                     to: ROUTER.settings,
                     modificator: styles.link,
-                }) as Block,
-                SearchForm: new SearchForm() as Block,
+                }) as unknown as Block,
+                SearchForm: new SearchForm() as unknown as Block,
             },
         );
     }

@@ -1,12 +1,13 @@
 import { Block, Router } from '../../core';
 import { withRouter } from '../../helpers';
+import { Indexed } from '../../types';
 import styles from './styles.module.css';
 
-interface LinkAttrs {
+interface LinkAttrs extends Indexed {
     href?: string;
 }
 
-interface LinkProps extends LinkAttrs {
+interface LinkProps extends LinkAttrs, Indexed {
     'theme-default'?: boolean;
     'theme-danger'?: boolean;
     label: string;

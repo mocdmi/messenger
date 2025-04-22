@@ -1,6 +1,6 @@
 import { AuthApi, SignInRequestDto, SignUpRequestDto } from '../api/auth';
 import { ROUTER } from '../const';
-import { Router } from '../core';
+import { Router, Store } from '../core';
 
 const authApi = new AuthApi();
 
@@ -32,12 +32,12 @@ export async function login(data: SignInRequestDto) {
     }
 }
 
-export async function me() {
+export async function getUserInfo() {
     try {
         const { status, response } = await authApi.me();
 
         if (status === 200) {
-            return response;
+            Store.getInstance().set('user', response);
         } else if ('reason' in response) {
             throw new Error(response.reason);
         }

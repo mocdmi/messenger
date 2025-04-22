@@ -1,7 +1,8 @@
 import { Block } from '../../core';
+import { Indexed } from '../../types';
 import { InputType } from './types';
 
-interface InputAttrs {
+interface InputAttrs extends Indexed {
     type: InputType;
     name: string;
     value: string;
@@ -9,7 +10,7 @@ interface InputAttrs {
     placeholder?: string;
 }
 
-interface InputProps extends InputAttrs {
+interface InputProps extends InputAttrs, Indexed {
     className?: string;
     onChange?: (e: Event) => void;
     onBlur?: (e: Event) => void;

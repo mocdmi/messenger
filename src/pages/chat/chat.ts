@@ -1,43 +1,45 @@
 import { Contacts, Popup } from '../../components';
 import { ChatContext } from '../../context/types/ChatContext';
 import { Block } from '../../core';
+import { Indexed } from '../../types';
 import Actions from './parts/actions';
 import AddContactForm from './parts/add-contact-form';
 import MessageForm from './parts/message-form';
 import RemoveContactForm from './parts/remove-contact-form';
 import styles from './styles.module.css';
 
-interface ChatProps extends ChatContext {
+interface ChatProps extends ChatContext, Indexed {
     showActions: boolean;
     showAddAction: boolean;
     showRemoveAction: boolean;
+    user: unknown;
 }
 
 export default class Chat extends Block<ChatProps> {
     constructor(props: ChatProps) {
         super('div', props, {
-            Contacts: new Contacts(props) as Block,
+            Contacts: new Contacts(props) as unknown as Block,
             PopupAddContact: new Popup({
                 title: 'Добавить пользователя',
-                Children: new AddContactForm() as Block,
+                Children: new AddContactForm() as unknown as Block,
                 handlerHidePopup: () => {
                     this.setProps({
                         ...props,
                         showAddAction: false,
                     });
                 },
-            }) as Block,
+            }) as unknown as Block,
             PopupRemoveContact: new Popup({
                 title: 'Удалить пользователя',
-                Children: new RemoveContactForm() as Block,
+                Children: new RemoveContactForm() as unknown as Block,
                 handlerHidePopup: () => {
                     this.setProps({
                         ...props,
                         showRemoveAction: false,
                     });
                 },
-            }) as Block,
-            MessageForm: new MessageForm() as Block,
+            }) as unknown as Block,
+            MessageForm: new MessageForm() as unknown as Block,
             Actions: new Actions({
                 showActions: props.showActions,
                 handlerShowAddAction: () => {
@@ -52,7 +54,7 @@ export default class Chat extends Block<ChatProps> {
                         showAddAction: true,
                     });
                 },
-            }) as Block,
+            }) as unknown as Block,
         });
     }
 
@@ -63,7 +65,7 @@ export default class Chat extends Block<ChatProps> {
                 <header class="${styles.header}">
                     <div class="${styles.info}">
                         <div class="${styles.avatar}"></div>
-                        <h2 class="${styles.name}">Вадим</h2>
+                        <h2 class="${styles.name}">{{user.first_name}}</h2>
                     </div>
                     {{{Actions}}}
                 </header>

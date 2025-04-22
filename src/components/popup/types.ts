@@ -1,6 +1,7 @@
 import { Block } from '../../core';
+import { Indexed } from '../../types';
 
-export interface PopupProps {
+export interface PopupProps extends Indexed {
     title: string;
     active?: boolean;
     Children: Block;

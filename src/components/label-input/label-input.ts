@@ -1,9 +1,10 @@
 import { Block } from '../../core';
+import { Indexed } from '../../types';
 import { Input } from '../input';
 import { InputType } from '../input/types';
 import styles from './styles.module.css';
 
-export interface LabelInputProps {
+export interface LabelInputProps extends Indexed {
     'theme-color'?: boolean;
     'theme-blank'?: boolean;
     'theme-default'?: boolean;
@@ -49,7 +50,7 @@ export default class LabelInput extends Block<LabelInputProps> {
                     placeholder: '',
                     onChange: props.onChange,
                     onBlur: props.onBlur,
-                }) as Block,
+                }) as unknown as Block,
             },
         );
     }

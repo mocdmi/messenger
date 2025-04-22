@@ -1,7 +1,8 @@
 import { Block } from '../../core';
+import { Indexed } from '../../types';
 import styles from './styles.module.css';
 
-interface PanelProps {
+interface PanelProps extends Indexed {
     'inner-class'?: string;
     Children: Block | Block[];
 }

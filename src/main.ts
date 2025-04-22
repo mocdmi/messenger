@@ -1,6 +1,6 @@
 import { ROUTER } from './const';
 import * as context from './context';
-import { Router, Store } from './core';
+import { Router } from './core';
 import * as Pages from './pages';
 import './assets/styles/styles.css';
 
@@ -16,7 +16,3 @@ router
     .use('/404', Pages.ErrorPage, context.errorNotFoundContext)
     .use('/500', Pages.ErrorPage, context.errorServerContext)
     .start();
-
-const store = Store.getInstance();
-
-store.set('user', { test: 'ok' });

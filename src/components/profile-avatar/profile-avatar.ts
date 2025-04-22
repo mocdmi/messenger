@@ -1,11 +1,12 @@
 import { Block } from '../../core';
+import { Indexed } from '../../types';
 import { Button } from '../button';
 import { Popup } from '../popup';
 import UploadForm from './parts/upload-form';
 import styles from './styles.module.css';
 import noPhoto from '../../assets/images/no-photo.svg';
 
-interface ProfileAvatarProps {
+interface ProfileAvatarProps extends Indexed {
     name?: string;
     popupShow?: boolean;
 }
@@ -28,7 +29,7 @@ export default class ProfileAvatar extends Block<ProfileAvatarProps> {
                             popupShow: false,
                         });
                     },
-                }) as Block,
+                }) as unknown as Block,
                 OpenPopupButton: new Button({
                     'theme-blank-light': true,
                     label: 'Поменять аватар',
@@ -39,7 +40,7 @@ export default class ProfileAvatar extends Block<ProfileAvatarProps> {
                             popupShow: true,
                         });
                     },
-                }) as Block,
+                }) as unknown as Block,
             },
         );
     }

@@ -1,9 +1,10 @@
 import Handlebars from 'handlebars';
 import { Attributes, EventBus } from '../core';
+import { Indexed } from '../types';
 
 type Children = Record<string, Block | Block[]>;
 
-export default abstract class Block<T extends object = object, P extends object = object> {
+export default abstract class Block<T extends Indexed = Indexed, P extends Indexed = Indexed> {
     private static EVENTS = {
         INIT: 'init',
         FLOW_CDM: 'flow:component-did-mount',
@@ -60,7 +61,9 @@ export default abstract class Block<T extends object = object, P extends object 
 
         if (props.attrs) {
             Object.entries(props.attrs).forEach(([attrName, attrValue]) => {
-                this.element.setAttribute(attrName, attrValue);
+                if (typeof attrValue === 'string') {
+                    this.element.setAttribute(attrName, attrValue);
+                }
             });
         }
     }

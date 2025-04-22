@@ -1,4 +1,6 @@
-export interface Contact {
+import { Indexed } from '../../types';
+
+export interface Contact extends Indexed {
     name: string;
     lastMessage: string;
     date: string;
@@ -6,6 +8,6 @@ export interface Contact {
     active?: boolean;
 }
 
-export interface ChatContext {
+export interface ChatContext extends Indexed {
     contacts: Contact[];
 }

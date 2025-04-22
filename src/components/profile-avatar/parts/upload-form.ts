@@ -25,12 +25,12 @@ export default class UploadForm extends Block {
                     accept: 'image/*',
                     name: 'avatar',
                     value: '',
-                }) as Block,
+                }) as unknown as Block,
                 SendButton: new Button({
                     'theme-default': true,
                     label: 'Поменять',
                     type: 'submit',
-                }) as Block,
+                }) as unknown as Block,
             },
         );
     }

@@ -1,10 +1,11 @@
 import { Block, Router } from '../../core';
 import { withRouter } from '../../helpers';
+import { Indexed } from '../../types';
 import { Link } from '../link';
 import { ProfileAvatar } from '../profile-avatar';
 import styles from './styles.module.css';
 
-interface ProfileProps {
+interface ProfileProps extends Indexed {
     name?: string;
     Children: Block | Block[];
     router?: Router;
@@ -19,7 +20,7 @@ class Profile extends Block<ProfileProps> {
                 className: styles.profile,
             },
             {
-                Avatar: new ProfileAvatar(props) as Block,
+                Avatar: new ProfileAvatar(props) as unknown as Block,
                 Body: Array.isArray(props.Children) ? props.Children : [props.Children],
                 BackButton: new Link({
                     label: 'Back',
@@ -29,7 +30,7 @@ class Profile extends Block<ProfileProps> {
                         e.preventDefault();
                         props.router?.back();
                     },
-                }) as Block,
+                }) as unknown as Block,
             },
         );
     }

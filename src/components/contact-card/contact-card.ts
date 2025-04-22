@@ -1,7 +1,8 @@
 import { Block } from '../../core';
+import { Indexed } from '../../types';
 import styles from './styles.module.css';
 
-interface ContactCardProps {
+interface ContactCardProps extends Indexed {
     name: string;
     lastMessage: string;
     date: string;
