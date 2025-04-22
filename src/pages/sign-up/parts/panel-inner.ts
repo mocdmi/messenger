@@ -12,12 +12,12 @@ export default class PanelInner extends Block {
                 className: styles.inner,
             },
             {
-                SignUpForm: new SignUpForm() as Block,
+                SignUpForm: new SignUpForm() as unknown as Block,
                 LoginLink: new Link({
                     'theme-default': true,
                     label: 'Войти',
                     to: ROUTER.login,
-                }) as Block,
+                }) as unknown as Block,
             },
         );
     }

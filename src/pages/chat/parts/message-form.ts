@@ -1,9 +1,10 @@
 import { Button, LabelInput } from '../../../components';
 import { Block, Validator } from '../../../core';
 import { isErrorsEmpty, validateOnSubmit } from '../../../helpers';
+import { Indexed } from '../../../types';
 import styles from '../styles.module.css';
 
-interface MessageFormProps {
+interface MessageFormProps extends Indexed {
     formState: {
         message: string;
     };
@@ -77,7 +78,7 @@ export default class MessageForm extends Block<MessageFormProps> {
                     },
                     onBlur: (e: Event) => {
                         const el = e.target as HTMLInputElement;
-                        const input = this.children.MessageInput as LabelInput;
+                        const input = this.children.MessageInput as unknown as LabelInput;
                         const error = Validator.validate(el.value).isRequired();
 
                         input.setProps({ ...input.props, error: error });
@@ -90,13 +91,13 @@ export default class MessageForm extends Block<MessageFormProps> {
                             },
                         });
                     },
-                }) as Block,
+                }) as unknown as Block,
                 SendButton: new Button({
                     'theme-default': true,
                     type: 'submit',
                     rounded: true,
                     icon: 'next',
-                }) as Block,
+                }) as unknown as Block,
             },
         );
     }

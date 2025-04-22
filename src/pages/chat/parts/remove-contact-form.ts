@@ -1,9 +1,10 @@
 import { Button, LabelInput } from '../../../components';
 import { Block, Validator } from '../../../core';
 import { isErrorsEmpty, validateOnSubmit } from '../../../helpers';
+import { Indexed } from '../../../types';
 import styles from '../styles.module.css';
 
-interface RemoveContactFormProps {
+interface RemoveContactFormProps extends Indexed {
     formState: {
         login: string;
     };
@@ -79,7 +80,7 @@ export default class RemoveContactForm extends Block<RemoveContactFormProps> {
                     },
                     onBlur: (e: Event) => {
                         const el = e.target as HTMLInputElement;
-                        const input = this.children.LoginInput as LabelInput;
+                        const input = this.children.LoginInput as unknown as LabelInput;
                         const error = Validator.validate(el.value).isRequired();
 
                         input.setProps({ ...input.props, error: error });
@@ -92,12 +93,12 @@ export default class RemoveContactForm extends Block<RemoveContactFormProps> {
                             },
                         });
                     },
-                }) as Block,
+                }) as unknown as Block,
                 RemoveButton: new Button({
                     'theme-default': true,
                     label: 'Удалить',
                     type: 'submit',
-                }) as Block,
+                }) as unknown as Block,
             },
         );
     }

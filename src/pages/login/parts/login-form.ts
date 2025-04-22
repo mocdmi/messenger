@@ -2,9 +2,10 @@ import { Button, LabelInput } from '../../../components';
 import { Block, Validator } from '../../../core';
 import { isErrorsEmpty, validateOnSubmit } from '../../../helpers';
 import { authService } from '../../../services';
+import { Indexed } from '../../../types';
 import styles from '../styles.module.css';
 
-interface LoginFormProps {
+interface LoginFormProps extends Indexed {
     formState: {
         login: string;
         password: string;
@@ -82,7 +83,7 @@ export default class LoginForm extends Block<LoginFormProps> {
                     },
                     onBlur: (e: Event) => {
                         const el = e.target as HTMLInputElement;
-                        const input = this.children.LoginInput as LabelInput;
+                        const input = this.children.LoginInput as unknown as LabelInput;
                         const error = Validator.validate(el.value).isLogin();
 
                         input.setProps({ ...input.props, error: error });
@@ -95,7 +96,7 @@ export default class LoginForm extends Block<LoginFormProps> {
                             },
                         });
                     },
-                }) as Block,
+                }) as unknown as Block,
                 PasswordInput: new LabelInput({
                     'theme-default': true,
                     name: 'password',
@@ -115,7 +116,7 @@ export default class LoginForm extends Block<LoginFormProps> {
                     },
                     onBlur: (e: Event) => {
                         const el = e.target as HTMLInputElement;
-                        const input = this.children.PasswordInput as LabelInput;
+                        const input = this.children.PasswordInput as unknown as LabelInput;
                         const error = Validator.validate(el.value).isPassword();
 
                         input.setProps({ ...input.props, error: error });
@@ -128,12 +129,12 @@ export default class LoginForm extends Block<LoginFormProps> {
                             },
                         });
                     },
-                }) as Block,
+                }) as unknown as Block,
                 LoginButton: new Button({
                     'theme-default': true,
                     label: 'Авторизоваться',
                     type: 'submit',
-                }) as Block,
+                }) as unknown as Block,
             },
         );
     }

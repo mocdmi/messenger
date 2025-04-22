@@ -8,8 +8,8 @@ export default class EditPasswordPage extends Block<ProfileContext> {
         super('div', props, {
             EditPassword: new Profile({
                 name: props.name,
-                Children: new EditForm(props) as Block,
-            }) as Block,
+                Children: new EditForm(props) as unknown as Block,
+            }) as unknown as Block,
         });
     }
 

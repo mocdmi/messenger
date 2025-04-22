@@ -1,10 +1,12 @@
 import { Block, BlockConstructor, Router } from '../core';
+import { Indexed } from '../types';
 
-export default function withRouter<P extends object = object, A extends object = object>(
-    block: BlockConstructor<P, A>,
-): BlockConstructor<P, A> {
+export default function withRouter<
+    TProps extends Indexed = Indexed,
+    TArgs extends Indexed = Indexed,
+>(block: BlockConstructor<TProps, TArgs>): BlockConstructor<TProps, TArgs> {
     return class extends block {
-        constructor(props: P, children?: Record<string, Block | Block[]>) {
+        constructor(props: TProps, children?: Record<string, Block | Block[]>) {
             super({ ...props, router: Router.getInstance() }, children);
         }
 

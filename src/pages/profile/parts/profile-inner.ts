@@ -11,17 +11,17 @@ export default class ProfileInner extends Block<ProfileContext> {
                 'theme-default': true,
                 label: 'Изменить данные',
                 to: ROUTER.editProfile,
-            }) as Block,
+            }) as unknown as Block,
             EditPasswordLink: new Link({
                 'theme-default': true,
                 label: 'Изменить пароль',
                 to: ROUTER.editPassword,
-            }) as Block,
+            }) as unknown as Block,
             LogoutLink: new Link({
                 'theme-danger': true,
                 label: 'Выйти',
                 to: '#',
-            }) as Block,
+            }) as unknown as Block,
         });
     }
 

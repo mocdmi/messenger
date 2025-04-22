@@ -1,9 +1,10 @@
 import { Button, LabelInput } from '../../../components';
 import { Block, Validator } from '../../../core';
 import { isErrorsEmpty, validateOnSubmit } from '../../../helpers';
+import { Indexed } from '../../../types';
 import styles from '../styles.module.css';
 
-interface AddContactFormProps {
+interface AddContactFormProps extends Indexed {
     formState: {
         login: string;
     };
@@ -79,7 +80,7 @@ export default class AddContactForm extends Block<AddContactFormProps> {
                     },
                     onBlur: (e: Event) => {
                         const el = e.target as HTMLInputElement;
-                        const input = this.children.LoginInput as LabelInput;
+                        const input = this.children.LoginInput as unknown as LabelInput;
                         const error = Validator.validate(el.value).isRequired();
 
                         input.setProps({ ...input.props, error: error });
@@ -92,12 +93,12 @@ export default class AddContactForm extends Block<AddContactFormProps> {
                             },
                         });
                     },
-                }) as Block,
+                }) as unknown as Block,
                 AddButton: new Button({
                     'theme-default': true,
                     label: 'Добавить',
                     type: 'submit',
-                }) as Block,
+                }) as unknown as Block,
             },
         );
     }

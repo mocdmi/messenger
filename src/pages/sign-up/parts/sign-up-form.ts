@@ -1,9 +1,10 @@
 import { Button, LabelInput } from '../../../components';
 import { Block, Validator } from '../../../core';
 import { isErrorsEmpty, validateOnSubmit } from '../../../helpers';
+import { Indexed } from '../../../types';
 import styles from '../styles.module.css';
 
-interface SignUpFormProps {
+interface SignUpFormProps extends Indexed {
     formState: {
         email: string;
         login: string;
@@ -109,7 +110,7 @@ export default class SignUpForm extends Block<SignUpFormProps> {
                     },
                     onBlur: (e: Event) => {
                         const el = e.target as HTMLInputElement;
-                        const input = this.children.EmailInput as LabelInput;
+                        const input = this.children.EmailInput as unknown as LabelInput;
                         const error = Validator.validate(el.value).isEmail();
 
                         input.setProps({ ...input.props, error: error });
@@ -122,7 +123,7 @@ export default class SignUpForm extends Block<SignUpFormProps> {
                             },
                         });
                     },
-                }) as Block,
+                }) as unknown as Block,
                 LoginInput: new LabelInput({
                     'theme-default': true,
                     name: 'login',
@@ -142,7 +143,7 @@ export default class SignUpForm extends Block<SignUpFormProps> {
                     },
                     onBlur: (e: Event) => {
                         const el = e.target as HTMLInputElement;
-                        const input = this.children.LoginInput as LabelInput;
+                        const input = this.children.LoginInput as unknown as LabelInput;
                         const error = Validator.validate(el.value).isLogin();
 
                         input.setProps({ ...input.props, error: error });
@@ -155,7 +156,7 @@ export default class SignUpForm extends Block<SignUpFormProps> {
                             },
                         });
                     },
-                }) as Block,
+                }) as unknown as Block,
                 FirstNameInput: new LabelInput({
                     'theme-default': true,
                     name: 'first_name',
@@ -175,7 +176,7 @@ export default class SignUpForm extends Block<SignUpFormProps> {
                     },
                     onBlur: (e: Event) => {
                         const el = e.target as HTMLInputElement;
-                        const input = this.children.FirstNameInput as LabelInput;
+                        const input = this.children.FirstNameInput as unknown as LabelInput;
                         const error = Validator.validate(el.value).isName();
 
                         input.setProps({ ...input.props, error: error });
@@ -188,7 +189,7 @@ export default class SignUpForm extends Block<SignUpFormProps> {
                             },
                         });
                     },
-                }) as Block,
+                }) as unknown as Block,
                 SecondNameInput: new LabelInput({
                     'theme-default': true,
                     name: 'second_name',
@@ -208,7 +209,7 @@ export default class SignUpForm extends Block<SignUpFormProps> {
                     },
                     onBlur: (e: Event) => {
                         const el = e.target as HTMLInputElement;
-                        const input = this.children.SecondNameInput as LabelInput;
+                        const input = this.children.SecondNameInput as unknown as LabelInput;
                         const error = Validator.validate(el.value).isName();
 
                         input.setProps({ ...input.props, error: error });
@@ -221,7 +222,7 @@ export default class SignUpForm extends Block<SignUpFormProps> {
                             },
                         });
                     },
-                }) as Block,
+                }) as unknown as Block,
                 PhoneInput: new LabelInput({
                     'theme-default': true,
                     name: 'phone',
@@ -241,7 +242,7 @@ export default class SignUpForm extends Block<SignUpFormProps> {
                     },
                     onBlur: (e: Event) => {
                         const el = e.target as HTMLInputElement;
-                        const input = this.children.PhoneInput as LabelInput;
+                        const input = this.children.PhoneInput as unknown as LabelInput;
                         const error = Validator.validate(el.value).isPhone();
 
                         input.setProps({ ...input.props, error: error });
@@ -254,7 +255,7 @@ export default class SignUpForm extends Block<SignUpFormProps> {
                             },
                         });
                     },
-                }) as Block,
+                }) as unknown as Block,
                 PasswordInput: new LabelInput({
                     'theme-default': true,
                     name: 'password',
@@ -274,7 +275,7 @@ export default class SignUpForm extends Block<SignUpFormProps> {
                     },
                     onBlur: (e: Event) => {
                         const el = e.target as HTMLInputElement;
-                        const input = this.children.PasswordInput as LabelInput;
+                        const input = this.children.PasswordInput as unknown as LabelInput;
                         const error = Validator.validate(el.value).isPassword();
 
                         input.setProps({ ...input.props, error: error });
@@ -287,7 +288,7 @@ export default class SignUpForm extends Block<SignUpFormProps> {
                             },
                         });
                     },
-                }) as Block,
+                }) as unknown as Block,
                 ConfirmPasswordInput: new LabelInput({
                     'theme-default': true,
                     name: 'confirm_password',
@@ -307,7 +308,7 @@ export default class SignUpForm extends Block<SignUpFormProps> {
                     },
                     onBlur: (e: Event) => {
                         const el = e.target as HTMLInputElement;
-                        const input = this.children.ConfirmPasswordInput as LabelInput;
+                        const input = this.children.ConfirmPasswordInput as unknown as LabelInput;
                         const error = Validator.validate(el.value).isPassword();
 
                         input.setProps({ ...input.props, error: error });
@@ -320,12 +321,12 @@ export default class SignUpForm extends Block<SignUpFormProps> {
                             },
                         });
                     },
-                }) as Block,
+                }) as unknown as Block,
                 SignInButton: new Button({
                     'theme-default': true,
                     label: 'Зарегистрироваться',
                     type: 'submit',
-                }) as Block,
+                }) as unknown as Block,
             },
         );
     }

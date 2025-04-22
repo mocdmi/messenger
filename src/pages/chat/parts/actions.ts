@@ -1,8 +1,9 @@
 import { Button, Panel } from '../../../components';
 import { Block } from '../../../core';
+import { Indexed } from '../../../types';
 import styles from '../styles.module.css';
 
-interface ActionsProps {
+interface ActionsProps extends Indexed {
     showActions: boolean;
     handlerShowAddAction: () => void;
     handlerShowRemoveAction: () => void;
@@ -22,7 +23,7 @@ export default class Actions extends Block<ActionsProps> {
                         showActions: !this.props.showActions,
                     });
                 },
-            }) as Block,
+            }) as unknown as Block,
             ActionsPanel: new Panel({
                 'inner-class': styles.actions,
                 Children: [
@@ -38,8 +39,8 @@ export default class Actions extends Block<ActionsProps> {
                         type: 'button',
                         onClick: props.handlerShowRemoveAction,
                     }),
-                ] as Block[],
-            }) as Block,
+                ] as unknown as Block[],
+            }) as unknown as Block,
         });
     }
 

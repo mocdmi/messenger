@@ -92,7 +92,7 @@ export default class EditForm extends Block<EditFormProps> {
                     },
                     onBlur: (e: Event) => {
                         const el = e.target as HTMLInputElement;
-                        const input = this.children.OldPasswordInput as LabelInput;
+                        const input = this.children.OldPasswordInput as unknown as LabelInput;
                         const error = Validator.validate(el.value).isPassword();
 
                         input.setProps({ ...input.props, error: error });
@@ -105,7 +105,7 @@ export default class EditForm extends Block<EditFormProps> {
                             },
                         });
                     },
-                }) as Block,
+                }) as unknown as Block,
                 NewPasswordInput: new LabelInput({
                     'theme-blank': true,
                     'align-right': true,
@@ -126,7 +126,7 @@ export default class EditForm extends Block<EditFormProps> {
                     },
                     onBlur: (e: Event) => {
                         const el = e.target as HTMLInputElement;
-                        const input = this.children.NewPasswordInput as LabelInput;
+                        const input = this.children.NewPasswordInput as unknown as LabelInput;
                         const error = Validator.validate(el.value).isPassword();
 
                         input.setProps({ ...input.props, error: error });
@@ -139,7 +139,7 @@ export default class EditForm extends Block<EditFormProps> {
                             },
                         });
                     },
-                }) as Block,
+                }) as unknown as Block,
                 NewPasswordConfirmInput: new LabelInput({
                     'theme-blank': true,
                     'align-right': true,
@@ -160,7 +160,8 @@ export default class EditForm extends Block<EditFormProps> {
                     },
                     onBlur: (e: Event) => {
                         const el = e.target as HTMLInputElement;
-                        const input = this.children.NewPasswordConfirmInput as LabelInput;
+                        const input = this.children
+                            .NewPasswordConfirmInput as unknown as LabelInput;
                         const error = Validator.validate(el.value).isPassword();
 
                         input.setProps({ ...input.props, error: error });
@@ -173,12 +174,12 @@ export default class EditForm extends Block<EditFormProps> {
                             },
                         });
                     },
-                }) as Block,
+                }) as unknown as Block,
                 SendButton: new Button({
                     'theme-default': true,
                     type: 'submit',
                     label: 'Сохранить',
-                }) as Block,
+                }) as unknown as Block,
             },
         );
     }

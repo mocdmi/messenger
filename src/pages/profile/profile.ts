@@ -7,8 +7,8 @@ export default class ProfilePage extends Block<ProfileContext> {
     constructor(props: ProfileContext) {
         super('div', props, {
             Profile: new Profile({
-                Children: new ProfileInner(props) as Block,
-            }) as Block,
+                Children: new ProfileInner(props) as unknown as Block,
+            }) as unknown as Block,
         });
     }
 

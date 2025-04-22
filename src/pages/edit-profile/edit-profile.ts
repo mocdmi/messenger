@@ -8,8 +8,8 @@ export default class EditProfilePage extends Block<ProfileContext> {
         super('div', props, {
             EditProfile: new Profile({
                 name: props.name,
-                Children: new EditForm(props) as Block,
-            }) as Block,
+                Children: new EditForm(props) as unknown as Block,
+            }) as unknown as Block,
         });
     }
 

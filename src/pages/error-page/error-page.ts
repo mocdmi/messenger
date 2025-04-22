@@ -11,7 +11,7 @@ export default class ErrorPage extends Block<ErrorContext> {
                 'theme-default': true,
                 label: 'Назад к чатам',
                 to: PageNames.CHAT,
-            }) as Block,
+            }) as unknown as Block,
         });
     }
 

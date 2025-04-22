@@ -15,7 +15,7 @@ export default class ListItem extends Block<Link> {
                 PageLink: new LinkComponent({
                     ...props,
                     'theme-default': true,
-                }) as Block,
+                }) as unknown as Block,
             },
         );
     }

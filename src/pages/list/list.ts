@@ -21,7 +21,7 @@ export default class ListPage extends Block {
             'div',
             {},
             {
-                LinkItems: links.map((props) => new ListItem(props)) as Block[],
+                LinkItems: links.map((props) => new ListItem(props)) as unknown as Block[],
             },
         );
     }

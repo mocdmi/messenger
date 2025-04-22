@@ -11,7 +11,7 @@ export default class SignUpPage extends Block {
             {
                 Panel: new Panel({
                     Children: new PanelInner(),
-                }) as Block,
+                }) as unknown as Block,
             },
         );
 

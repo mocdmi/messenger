@@ -109,7 +109,7 @@ export default class EditForm extends Block<EditFormProps> {
                     },
                     onBlur: (e: Event) => {
                         const el = e.target as HTMLInputElement;
-                        const input = this.children.EmailInput as LabelInput;
+                        const input = this.children.EmailInput as unknown as LabelInput;
                         const error = Validator.validate(el.value).isEmail();
 
                         input.setProps({ ...input.props, error: error });
@@ -122,7 +122,7 @@ export default class EditForm extends Block<EditFormProps> {
                             },
                         });
                     },
-                }) as Block,
+                }) as unknown as Block,
                 LoginInput: new LabelInput({
                     'theme-blank': true,
                     'align-right': true,
@@ -144,7 +144,7 @@ export default class EditForm extends Block<EditFormProps> {
                     },
                     onBlur: (e: Event) => {
                         const el = e.target as HTMLInputElement;
-                        const input = this.children.LoginInput as LabelInput;
+                        const input = this.children.LoginInput as unknown as LabelInput;
                         const error = Validator.validate(el.value).isLogin();
 
                         input.setProps({ ...input.props, error: error });
@@ -157,7 +157,7 @@ export default class EditForm extends Block<EditFormProps> {
                             },
                         });
                     },
-                }) as Block,
+                }) as unknown as Block,
                 FirstNameInput: new LabelInput({
                     'theme-blank': true,
                     'align-right': true,
@@ -179,7 +179,7 @@ export default class EditForm extends Block<EditFormProps> {
                     },
                     onBlur: (e: Event) => {
                         const el = e.target as HTMLInputElement;
-                        const input = this.children.FirstNameInput as LabelInput;
+                        const input = this.children.FirstNameInput as unknown as LabelInput;
                         const error = Validator.validate(el.value).isName();
 
                         input.setProps({ ...input.props, error: error });
@@ -192,7 +192,7 @@ export default class EditForm extends Block<EditFormProps> {
                             },
                         });
                     },
-                }) as Block,
+                }) as unknown as Block,
                 SecondNameInput: new LabelInput({
                     'theme-blank': true,
                     'align-right': true,
@@ -214,7 +214,7 @@ export default class EditForm extends Block<EditFormProps> {
                     },
                     onBlur: (e: Event) => {
                         const el = e.target as HTMLInputElement;
-                        const input = this.children.SecondNameInput as LabelInput;
+                        const input = this.children.SecondNameInput as unknown as LabelInput;
                         const error = Validator.validate(el.value).isName();
 
                         input.setProps({ ...input.props, error: error });
@@ -227,7 +227,7 @@ export default class EditForm extends Block<EditFormProps> {
                             },
                         });
                     },
-                }) as Block,
+                }) as unknown as Block,
                 ChatNameInput: new LabelInput({
                     'theme-blank': true,
                     'align-right': true,
@@ -247,7 +247,7 @@ export default class EditForm extends Block<EditFormProps> {
                             },
                         });
                     },
-                }) as Block,
+                }) as unknown as Block,
                 PhoneInput: new LabelInput({
                     'theme-blank': true,
                     'align-right': true,
@@ -269,7 +269,7 @@ export default class EditForm extends Block<EditFormProps> {
                     },
                     onBlur: (e: Event) => {
                         const el = e.target as HTMLInputElement;
-                        const input = this.children.PhoneInput as LabelInput;
+                        const input = this.children.PhoneInput as unknown as LabelInput;
                         const error = Validator.validate(el.value).isPhone();
 
                         input.setProps({ ...input.props, error: error });
@@ -282,12 +282,12 @@ export default class EditForm extends Block<EditFormProps> {
                             },
                         });
                     },
-                }) as Block,
+                }) as unknown as Block,
                 SendButton: new Button({
                     'theme-default': true,
                     type: 'submit',
                     label: 'Сохранить',
-                }) as Block,
+                }) as unknown as Block,
             },
         );
     }
