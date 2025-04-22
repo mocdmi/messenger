@@ -1,9 +1,9 @@
 import { Block } from '../core';
 import { Indexed } from '../types';
 
-export type Attributes<TArgs> = {
+export type Attributes<TAttrs> = {
     className?: string;
-    attrs?: TArgs;
+    attrs?: TAttrs;
     events?: {
         [key: string]: (e: Event) => void;
     };
@@ -11,11 +11,11 @@ export type Attributes<TArgs> = {
 
 export type BlockConstructor<
     TProps extends Indexed = Indexed,
-    TArgs extends Indexed = Indexed,
+    TAttrs extends Indexed = Indexed,
 > = new (
-    props: TProps & Attributes<TArgs>,
+    props: TProps & Attributes<TAttrs>,
     children?: Record<string, Block | Block[]>,
-) => Block<TProps, TArgs>;
+) => Block<TProps, TAttrs>;
 
 export enum StoreEvents {
     Updated = 'updated',

@@ -4,7 +4,10 @@ import { Indexed } from '../types';
 
 type Children = Record<string, Block | Block[]>;
 
-export default abstract class Block<T extends Indexed = Indexed, P extends Indexed = Indexed> {
+export default abstract class Block<
+    TProps extends Indexed = Indexed,
+    TAttrs extends Indexed = Indexed,
+> {
     private static EVENTS = {
         INIT: 'init',
         FLOW_CDM: 'flow:component-did-mount',
@@ -15,16 +18,16 @@ export default abstract class Block<T extends Indexed = Indexed, P extends Index
     private element: HTMLElement = document.createElement('div');
     private readonly meta: {
         tagName: string;
-        props: T & Attributes<P>;
+        props: TProps & Attributes<TAttrs>;
     };
     private readonly eventBus: EventBus = new EventBus();
     protected readonly children: Children;
-    readonly props: T & Attributes<P>;
+    readonly props: TProps & Attributes<TAttrs>;
     protected readonly id = crypto.randomUUID();
 
     protected constructor(
         tagName: string = 'div',
-        props: T & Attributes<P>,
+        props: TProps & Attributes<TAttrs>,
         children: Children = {},
     ) {
         this.children = children;
@@ -83,7 +86,7 @@ export default abstract class Block<T extends Indexed = Indexed, P extends Index
         this.eventBus.emit(Block.EVENTS.FLOW_CDM);
     }
 
-    private _componentDidUpdate(oldProps: T, newProps: T): void {
+    private _componentDidUpdate(oldProps: TProps, newProps: TProps): void {
         const response: boolean = this.componentDidUpdate(oldProps, newProps);
 
         if (!response) {
@@ -93,11 +96,11 @@ export default abstract class Block<T extends Indexed = Indexed, P extends Index
         this.eventBus.emit(Block.EVENTS.FLOW_RENDER);
     }
 
-    componentDidUpdate(_oldProps: T, _newProps: T): boolean {
+    componentDidUpdate(_oldProps: TProps, _newProps: TProps): boolean {
         return true;
     }
 
-    setProps = (nextProps: T): void => {
+    setProps = (nextProps: TProps): void => {
         if (!nextProps) {
             return;
         }
@@ -166,18 +169,18 @@ export default abstract class Block<T extends Indexed = Indexed, P extends Index
         return this.element;
     }
 
-    private makePropsProxy(props: T): T {
-        return new Proxy<T>(props, {
-            get: (target: T, prop: PropertyKey) => {
-                const key = prop as keyof T;
-                const value: T[keyof T] = target[key];
+    private makePropsProxy(props: TProps): TProps {
+        return new Proxy<TProps>(props, {
+            get: (target: TProps, prop: PropertyKey) => {
+                const key = prop as keyof TProps;
+                const value: TProps[keyof TProps] = target[key];
 
                 return typeof value === 'function' ? value.bind(target) : value;
             },
 
-            set: (target: T, prop: PropertyKey, value): boolean => {
-                const key = prop as keyof T;
-                const oldTarget: T = { ...target };
+            set: (target: TProps, prop: PropertyKey, value): boolean => {
+                const key = prop as keyof TProps;
+                const oldTarget: TProps = { ...target };
 
                 target[key] = value;
                 this.eventBus.emit(Block.EVENTS.FLOW_CDU, oldTarget, target);

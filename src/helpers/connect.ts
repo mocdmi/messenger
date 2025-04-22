@@ -5,8 +5,8 @@ import { isEqual } from '../helpers';
 export default function connect<TStateProps extends Indexed>(
     mapStateToProps: (store: Indexed) => TStateProps,
 ) {
-    return function <TProps extends Indexed = Indexed, TArgs extends Indexed = Indexed>(
-        block: BlockConstructor<TProps & TStateProps, TArgs>,
+    return function <TProps extends Indexed = Indexed, TAttrs extends Indexed = Indexed>(
+        block: BlockConstructor<TProps & TStateProps, TAttrs>,
     ) {
         return class extends block {
             constructor(props: TProps & TStateProps, children?: Record<string, Block | Block[]>) {
