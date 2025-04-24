@@ -1,9 +1,12 @@
 import { AuthApi, SignInRequestDto, SignUpRequestDto } from '../api/auth';
 import { ROUTER } from '../const';
 import { Router, Store } from '../core';
+import { AppStore } from '../types';
 
 export default class AuthService {
     private readonly authApi = new AuthApi();
+    private readonly router = Router.getInstance();
+    private readonly store = Store.getInstance();
 
     constructor() {}
 
@@ -12,7 +15,7 @@ export default class AuthService {
             const { status, response } = await this.authApi.create(data);
 
             if (status === 200) {
-                Router.getInstance().go(ROUTER.messenger);
+                this.router.go(ROUTER.messenger);
             } else if ('reason' in response) {
                 throw new Error(response.reason);
             }
@@ -26,7 +29,7 @@ export default class AuthService {
             const { status, response } = await this.authApi.login(data);
 
             if (status === 200) {
-                Router.getInstance().go(ROUTER.messenger);
+                this.router.go(ROUTER.messenger);
             } else if ('reason' in response) {
                 throw new Error(response.reason);
             }
@@ -37,12 +40,16 @@ export default class AuthService {
 
     async getUser(): Promise<void> {
         try {
-            const { status, response } = await this.authApi.me();
+            const { user } = this.store.getState<AppStore>();
 
-            if (status === 200) {
-                Store.getInstance().set('user', response);
-            } else if ('reason' in response) {
-                throw new Error(response.reason);
+            if (!user) {
+                const { status, response } = await this.authApi.me();
+
+                if (status === 200) {
+                    Store.getInstance().set('user', response);
+                } else if ('reason' in response) {
+                    throw new Error(response.reason);
+                }
             }
         } catch (error) {
             console.error(error);
@@ -54,7 +61,7 @@ export default class AuthService {
             const { status } = await this.authApi.logout();
 
             if (status === 200) {
-                Router.getInstance().go(ROUTER.login);
+                this.router.go(ROUTER.login);
             } else {
                 throw new Error(`Error logout. Status: ${status}`);
             }
