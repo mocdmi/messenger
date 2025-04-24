@@ -1,10 +1,10 @@
 export { default as Block } from './block';
-export { default as EventBus } from './event-bus';
+export { default as EventBus } from './eventBus';
 export { default as Validator } from './validator';
-export { default as HTTPTransport } from './http-transport';
+export { default as HTTPTransport } from './httpTransport';
 export { default as Router } from './router';
 export { default as Route } from './route';
-export { default as BaseAPI } from './base-api';
+export { default as BaseAPI } from './baseApi';
 export { default as Store } from './store';
 export { StoreEvents } from './types';
 export type { Attributes, BlockConstructor } from './types';

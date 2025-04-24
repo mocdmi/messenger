@@ -1,7 +1,7 @@
 import { Profile } from '../../components';
 import { ProfileContext } from '../../context/types/ProfileContext';
 import { Block } from '../../core';
-import EditForm from './parts/edit-form';
+import EditForm from './parts/editForm';
 
 export default class EditProfilePage extends Block<ProfileContext> {
     constructor(props: ProfileContext) {

@@ -1,6 +1,6 @@
 import { Panel } from '../../components';
 import { Block, Store, StoreEvents } from '../../core';
-import PanelInner from './parts/panel-inner';
+import PanelInner from './parts/panelInner';
 import styles from './styles.module.css';
 
 export default class SignUpPage extends Block {

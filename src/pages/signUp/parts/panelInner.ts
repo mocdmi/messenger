@@ -2,7 +2,7 @@ import { Link } from '../../../components';
 import { ROUTER } from '../../../const';
 import { Block } from '../../../core';
 import styles from '../styles.module.css';
-import SignUpForm from './sign-up-form';
+import SignUpForm from './signUpForm';
 
 export default class PanelInner extends Block {
     constructor() {

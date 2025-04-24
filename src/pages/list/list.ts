@@ -1,4 +1,4 @@
-import { PageNames } from '../../types/page-names';
+import { PageNames } from '../../types/pageNames';
 import ListItem from './parts/list-item';
 import { Link } from './types';
 import { Block } from '../../core';

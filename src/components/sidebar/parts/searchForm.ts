@@ -1,6 +1,6 @@
 import { Block } from '../../../core';
 import { Indexed } from '../../../types';
-import { LabelInput } from '../../label-input';
+import { LabelInput } from '../../labelInput';
 import styles from '../styles.module.css';
 
 interface SearchFormProps extends Indexed {

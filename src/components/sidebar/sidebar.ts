@@ -3,7 +3,7 @@ import { ChatContext, IChat } from '../../context/types/ChatContext';
 import { Block } from '../../core';
 import { Chat } from '../chat';
 import { Link } from '../link';
-import SearchForm from './parts/search-form';
+import SearchForm from './parts/searchForm';
 import styles from './styles.module.css';
 
 export default class Sidebar extends Block<ChatContext> {

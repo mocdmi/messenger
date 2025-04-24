@@ -1,9 +1,9 @@
 export { Sidebar } from './sidebar';
-export { LabelInput } from './label-input';
+export { LabelInput } from './labelInput';
 export { Input } from './input';
 export { Chat } from './chat';
 export { Button } from './button';
-export { ProfileAvatar } from './profile-avatar';
+export { ProfileAvatar } from './profileAvatar';
 export { Link } from './link';
 export { Profile } from './profile';
 export { Panel } from './panel';

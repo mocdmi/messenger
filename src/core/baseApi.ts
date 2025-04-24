@@ -1,4 +1,4 @@
-export default abstract class BaseAPI {
+export default abstract class BaseApi {
     create(_data?: unknown): void {
         throw new Error('Method not implemented.');
     }
