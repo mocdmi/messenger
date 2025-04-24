@@ -2,11 +2,9 @@ import { ProfileProps } from '../../profile';
 import { Link } from '../../../components';
 import { ROUTER } from '../../../const';
 import { Block } from '../../../core';
-import { connect } from '../../../helpers';
-import { AppStore } from '../../../types';
 import styles from '../styles.module.css';
 
-class ProfileInner extends Block<ProfileProps> {
+export default class ProfileInner extends Block<ProfileProps> {
     constructor(props: ProfileProps) {
         super('div', props, {
             EditLink: new Link({
@@ -52,34 +50,3 @@ class ProfileInner extends Block<ProfileProps> {
         `;
     }
 }
-
-export default connect<AppStore, ProfileProps>((state) => {
-    return {
-        items: [
-            {
-                label: 'Почта',
-                value: state.user?.email,
-            },
-            {
-                label: 'Логин',
-                value: state.user?.login,
-            },
-            {
-                label: 'Имя',
-                value: state.user?.first_name,
-            },
-            {
-                label: 'Фамилия',
-                value: state.user?.second_name,
-            },
-            {
-                label: 'Имя в чате',
-                value: state.user?.display_name,
-            },
-            {
-                label: 'Телефон',
-                value: state.user?.phone,
-            },
-        ],
-    };
-})(ProfileInner);

@@ -2,7 +2,7 @@ import { Link } from '../../../components';
 import { ROUTER } from '../../../const';
 import { Block } from '../../../core';
 import styles from '../styles.module.css';
-import LoginForm from './login-form';
+import LoginForm from './loginForm';
 
 export default class PanelInner extends Block {
     constructor() {

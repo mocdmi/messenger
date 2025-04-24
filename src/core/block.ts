@@ -21,7 +21,7 @@ export default abstract class Block<
         props: TProps & Attributes<TAttrs>;
     };
     private readonly eventBus: EventBus = new EventBus();
-    protected readonly children: Children;
+    readonly children: Children;
     readonly props: TProps & Attributes<TAttrs>;
     protected readonly id = crypto.randomUUID();
 
@@ -109,6 +109,22 @@ export default abstract class Block<
 
         Object.assign(this.props, nextProps);
     };
+
+    updateNestedChildProps(
+        childKey: keyof Children,
+        nestedKey: keyof Children,
+        props: TProps,
+    ): void {
+        const child = this.children[childKey];
+
+        if (child instanceof Block && child.children) {
+            const nestedChild = Array.isArray(child.children[nestedKey])
+                ? child.children[nestedKey][0]
+                : child.children[nestedKey];
+
+            nestedChild?.setProps(props);
+        }
+    }
 
     private compile(): DocumentFragment {
         const propsAndStubs = { ...this.props } as Record<string, unknown>;

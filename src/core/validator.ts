@@ -1,9 +1,8 @@
 export default class Validator {
-    private static error: string;
+    private static error: string = '';
     private static value: string;
 
     static validate(value: string) {
-        this.error = '';
         this.value = value;
         return this;
     }

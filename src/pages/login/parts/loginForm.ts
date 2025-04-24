@@ -1,7 +1,7 @@
 import { Button, LabelInput } from '../../../components';
 import { Block, Validator } from '../../../core';
 import { isErrorsEmpty, validateOnSubmit } from '../../../helpers';
-import { authService } from '../../../services';
+import { AuthService } from '../../../services';
 import { Indexed } from '../../../types';
 import styles from '../styles.module.css';
 
@@ -22,6 +22,8 @@ const validators: ((value: string) => string)[] = [
 ];
 
 export default class LoginForm extends Block<LoginFormProps> {
+    private readonly authService = new AuthService();
+
     constructor() {
         super(
             'form',
@@ -59,7 +61,7 @@ export default class LoginForm extends Block<LoginFormProps> {
                         );
 
                         if (isErrorsEmpty(this.props.errors)) {
-                            await authService.login(this.props.formState);
+                            await this.authService.login(this.props.formState);
                         }
                     },
                 },
