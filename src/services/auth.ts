@@ -53,7 +53,7 @@ export async function logout() {
         if (status === 200) {
             Router.getInstance().go(ROUTER.login);
         } else {
-            throw new Error(`Статус: ${status}`);
+            throw new Error(`Error logout. Status: ${status}`);
         }
     } catch (error) {
         console.error(error);

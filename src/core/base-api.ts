@@ -1,17 +1,17 @@
 export default abstract class BaseAPI {
-    create(_data?: unknown) {
+    create(_data?: unknown): void {
         throw new Error('Method not implemented.');
     }
 
-    request(_data?: unknown) {
+    request(_data?: unknown): void {
         throw new Error('Method not implemented.');
     }
 
-    update(_data?: unknown) {
+    update(_data?: unknown): void {
         throw new Error('Method not implemented.');
     }
 
-    delete(_data?: unknown) {
+    delete(_data?: unknown): void {
         throw new Error('Method not implemented.');
     }
 }

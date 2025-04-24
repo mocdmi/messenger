@@ -5,7 +5,10 @@ export default class EventBus {
         this.listeners = {};
     }
 
-    on<T extends string, P extends unknown[]>(event: T, callback: (...args: P) => void): void {
+    on<TEvent extends string, TArgs extends unknown[]>(
+        event: TEvent,
+        callback: (...args: TArgs) => void,
+    ): void {
         if (!this.listeners[event]) {
             this.listeners[event] = [];
         }
@@ -13,7 +16,10 @@ export default class EventBus {
         this.listeners[event].push(callback as (...args: unknown[]) => void);
     }
 
-    off<T extends string, P extends unknown[]>(event: T, callback: (...args: P) => void): void {
+    off<TEvent extends string, TArgs extends unknown[]>(
+        event: TEvent,
+        callback: (...args: TArgs) => void,
+    ): void {
         if (!this.listeners[event]) {
             throw new Error(`Нет события: ${event}`);
         }
@@ -21,7 +27,7 @@ export default class EventBus {
         this.listeners[event] = this.listeners[event].filter((listener) => listener !== callback);
     }
 
-    emit<T extends string, P extends unknown[]>(event: T, ...args: P): void {
+    emit<TEvent extends string, TArgs extends unknown[]>(event: TEvent, ...args: TArgs): void {
         if (!this.listeners[event]) {
             return;
         }

@@ -16,7 +16,7 @@ interface InputProps extends InputAttrs, Indexed {
     onBlur?: (e: Event) => void;
 }
 
-// TODO:
+// TODO: ошибка при нажатии enter в инпуте
 //  block.ts:139 Uncaught NotFoundError: Failed to execute 'replaceWith' on 'Element': The node to be removed is no
 //  longer a child of this node. Perhaps it was moved in a 'blur' event handler?
 export default class Input extends Block<InputProps, InputAttrs> {

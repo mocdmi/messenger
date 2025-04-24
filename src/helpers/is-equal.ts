@@ -19,7 +19,10 @@ function isArrayOrObject(value: unknown): value is PlainObject | unknown[] {
     return isPlainObject(value) || isArray(value);
 }
 
-export default function isEqual(lhs: PlainObject | unknown[], rhs: PlainObject | unknown[]) {
+export default function isEqual(
+    lhs: PlainObject | unknown[],
+    rhs: PlainObject | unknown[],
+): boolean {
     for (const [key, value] of Object.entries(lhs)) {
         const rightValue = (rhs as PlainObject)[key];
 

@@ -21,7 +21,7 @@ export default class Route {
         this.BlockClass = BlockClass;
     }
 
-    leave() {
+    leave(): void {
         if (this.block) {
             this.block.hide();
         }
@@ -31,11 +31,11 @@ export default class Route {
         return path === this.path;
     }
 
-    private renderDom(selector: string, block: Block) {
-        const root = document.querySelector(selector);
+    private renderDom(rootQuery: string, block: Block): void {
+        const root = document.querySelector(rootQuery);
 
         if (!root) {
-            throw new Error(`Element with selector "${selector}" not found`);
+            throw new Error(`Element with selector "${rootQuery}" not found`);
         }
 
         root.innerHTML = '';
@@ -43,7 +43,7 @@ export default class Route {
         block.show();
     }
 
-    render() {
+    render(): void {
         if (!this.block) {
             this.block = new this.BlockClass(this.context);
         }

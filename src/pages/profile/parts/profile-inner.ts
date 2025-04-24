@@ -1,11 +1,13 @@
+import { ProfileProps } from '../../profile';
 import { Link } from '../../../components';
 import { ROUTER } from '../../../const';
-import { ProfileContext } from '../../../context/types/ProfileContext';
 import { Block } from '../../../core';
+import { connect } from '../../../helpers';
+import { AppStore } from '../../../types';
 import styles from '../styles.module.css';
 
-export default class ProfileInner extends Block<ProfileContext> {
-    constructor(props: ProfileContext) {
+class ProfileInner extends Block<ProfileProps> {
+    constructor(props: ProfileProps) {
         super('div', props, {
             EditLink: new Link({
                 'theme-default': true,
@@ -29,7 +31,7 @@ export default class ProfileInner extends Block<ProfileContext> {
     render(): string {
         return `
             <div class="${styles.detail}">
-                {{#each detail}}
+                {{#each items}}
                     <div class="${styles.row}">
                         <div class="${styles.label}">{{label}}</div>
                         <div class="${styles.value}">{{value}}</div>
@@ -50,3 +52,34 @@ export default class ProfileInner extends Block<ProfileContext> {
         `;
     }
 }
+
+export default connect<AppStore, ProfileProps>((state) => {
+    return {
+        items: [
+            {
+                label: 'Почта',
+                value: state.user?.email,
+            },
+            {
+                label: 'Логин',
+                value: state.user?.login,
+            },
+            {
+                label: 'Имя',
+                value: state.user?.first_name,
+            },
+            {
+                label: 'Фамилия',
+                value: state.user?.second_name,
+            },
+            {
+                label: 'Имя в чате',
+                value: state.user?.display_name,
+            },
+            {
+                label: 'Телефон',
+                value: state.user?.phone,
+            },
+        ],
+    };
+})(ProfileInner);

@@ -5,26 +5,25 @@ export default class Router {
     private static instance: Router;
     private routes: Route[] = [];
     private currentRoute: Route | null = null;
-    private readonly rootQuery: string;
+    private rootQuery: string | undefined;
 
-    private constructor(rootQuery: string) {
-        this.rootQuery = rootQuery;
-    }
+    private constructor() {}
 
-    static getInstance(rootQuery?: string) {
+    static getInstance(): Router {
         if (!Router.instance) {
-            if (!rootQuery) {
-                throw new Error('Root query is required to create Router instance');
-            }
-
-            Router.instance = new Router(rootQuery);
+            Router.instance = new Router();
         }
 
         return Router.instance;
     }
 
-    start() {
-        window.onpopstate = (event) => {
+    createApp(rootQuery: string): Router {
+        this.rootQuery = rootQuery;
+        return this;
+    }
+
+    start(): void {
+        window.onpopstate = (event): void => {
             try {
                 const path = (event.currentTarget as Window)?.location.pathname;
                 this.onRoute(path);
@@ -36,7 +35,7 @@ export default class Router {
         this.onRoute(window.location.pathname);
     }
 
-    private onRoute(path: string) {
+    private onRoute(path: string): void {
         const route = this.getBlockByPath(path);
 
         if (!route) {
@@ -52,20 +51,20 @@ export default class Router {
     }
 
     use(path: string, block: unknown, props?: Indexed): Router {
-        const route = new Route(path, block as BlockConstructor, props, this.rootQuery);
+        const route = new Route(path, block as BlockConstructor, props, this.rootQuery!);
         this.routes.push(route);
         return this;
     }
 
-    back() {
+    back(): void {
         history.back();
     }
 
-    next() {
+    next(): void {
         history.back();
     }
 
-    go(path: string) {
+    go(path: string): void {
         try {
             history.pushState({}, '', path);
             this.onRoute(path);
@@ -74,7 +73,7 @@ export default class Router {
         }
     }
 
-    private getBlockByPath(path: string) {
+    private getBlockByPath(path: string): Route | undefined {
         return this.routes.find((route) => route.match(path));
     }
 }

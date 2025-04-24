@@ -16,10 +16,10 @@ interface Response<TResp> {
 
 type Body = string | Blob | ArrayBuffer | ArrayBufferView | FormData | URLSearchParams | null;
 
-type HTTPMethod = <TReqData = void, TRespData = void>(
+type HTTPMethod = <TReq = void, TResp = void>(
     url: string,
-    options?: Options<TReqData>,
-) => Promise<Response<TRespData>>;
+    options?: Options<TReq>,
+) => Promise<Response<TResp>>;
 
 export default class HttpTransport {
     private readonly baseUrl: string;
@@ -37,7 +37,7 @@ export default class HttpTransport {
 
     private queryStringify<TReq>(data: TReq): string {
         if (typeof data !== 'object' || data === null) {
-            throw new Error('Должно быть объектом');
+            throw new Error('Must be an object');
         }
 
         const props: string[] = [];
@@ -114,7 +114,7 @@ export default class HttpTransport {
                 xhr.send(body);
             }
 
-            xhr.onload = () => {
+            xhr.onload = (): void => {
                 let parsedResponse = xhr.response;
 
                 if (xhr.getResponseHeader('Content-Type')?.includes('application/json')) {
@@ -137,9 +137,9 @@ export default class HttpTransport {
                 });
             };
 
-            xhr.onerror = () => reject('Ошибка соединения');
-            xhr.onabort = () => reject('Запрос прерван');
-            xhr.ontimeout = () => reject('Таймаут');
+            xhr.onerror = (): void => reject('Ошибка соединения');
+            xhr.onabort = (): void => reject('Запрос прерван');
+            xhr.ontimeout = (): void => reject('Таймаут');
         });
     }
 }

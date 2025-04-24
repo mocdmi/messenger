@@ -100,6 +100,8 @@ export default abstract class Block<
         return true;
     }
 
+    componentWillUnmount(): void {}
+
     setProps = (nextProps: TProps): void => {
         if (!nextProps) {
             return;
@@ -150,6 +152,7 @@ export default abstract class Block<
     }
 
     private _render(): void {
+        this.componentWillUnmount();
         this.removeEvents();
 
         const block: DocumentFragment = this.compile();
@@ -189,7 +192,7 @@ export default abstract class Block<
             },
 
             deleteProperty: (): never => {
-                throw new Error('Нет доступа');
+                throw new Error('No access to delete props');
             },
         });
     }
