@@ -4,7 +4,7 @@ import { isErrorsEmpty, validateOnSubmit } from '../../../helpers';
 import { Indexed } from '../../../types';
 import styles from '../styles.module.css';
 
-interface RemoveContactFormProps extends Indexed {
+interface RemoveChatFormProps extends Indexed {
     formState: {
         login: string;
     };
@@ -17,7 +17,7 @@ const validators: ((value: string) => string)[] = [
     (value: string) => Validator.validate(value).isRequired(),
 ];
 
-export default class RemoveContactForm extends Block<RemoveContactFormProps> {
+export default class RemoveChatForm extends Block<RemoveChatFormProps> {
     constructor() {
         super(
             'form',
@@ -114,4 +114,4 @@ export default class RemoveContactForm extends Block<RemoveContactFormProps> {
             </div>
         `;
     }
-}
+} 

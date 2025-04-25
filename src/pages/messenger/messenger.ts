@@ -3,9 +3,9 @@ import { ChatContext } from '../../context/types/ChatContext';
 import { Block } from '../../core';
 import { Indexed } from '../../types';
 import Actions from './parts/actions';
-import AddContactForm from './parts/add-contact-form';
-import MessageForm from './parts/message-form';
-import RemoveContactForm from './parts/remove-contact-form';
+import AddContactForm from './parts/addContactForm';
+import MessageForm from './parts/messageForm';
+import RemoveChatForm from './parts/removeChatForm';
 import styles from './styles.module.css';
 
 interface ChatProps extends ChatContext, Indexed {
@@ -14,7 +14,7 @@ interface ChatProps extends ChatContext, Indexed {
     showRemoveAction: boolean;
 }
 
-export default class Chat extends Block<ChatProps> {
+export default class Messenger extends Block<ChatProps> {
     constructor(props: ChatProps) {
         super('div', props, {
             Sidebar: new Sidebar(props) as unknown as Block,
@@ -30,7 +30,7 @@ export default class Chat extends Block<ChatProps> {
             }) as unknown as Block,
             PopupRemoveContact: new Popup({
                 title: 'Удалить пользователя',
-                Children: new RemoveContactForm() as unknown as Block,
+                Children: new RemoveChatForm() as unknown as Block,
                 handlerHidePopup: () => {
                     this.setProps({
                         ...props,

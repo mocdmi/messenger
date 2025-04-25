@@ -8,7 +8,7 @@ import { AppStore } from './types';
 const router = Router.getInstance().createApp('#app');
 
 router
-    .use(ROUTER.messenger, Pages.ChatPage, context.chatContext)
+    .use(ROUTER.messenger, Pages.Messenger, context.chatContext)
     .use(ROUTER.editPassword, Pages.EditPasswordPage)
     .use(ROUTER.editProfile, Pages.EditProfilePage, context.profileContext)
     .use(ROUTER.login, Pages.LoginPage)

@@ -1,4 +1,4 @@
-export { ChatPage } from './chat';
+export { Messenger } from './messenger';
 export { EditPasswordPage } from './editPassword';
 export { EditProfilePage } from './editProfile';
 export { LoginPage } from './login';
