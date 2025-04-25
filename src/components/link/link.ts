@@ -1,6 +1,6 @@
-import { Block, Router } from '../../core';
-import { withRouter } from '../../helpers';
-import { Indexed } from '../../types';
+import { Block, Router } from '@core';
+import { withRouter } from '@helpers';
+import { Indexed } from '@types';
 import styles from './styles.module.css';
 
 interface LinkAttrs extends Indexed {

@@ -1,5 +1,5 @@
-import { Route, BlockConstructor } from '../core';
-import { Indexed } from '../types';
+import { Route, BlockConstructor } from '@core';
+import { Indexed } from '@types';
 
 export default class Router {
     private static instance: Router;
@@ -61,7 +61,7 @@ export default class Router {
     }
 
     next(): void {
-        history.back();
+        history.forward();
     }
 
     go(path: string): void {

@@ -1,9 +1,9 @@
-import { Profile } from '../../components';
-import { Block } from '../../core';
-import { connect } from '../../helpers';
-import { AuthService } from '../../services';
-import { AppStore } from '../../types';
-import ProfileInner from './parts/profile-inner';
+import { Profile } from '@components';
+import { Block } from '@core';
+import { connect } from '@helpers';
+import { AuthService } from '@services';
+import { AppStore } from '@types';
+import ProfileInner from './parts/profileInner';
 import { ProfileProps } from './types';
 
 class ProfilePage extends Block<ProfileProps> {

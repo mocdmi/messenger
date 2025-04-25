@@ -1,8 +1,8 @@
-import { Link } from '../../components';
+import { Link } from '@components';
 import { ErrorContext } from '../../context/types/ErrorContext';
-import { Block } from '../../core';
-import { PageNames } from '../../types/pageNames';
+import { Block } from '@core';
 import styles from './styles.module.css';
+import { ROUTER } from '@const';
 
 export default class ErrorPage extends Block<ErrorContext> {
     constructor(props: ErrorContext) {
@@ -10,7 +10,7 @@ export default class ErrorPage extends Block<ErrorContext> {
             BackLink: new Link({
                 'theme-default': true,
                 label: 'Назад к чатам',
-                to: PageNames.CHAT,
+                to: ROUTER.messenger,
             }) as unknown as Block,
         });
     }

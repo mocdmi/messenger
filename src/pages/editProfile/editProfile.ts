@@ -1,6 +1,6 @@
-import { Profile } from '../../components';
+import { Profile } from '@components';
 import { ProfileContext } from '../../context/types/ProfileContext';
-import { Block } from '../../core';
+import { Block } from '@core';
 import EditForm from './parts/editForm';
 
 export default class EditProfilePage extends Block<ProfileContext> {

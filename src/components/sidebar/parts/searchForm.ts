@@ -1,5 +1,5 @@
-import { Block } from '../../../core';
-import { Indexed } from '../../../types';
+import { Block } from '@core';
+import { Indexed } from '@types';
 import { LabelInput } from '../../labelInput';
 import styles from '../styles.module.css';
 

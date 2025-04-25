@@ -1,4 +1,4 @@
-import { Indexed } from '../types';
+import { Indexed } from '@types';
 
 function isObject(value: unknown): value is Indexed {
     return typeof value === 'object' && value !== null && !Array.isArray(value);

@@ -1,4 +1,4 @@
-import { Block } from '../core';
+import { Block } from '@core';
 
 // TODO: Сделать более надежную реализацию, cейчас зависит от порядка инпутов
 export default function validateOnSubmit(

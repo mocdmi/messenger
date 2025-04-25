@@ -1,6 +1,6 @@
 import Handlebars from 'handlebars';
-import { Attributes, EventBus } from '../core';
-import { Indexed } from '../types';
+import { Attributes, EventBus } from '@core';
+import { Indexed } from '@types';
 
 type Children = Record<string, Block | Block[]>;
 

@@ -1,5 +1,5 @@
-import { Block, BlockConstructor, Router } from '../core';
-import { Indexed } from '../types';
+import { Block, BlockConstructor, Router } from '@core';
+import { Indexed } from '@types';
 
 export default function withRouter<
     TProps extends Indexed = Indexed,

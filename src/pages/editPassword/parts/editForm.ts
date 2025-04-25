@@ -1,7 +1,7 @@
-import { Button, LabelInput } from '../../../components';
+import { Button, LabelInput } from '@components';
 import { ProfileContext } from '../../../context/types/ProfileContext';
-import { Block, Validator } from '../../../core';
-import { isErrorsEmpty, validateOnSubmit } from '../../../helpers';
+import { Block, Validator } from '@core';
+import { isErrorsEmpty, validateOnSubmit } from '@helpers';
 import styles from '../styles.module.css';
 
 interface EditFormProps extends ProfileContext {

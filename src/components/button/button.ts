@@ -1,5 +1,5 @@
-import { Block } from '../../core';
-import { Indexed } from '../../types';
+import { Block } from '@core';
+import { Indexed } from '@types';
 import styles from './styles.module.css';
 
 type ButtonType = 'button' | 'submit' | 'reset';

@@ -1,5 +1,5 @@
-import { Block, BlockConstructor } from '../core';
-import { Indexed } from '../types';
+import { Block, BlockConstructor } from '@core';
+import { Indexed } from '@types';
 
 export default class Route {
     private readonly path: string;

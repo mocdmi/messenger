@@ -1,5 +1,5 @@
-import { Block } from '../core';
-import { Indexed } from '../types';
+import { Block } from '@core';
+import { Indexed } from '@types';
 
 export type Attributes<TAttrs> = {
     className?: string;

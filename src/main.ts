@@ -1,9 +1,9 @@
-import { ROUTER } from './const';
+import { ROUTER } from '@const';
 import * as context from './context';
-import { Router, Store } from './core';
-import * as Pages from './pages';
-import './assets/styles/styles.css';
-import { AppStore } from './types';
+import { Router, Store } from '@core';
+import * as Pages from '@pages';
+import '@assets/styles/styles.css';
+import { AppStore } from '@types';
 
 const router = Router.getInstance().createApp('#app');
 

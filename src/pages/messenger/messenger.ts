@@ -1,7 +1,7 @@
-import { Sidebar, Popup } from '../../components';
+import { Sidebar, Popup } from '@components';
 import { ChatContext } from '../../context/types/ChatContext';
-import { Block } from '../../core';
-import { Indexed } from '../../types';
+import { Block } from '@core';
+import { Indexed } from '@types';
 import Actions from './parts/actions';
 import AddContactForm from './parts/addContactForm';
 import MessageForm from './parts/messageForm';

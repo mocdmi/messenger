@@ -1,7 +1,7 @@
-import { ProfileProps } from '../../profile';
-import { Link } from '../../../components';
-import { ROUTER } from '../../../const';
-import { Block } from '../../../core';
+import { ProfileProps } from '..';
+import { Link } from '@components';
+import { ROUTER } from '@const';
+import { Block } from '@core';
 import styles from '../styles.module.css';
 
 export default class ProfileInner extends Block<ProfileProps> {

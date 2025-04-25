@@ -1,4 +1,4 @@
-export { default as AuthApi } from './auth-api';
+export { default as AuthApi } from './authApi';
 export type {
     UserResponseDto,
     SignUpRequestDto,

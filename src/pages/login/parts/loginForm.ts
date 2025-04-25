@@ -1,8 +1,8 @@
-import { Button, LabelInput } from '../../../components';
-import { Block, Validator } from '../../../core';
-import { isErrorsEmpty, validateOnSubmit } from '../../../helpers';
-import { AuthService } from '../../../services';
-import { Indexed } from '../../../types';
+import { Button, LabelInput } from '@components';
+import { Block, Validator } from '@core';
+import { isErrorsEmpty, validateOnSubmit } from '@helpers';
+import { AuthService } from '@services';
+import { Indexed } from '@types';
 import styles from '../styles.module.css';
 
 interface LoginFormProps extends Indexed {

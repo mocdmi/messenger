@@ -1,10 +1,10 @@
-import { Block } from '../../core';
-import { Indexed } from '../../types';
+import { Block } from '@core';
+import { Indexed } from '@types';
 import { Button } from '../button';
 import { Popup } from '../popup';
 import UploadForm from './parts/uploadForm';
 import styles from './styles.module.css';
-import noPhoto from '../../assets/images/no-photo.svg';
+import noPhoto from '@assets/images/no-photo.svg';
 
 interface ProfileAvatarProps extends Indexed {
     name?: string;

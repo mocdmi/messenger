@@ -1,6 +1,6 @@
-import { ROUTER } from '../../const';
+import { ROUTER } from '@const';
 import { ChatContext, IChat } from '../../context/types/ChatContext';
-import { Block } from '../../core';
+import { Block } from '@core';
 import { Chat } from '../chat';
 import { Link } from '../link';
 import SearchForm from './parts/searchForm';

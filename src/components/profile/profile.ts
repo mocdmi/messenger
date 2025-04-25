@@ -1,6 +1,6 @@
-import { Block, Router } from '../../core';
-import { withRouter } from '../../helpers';
-import { Indexed } from '../../types';
+import { Block, Router } from '@core';
+import { withRouter } from '@helpers';
+import { Indexed } from '@types';
 import { Link } from '../link';
 import { ProfileAvatar } from '../profileAvatar';
 import styles from './styles.module.css';

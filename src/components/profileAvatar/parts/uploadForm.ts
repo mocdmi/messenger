@@ -1,4 +1,4 @@
-import { Block } from '../../../core';
+import { Block } from '@core';
 import { Button } from '../../button';
 import { Input } from '../../input';
 import styles from '../styles.module.css';

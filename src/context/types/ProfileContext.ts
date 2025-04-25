@@ -1,4 +1,4 @@
-import { Indexed } from '../../types';
+import { Indexed } from '@types';
 
 export interface ProfileDetail extends Indexed {
     label: string;

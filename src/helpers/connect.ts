@@ -1,6 +1,6 @@
-import { Block, BlockConstructor, Store, StoreEvents } from '../core';
-import { Indexed } from '../types';
-import { isEqual } from '../helpers';
+import { Block, BlockConstructor, Store, StoreEvents } from '@core';
+import { Indexed } from '@types';
+import { isEqual } from '@helpers';
 
 export default function connect<TStore extends Indexed, TProps extends Indexed>(
     mapStateToProps: (store: TStore) => TProps,

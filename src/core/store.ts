@@ -1,6 +1,6 @@
-import { EventBus, StoreEvents } from '../core';
-import { set } from '../helpers';
-import { Indexed } from '../types';
+import { EventBus, StoreEvents } from '@core';
+import { set } from '@helpers';
+import { Indexed } from '@types';
 
 export default class Store extends EventBus {
     private static instance: Store;

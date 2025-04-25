@@ -1,4 +1,4 @@
-import { BaseAPI, HTTPTransport } from '../../core';
+import { BaseAPI, HTTPTransport } from '@core';
 import {
     SignInRequestDto,
     SignUpRequestDto,
