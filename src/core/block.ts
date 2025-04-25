@@ -1,12 +1,11 @@
 import Handlebars from 'handlebars';
 import { Attributes, EventBus } from '@core';
-import { Indexed } from '@types';
 
 type Children = Record<string, Block | Block[]>;
 
 export default abstract class Block<
-    TProps extends Indexed = Indexed,
-    TAttrs extends Indexed = Indexed,
+    TProps extends object = object,
+    TAttrs extends object = object,
 > {
     private static EVENTS = {
         INIT: 'init',

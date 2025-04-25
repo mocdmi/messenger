@@ -1,6 +1,4 @@
-import { Indexed } from '@types';
-
-export interface ProfileProps extends Indexed {
+export interface ProfileProps {
     items: ProfileItem[];
 }
 

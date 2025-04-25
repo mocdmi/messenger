@@ -1,6 +1,4 @@
-import { Indexed } from '@types';
-
-export interface ErrorContext extends Indexed {
+export interface ErrorContext {
     status: number;
     message: string;
 }

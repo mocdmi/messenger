@@ -1,5 +1,4 @@
 import { Block } from '@core';
-import { Indexed } from '@types';
 
 export type Attributes<TAttrs> = {
     className?: string;
@@ -9,10 +8,7 @@ export type Attributes<TAttrs> = {
     };
 };
 
-export type BlockConstructor<
-    TProps extends Indexed = Indexed,
-    TAttrs extends Indexed = Indexed,
-> = new (
+export type BlockConstructor<TProps extends object = object, TAttrs extends object = object> = new (
     props: TProps & Attributes<TAttrs>,
     children?: Record<string, Block | Block[]>,
 ) => Block<TProps, TAttrs>;

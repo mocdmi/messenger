@@ -1,10 +1,9 @@
 import { Block } from '@core';
-import { Indexed } from '@types';
 import { Input } from '../input';
 import { InputType } from '../input/types';
 import styles from './styles.module.css';
 
-export interface LabelInputProps extends Indexed {
+export interface LabelInputProps {
     'theme-color'?: boolean;
     'theme-blank'?: boolean;
     'theme-default'?: boolean;

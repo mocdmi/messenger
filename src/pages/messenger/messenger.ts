@@ -1,14 +1,13 @@
 import { Sidebar, Popup } from '@components';
 import { ChatContext } from '../../context/types/ChatContext';
 import { Block } from '@core';
-import { Indexed } from '@types';
 import Actions from './parts/actions';
 import AddContactForm from './parts/addContactForm';
 import MessageForm from './parts/messageForm';
 import RemoveChatForm from './parts/removeChatForm';
 import styles from './styles.module.css';
 
-interface ChatProps extends ChatContext, Indexed {
+interface ChatProps extends ChatContext {
     showActions: boolean;
     showAddAction: boolean;
     showRemoveAction: boolean;

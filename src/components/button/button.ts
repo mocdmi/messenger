@@ -1,14 +1,13 @@
 import { Block } from '@core';
-import { Indexed } from '@types';
 import styles from './styles.module.css';
 
 type ButtonType = 'button' | 'submit' | 'reset';
 
-interface ButtonAttrs extends Indexed {
+interface ButtonAttrs {
     type: ButtonType;
 }
 
-interface ButtonProps extends ButtonAttrs, Indexed {
+interface ButtonProps extends ButtonAttrs {
     'theme-default'?: boolean;
     'theme-blank'?: boolean;
     'theme-blank-light'?: boolean;

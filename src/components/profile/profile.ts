@@ -1,11 +1,10 @@
 import { Block, Router } from '@core';
 import { withRouter } from '@helpers';
-import { Indexed } from '@types';
 import { Link } from '../link';
 import { ProfileAvatar } from '../profileAvatar';
 import styles from './styles.module.css';
 
-interface ProfileProps extends Indexed {
+interface ProfileProps {
     name?: string;
     Children: Block | Block[];
     router?: Router;

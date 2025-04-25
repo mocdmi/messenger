@@ -1,9 +1,8 @@
 import { Button, Panel } from '@components';
 import { Block } from '@core';
-import { Indexed } from '@types';
 import styles from '../styles.module.css';
 
-interface ActionsProps extends Indexed {
+interface ActionsProps {
     showActions: boolean;
     handlerShowAddAction: () => void;
     handlerShowRemoveAction: () => void;

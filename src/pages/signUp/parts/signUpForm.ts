@@ -1,10 +1,9 @@
 import { Button, LabelInput } from '@components';
 import { Block, Validator } from '@core';
 import { isErrorsEmpty, validateOnSubmit } from '@helpers';
-import { Indexed } from '@types';
 import styles from '../styles.module.css';
 
-interface SignUpFormProps extends Indexed {
+interface SignUpFormProps {
     formState: {
         email: string;
         login: string;

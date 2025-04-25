@@ -1,19 +1,13 @@
 import { Block, BlockConstructor } from '@core';
-import { Indexed } from '@types';
 
 export default class Route {
     private readonly path: string;
     private readonly rootQuery: string;
     private block: Block | null;
-    private readonly context: Indexed;
+    private readonly context: object;
     private readonly BlockClass: BlockConstructor;
 
-    constructor(
-        path: string,
-        BlockClass: BlockConstructor,
-        props: Indexed = {},
-        rootQuery: string,
-    ) {
+    constructor(path: string, BlockClass: BlockConstructor, props: object = {}, rootQuery: string) {
         this.path = path;
         this.rootQuery = rootQuery;
         this.context = props;

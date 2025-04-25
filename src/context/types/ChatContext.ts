@@ -1,6 +1,4 @@
-import { Indexed } from '@types';
-
-export interface IChat extends Indexed {
+export interface IChat {
     name: string;
     lastMessage: string;
     date: string;
@@ -8,6 +6,6 @@ export interface IChat extends Indexed {
     active?: boolean;
 }
 
-export interface ChatContext extends Indexed {
+export interface ChatContext {
     chats: IChat[];
 }

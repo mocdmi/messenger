@@ -1,10 +1,9 @@
 import { Button, LabelInput } from '@components';
 import { Block, Validator } from '@core';
 import { isErrorsEmpty, validateOnSubmit } from '@helpers';
-import { Indexed } from '@types';
 import styles from '../styles.module.css';
 
-interface MessageFormProps extends Indexed {
+interface MessageFormProps {
     formState: {
         message: string;
     };

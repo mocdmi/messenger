@@ -2,6 +2,8 @@ type PlainObject<T = unknown> = {
     [k in string]: T;
 };
 
+type ArrayOrObject = PlainObject | unknown[];
+
 function isPlainObject(value: unknown): value is PlainObject {
     return (
         typeof value === 'object' &&
@@ -19,9 +21,9 @@ function isArrayOrObject(value: unknown): value is PlainObject | unknown[] {
     return isPlainObject(value) || isArray(value);
 }
 
-export default function isEqual(
-    lhs: PlainObject | unknown[],
-    rhs: PlainObject | unknown[],
+export default function isEqual<T extends object>(
+    lhs: T | ArrayOrObject,
+    rhs: T | ArrayOrObject,
 ): boolean {
     for (const [key, value] of Object.entries(lhs)) {
         const rightValue = (rhs as PlainObject)[key];

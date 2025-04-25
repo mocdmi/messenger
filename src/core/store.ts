@@ -1,10 +1,9 @@
 import { EventBus, StoreEvents } from '@core';
 import { set } from '@helpers';
-import { Indexed } from '@types';
 
 export default class Store extends EventBus {
     private static instance: Store;
-    private state: Indexed = {};
+    private state: object = {};
 
     private constructor() {
         super();
@@ -18,11 +17,11 @@ export default class Store extends EventBus {
         return Store.instance;
     }
 
-    createStore<TStore extends Indexed>(defaultState: TStore): void {
+    createStore<TStore extends object>(defaultState: TStore): void {
         this.state = defaultState;
     }
 
-    getState<TStore extends Indexed = typeof this.state>(): TStore {
+    getState<TStore extends object>(): TStore {
         return this.makeStateProxy<TStore>(this.state as TStore);
     }
 
@@ -31,7 +30,7 @@ export default class Store extends EventBus {
         this.emit(StoreEvents.Updated, this.state);
     }
 
-    private makeStateProxy<TStore extends Indexed>(state: TStore): TStore {
+    private makeStateProxy<TStore extends object>(state: TStore): TStore {
         return new Proxy<TStore>(state, {
             set: (): never => {
                 throw new Error('No access to set props');

@@ -1,6 +1,4 @@
-export type Indexed = Record<string, unknown>;
-
-export interface AppStore extends Indexed {
+export interface AppStore {
     user: User | null;
 }
 

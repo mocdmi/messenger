@@ -1,4 +1,4 @@
-import { Indexed } from '@types';
+type Indexed = Record<string, unknown>;
 
 function isObject(value: unknown): value is Indexed {
     return typeof value === 'object' && value !== null && !Array.isArray(value);
@@ -22,7 +22,7 @@ function merge(lhs: Indexed, rhs: Indexed): Indexed {
     return lhs;
 }
 
-export default function set(object: Indexed, path: string, value: unknown): Indexed | unknown {
+export default function set(object: object, path: string, value: unknown): Indexed | unknown {
     if (typeof object !== 'object' || Array.isArray(object) || object === null) {
         return object;
     }

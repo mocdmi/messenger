@@ -1,5 +1,4 @@
 import { Route, BlockConstructor } from '@core';
-import { Indexed } from '@types';
 
 export default class Router {
     private static instance: Router;
@@ -50,7 +49,7 @@ export default class Router {
         route.render();
     }
 
-    use(path: string, block: unknown, props?: Indexed): Router {
+    use<TProps extends object>(path: string, block: unknown, props?: TProps): Router {
         const route = new Route(path, block as BlockConstructor, props, this.rootQuery!);
         this.routes.push(route);
         return this;

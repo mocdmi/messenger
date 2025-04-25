@@ -1,11 +1,10 @@
 import { Block, BlockConstructor, Store, StoreEvents } from '@core';
-import { Indexed } from '@types';
 import { isEqual } from '@helpers';
 
-export default function connect<TStore extends Indexed, TProps extends Indexed>(
+export default function connect<TStore extends object, TProps extends object>(
     mapStateToProps: (store: TStore) => TProps,
 ) {
-    return function <TAttrs extends Indexed = Indexed>(
+    return function <TAttrs extends object = object>(
         block: BlockConstructor<TProps, TAttrs>,
     ): BlockConstructor<TProps, TAttrs> {
         return class extends block {
@@ -20,7 +19,7 @@ export default function connect<TStore extends Indexed, TProps extends Indexed>(
                 this.onChangeStoreCallback = () => {
                     const newState = mapStateToProps(store.getState());
 
-                    if (!isEqual(state, newState)) {
+                    if (!isEqual<TProps>(state, newState)) {
                         this.setProps({ ...newState });
                     }
 
