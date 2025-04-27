@@ -1,16 +1,57 @@
 import { Profile } from '@components';
-import { ProfileContext } from '../../context/types/ProfileContext';
 import { Block } from '@core';
+import { AuthService } from '@services';
+import { EditProfileProps } from './types';
 import EditForm from './parts/editForm';
+import { connect } from '@helpers';
+import { AppStore } from '@types';
+import mapStateToProps from './mapStateToProps';
 
-export default class EditProfilePage extends Block<ProfileContext> {
-    constructor(props: ProfileContext) {
+class EditProfilePage extends Block<EditProfileProps> {
+    private readonly authService = new AuthService();
+
+    constructor(props: EditProfileProps) {
         super('div', props, {
             EditProfile: new Profile({
-                name: props.name,
-                Children: new EditForm(props) as unknown as Block,
-            }) as unknown as Block,
+                name: (props.name as string) || 'Пользователь',
+                Children: new EditForm(props) as Block,
+            }) as Block,
         });
+    }
+
+    componentDidMount() {
+        const getUser = async () => {
+            await this.authService.getUser();
+        };
+
+        getUser();
+    }
+
+    componentDidUpdate(oldProps: EditProfileProps, newProps: EditProfileProps): boolean {
+        if (oldProps !== newProps) {
+            const editProfile = this.children.EditProfile as Block;
+
+            if (editProfile) {
+                const Avatar = editProfile.children.Avatar as Block;
+                const bodyChildren = editProfile.children.Body;
+
+                if (Array.isArray(bodyChildren) && bodyChildren.length > 0) {
+                    const editForm = bodyChildren[0] as Block;
+
+                    if (editForm) {
+                        editForm.setProps(newProps);
+                    }
+                }
+
+                if (Avatar) {
+                    Avatar.setProps({ name: newProps.name as string });
+                }
+            }
+
+            return true;
+        }
+
+        return false;
     }
 
     // language=Handlebars
@@ -18,3 +59,5 @@ export default class EditProfilePage extends Block<ProfileContext> {
         return '{{{EditProfile}}}';
     }
 }
+
+export default connect<AppStore, EditProfileProps>(mapStateToProps)(EditProfilePage);

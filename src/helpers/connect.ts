@@ -29,7 +29,7 @@ export default function connect<TStore extends object, TProps extends object>(
                 Store.getInstance().on(StoreEvents.Updated, this.onChangeStoreCallback);
             }
 
-            // TODO: разобраться с этим
+            // TODO: разобраться с удалением слушателя
             // componentWillUnmount(): void {
             //     super.componentWillUnmount();
             //     Store.getInstance().off(StoreEvents.Updated, this.onChangeStoreCallback);

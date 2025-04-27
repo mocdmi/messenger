@@ -1,5 +1,5 @@
 import { Block } from '@core';
-import { InputType } from './types';
+import { InputType } from '@types';
 
 interface InputAttrs {
     type: InputType;
@@ -15,9 +15,6 @@ interface InputProps extends InputAttrs {
     onBlur?: (e: Event) => void;
 }
 
-// TODO: ошибка при нажатии enter в инпуте
-//  block.ts:139 Uncaught NotFoundError: Failed to execute 'replaceWith' on 'Element': The node to be removed is no
-//  longer a child of this node. Perhaps it was moved in a 'blur' event handler?
 export default class Input extends Block<InputProps, InputAttrs> {
     constructor(props: InputProps) {
         super('input', {
@@ -34,6 +31,23 @@ export default class Input extends Block<InputProps, InputAttrs> {
                 ...(props.onBlur ? { blur: props.onBlur } : {}),
             },
         });
+    }
+
+    componentDidUpdate(oldProps: InputProps, newProps: InputProps): boolean {
+        if (oldProps.value !== newProps.value) {
+            const input = this.getContent() as HTMLInputElement;
+
+            if (input) {
+                input.value = newProps.value || '';
+            }
+
+            this.setProps({
+                ...this.props,
+                value: newProps.value,
+            });
+        }
+
+        return true;
     }
 
     // language=Handlebars

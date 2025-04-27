@@ -17,14 +17,13 @@ class ProfilePage extends Block<ProfileProps> {
         });
     }
 
-    async componentDidMount() {
-        await this.authService.getUser();
-        super.componentDidMount();
-    }
+    componentDidMount() {
+        const getUser = async () => {
+            await this.authService.getUser();
+            super.componentDidMount();
+        };
 
-    componentDidUpdate(oldProps: ProfileProps, newProps: ProfileProps): boolean {
-        this.updateNestedChildProps('Profile', 'Body', this.props);
-        return super.componentDidUpdate(oldProps, newProps);
+        getUser();
     }
 
     // language=Handlebars
@@ -34,31 +33,33 @@ class ProfilePage extends Block<ProfileProps> {
 }
 
 export default connect<AppStore, ProfileProps>((state) => {
+    const user = state.user?.user;
+
     return {
         items: [
             {
                 label: 'Почта',
-                value: state.user?.email,
+                value: user?.email,
             },
             {
                 label: 'Логин',
-                value: state.user?.login,
+                value: user?.login,
             },
             {
                 label: 'Имя',
-                value: state.user?.first_name,
+                value: user?.first_name,
             },
             {
                 label: 'Фамилия',
-                value: state.user?.second_name,
+                value: user?.second_name,
             },
             {
                 label: 'Имя в чате',
-                value: state.user?.display_name,
+                value: user?.display_name,
             },
             {
                 label: 'Телефон',
-                value: state.user?.phone,
+                value: user?.phone,
             },
         ],
     };

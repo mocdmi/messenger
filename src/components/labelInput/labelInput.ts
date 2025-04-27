@@ -1,6 +1,6 @@
 import { Block } from '@core';
 import { Input } from '../input';
-import { InputType } from '../input/types';
+import { InputType } from '@types';
 import styles from './styles.module.css';
 
 export interface LabelInputProps {
@@ -52,6 +52,22 @@ export default class LabelInput extends Block<LabelInputProps> {
                 }) as unknown as Block,
             },
         );
+    }
+
+    componentDidUpdate(oldProps: LabelInputProps, newProps: LabelInputProps): boolean {
+        if (oldProps.value !== newProps.value) {
+            const input = this.children.Input as Block;
+            input.setProps({ value: newProps.value });
+        }
+
+        if (oldProps.error !== newProps.error) {
+            this.setProps({
+                ...this.props,
+                error: newProps.error,
+            });
+        }
+
+        return true;
     }
 
     // language=Handlebars

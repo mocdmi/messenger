@@ -4,6 +4,7 @@ export default class Validator {
 
     static validate(value: string) {
         this.value = value;
+        this.error = '';
         return this;
     }
 
