@@ -105,7 +105,7 @@ export default class EditForm extends Block<EditFormProps> {
                             },
                         });
                     },
-                }) as unknown as Block,
+                }) as Block,
                 NewPasswordInput: new LabelInput({
                     'theme-blank': true,
                     'align-right': true,
@@ -139,7 +139,7 @@ export default class EditForm extends Block<EditFormProps> {
                             },
                         });
                     },
-                }) as unknown as Block,
+                }) as Block,
                 NewPasswordConfirmInput: new LabelInput({
                     'theme-blank': true,
                     'align-right': true,
@@ -174,12 +174,12 @@ export default class EditForm extends Block<EditFormProps> {
                             },
                         });
                     },
-                }) as unknown as Block,
+                }) as Block,
                 SendButton: new Button({
                     'theme-default': true,
                     type: 'submit',
                     label: 'Сохранить',
-                }) as unknown as Block,
+                }) as Block,
             },
         );
     }

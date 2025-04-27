@@ -7,12 +7,30 @@ export default function mapStateToProps(state: AppStore): EditProfileProps {
     return {
         name: (user?.first_name as string) || '',
         form: {
-            email: { value: user?.email, error: '' },
-            login: { value: user?.login, error: '' },
-            first_name: { value: user?.first_name, error: '' },
-            second_name: { value: user?.second_name, error: '' },
-            display_name: { value: user?.display_name, error: '' },
-            phone: { value: user?.phone, error: '' },
+            email: {
+                value: user?.email,
+                error: '',
+            },
+            login: {
+                value: user?.login,
+                error: '',
+            },
+            first_name: {
+                value: user?.first_name,
+                error: '',
+            },
+            second_name: {
+                value: user?.second_name,
+                error: '',
+            },
+            display_name: {
+                value: user?.display_name,
+                error: '',
+            },
+            phone: {
+                value: user?.phone,
+                error: '',
+            },
         },
     };
 }

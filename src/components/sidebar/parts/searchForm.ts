@@ -49,7 +49,7 @@ export default class SearchForm extends Block<SearchFormProps> {
                             },
                         });
                     },
-                }) as unknown as Block,
+                }) as Block,
             },
         );
     }

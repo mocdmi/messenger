@@ -28,7 +28,7 @@ export default class ProfileAvatar extends Block<ProfileAvatarProps> {
                             popupShow: false,
                         });
                     },
-                }) as unknown as Block,
+                }) as Block,
                 OpenPopupButton: new Button({
                     'theme-blank-light': true,
                     label: 'Поменять аватар',
@@ -39,7 +39,7 @@ export default class ProfileAvatar extends Block<ProfileAvatarProps> {
                             popupShow: true,
                         });
                     },
-                }) as unknown as Block,
+                }) as Block,
             },
         );
     }

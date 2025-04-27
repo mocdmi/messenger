@@ -6,6 +6,6 @@ export interface EditProfileProps {
 }
 
 interface ProfileForm {
-    value: unknown;
+    value?: string;
     error: string;
 }

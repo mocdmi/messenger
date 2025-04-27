@@ -4,5 +4,5 @@ export interface ProfileProps {
 
 interface ProfileItem {
     label: string;
-    value: unknown;
+    value?: string;
 }

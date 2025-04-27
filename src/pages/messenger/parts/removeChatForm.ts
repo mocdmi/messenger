@@ -92,12 +92,12 @@ export default class RemoveChatForm extends Block<RemoveChatFormProps> {
                             },
                         });
                     },
-                }) as unknown as Block,
+                }) as Block,
                 RemoveButton: new Button({
                     'theme-default': true,
                     label: 'Удалить',
                     type: 'submit',
-                }) as unknown as Block,
+                }) as Block,
             },
         );
     }

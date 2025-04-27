@@ -90,13 +90,13 @@ export default class MessageForm extends Block<MessageFormProps> {
                             },
                         });
                     },
-                }) as unknown as Block,
+                }) as Block,
                 SendButton: new Button({
                     'theme-default': true,
                     type: 'submit',
                     rounded: true,
                     icon: 'next',
-                }) as unknown as Block,
+                }) as Block,
             },
         );
     }

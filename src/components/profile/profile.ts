@@ -19,7 +19,7 @@ class Profile extends Block<ProfileProps> {
                 className: styles.profile,
             },
             {
-                Avatar: new ProfileAvatar(props) as unknown as Block,
+                Avatar: new ProfileAvatar(props) as Block,
                 Body: Array.isArray(props.Children) ? props.Children : [props.Children],
                 BackButton: new Link({
                     label: 'Back',
@@ -29,7 +29,7 @@ class Profile extends Block<ProfileProps> {
                         e.preventDefault();
                         props.router?.back();
                     },
-                }) as unknown as Block,
+                }) as Block,
             },
         );
     }

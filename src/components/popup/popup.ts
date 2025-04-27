@@ -23,8 +23,8 @@ export default class Popup extends Block<PopupProps> {
             },
             {
                 Body: new Panel({
-                    Children: new Inner(props) as unknown as Block,
-                }) as unknown as Block,
+                    Children: new Inner(props) as Block,
+                }) as Block,
             },
         );
     }

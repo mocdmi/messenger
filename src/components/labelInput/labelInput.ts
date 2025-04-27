@@ -49,7 +49,7 @@ export default class LabelInput extends Block<LabelInputProps> {
                     placeholder: '',
                     onChange: props.onChange,
                     onBlur: props.onBlur,
-                }) as unknown as Block,
+                }) as Block,
             },
         );
     }

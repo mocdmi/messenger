@@ -11,7 +11,7 @@ export default class ErrorPage extends Block<ErrorContext> {
                 'theme-default': true,
                 label: 'Назад к чатам',
                 to: ROUTER.messenger,
-            }) as unknown as Block,
+            }) as Block,
         });
     }
 

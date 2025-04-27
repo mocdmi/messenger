@@ -16,28 +16,28 @@ interface ChatProps extends ChatContext {
 export default class Messenger extends Block<ChatProps> {
     constructor(props: ChatProps) {
         super('div', props, {
-            Sidebar: new Sidebar(props) as unknown as Block,
+            Sidebar: new Sidebar(props) as Block,
             PopupAddContact: new Popup({
                 title: 'Добавить пользователя',
-                Children: new AddContactForm() as unknown as Block,
+                Children: new AddContactForm() as Block,
                 handlerHidePopup: () => {
                     this.setProps({
                         ...props,
                         showAddAction: false,
                     });
                 },
-            }) as unknown as Block,
+            }) as Block,
             PopupRemoveContact: new Popup({
                 title: 'Удалить пользователя',
-                Children: new RemoveChatForm() as unknown as Block,
+                Children: new RemoveChatForm() as Block,
                 handlerHidePopup: () => {
                     this.setProps({
                         ...props,
                         showRemoveAction: false,
                     });
                 },
-            }) as unknown as Block,
-            MessageForm: new MessageForm() as unknown as Block,
+            }) as Block,
+            MessageForm: new MessageForm() as Block,
             Actions: new Actions({
                 showActions: props.showActions,
                 handlerShowAddAction: () => {
@@ -52,7 +52,7 @@ export default class Messenger extends Block<ChatProps> {
                         showAddAction: true,
                     });
                 },
-            }) as unknown as Block,
+            }) as Block,
         });
     }
 

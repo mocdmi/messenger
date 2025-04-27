@@ -92,12 +92,12 @@ export default class AddContactForm extends Block<AddContactFormProps> {
                             },
                         });
                     },
-                }) as unknown as Block,
+                }) as Block,
                 AddButton: new Button({
                     'theme-default': true,
                     label: 'Добавить',
                     type: 'submit',
-                }) as unknown as Block,
+                }) as Block,
             },
         );
     }

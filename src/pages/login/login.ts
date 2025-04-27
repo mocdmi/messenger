@@ -11,7 +11,7 @@ export default class LoginPage extends Block {
             {
                 Panel: new Panel({
                     Children: new PanelInner(),
-                }) as unknown as Block,
+                }) as Block,
             },
         );
     }

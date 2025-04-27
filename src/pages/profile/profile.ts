@@ -5,6 +5,7 @@ import { AuthService } from '@services';
 import { AppStore } from '@types';
 import ProfileInner from './parts/profileInner';
 import { ProfileProps } from './types';
+import mapStateToProps from './mapStateToProps';
 
 class ProfilePage extends Block<ProfileProps> {
     private readonly authService = new AuthService();
@@ -12,18 +13,37 @@ class ProfilePage extends Block<ProfileProps> {
     constructor(props: ProfileProps) {
         super('div', props, {
             Profile: new Profile({
-                Children: new ProfileInner(props) as unknown as Block,
-            }) as unknown as Block,
+                Children: new ProfileInner(props) as Block,
+            }) as Block,
         });
     }
 
     componentDidMount() {
         const getUser = async () => {
             await this.authService.getUser();
-            super.componentDidMount();
         };
 
         getUser();
+    }
+
+    componentDidUpdate(oldProps: ProfileProps, newProps: ProfileProps): boolean {
+        if (oldProps !== newProps) {
+            const profile = this.children.Profile as Block;
+
+            if (profile) {
+                const bodyChildren = profile.children.Body;
+
+                if (Array.isArray(bodyChildren) && bodyChildren.length > 0) {
+                    const profileInner = bodyChildren[0] as Block;
+
+                    if (profileInner) {
+                        profileInner.setProps(newProps);
+                    }
+                }
+            }
+        }
+
+        return true;
     }
 
     // language=Handlebars
@@ -32,35 +52,4 @@ class ProfilePage extends Block<ProfileProps> {
     }
 }
 
-export default connect<AppStore, ProfileProps>((state) => {
-    const user = state.user?.user;
-
-    return {
-        items: [
-            {
-                label: 'Почта',
-                value: user?.email,
-            },
-            {
-                label: 'Логин',
-                value: user?.login,
-            },
-            {
-                label: 'Имя',
-                value: user?.first_name,
-            },
-            {
-                label: 'Фамилия',
-                value: user?.second_name,
-            },
-            {
-                label: 'Имя в чате',
-                value: user?.display_name,
-            },
-            {
-                label: 'Телефон',
-                value: user?.phone,
-            },
-        ],
-    };
-})(ProfilePage);
+export default connect<AppStore, ProfileProps>(mapStateToProps)(ProfilePage);

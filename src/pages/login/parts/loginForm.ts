@@ -97,7 +97,7 @@ export default class LoginForm extends Block<LoginFormProps> {
                             },
                         });
                     },
-                }) as unknown as Block,
+                }) as Block,
                 PasswordInput: new LabelInput({
                     'theme-default': true,
                     name: 'password',
@@ -130,12 +130,12 @@ export default class LoginForm extends Block<LoginFormProps> {
                             },
                         });
                     },
-                }) as unknown as Block,
+                }) as Block,
                 LoginButton: new Button({
                     'theme-default': true,
                     label: 'Авторизоваться',
                     type: 'submit',
-                }) as unknown as Block,
+                }) as Block,
             },
         );
     }

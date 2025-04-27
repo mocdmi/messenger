@@ -11,7 +11,7 @@ const validators = {
     login: (value: unknown) => Validator.validate((value ?? '') as string).isLogin(),
     first_name: (value: unknown) => Validator.validate((value ?? '') as string).isName(),
     second_name: (value: unknown) => Validator.validate((value ?? '') as string).isName(),
-    display_name: (value: unknown) => '',
+    display_name: () => '',
     phone: (value: unknown) => Validator.validate((value ?? '') as string).isPhone(),
 };
 

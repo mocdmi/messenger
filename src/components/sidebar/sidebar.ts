@@ -16,15 +16,15 @@ export default class Sidebar extends Block<ChatContext> {
             },
             {
                 Chats: props.chats.map((contact: IChat) => {
-                    return new Chat(contact) as unknown as Block;
+                    return new Chat(contact) as Block;
                 }),
                 ProfileLink: new Link({
                     'theme-default': true,
                     label: 'Профиль',
                     to: ROUTER.settings,
                     modificator: styles.link,
-                }) as unknown as Block,
-                SearchForm: new SearchForm() as unknown as Block,
+                }) as Block,
+                SearchForm: new SearchForm() as Block,
             },
         );
     }

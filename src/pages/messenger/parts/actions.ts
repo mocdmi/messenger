@@ -22,7 +22,7 @@ export default class Actions extends Block<ActionsProps> {
                         showActions: !this.props.showActions,
                     });
                 },
-            }) as unknown as Block,
+            }) as Block,
             ActionsPanel: new Panel({
                 'inner-class': styles.actions,
                 Children: [
@@ -38,8 +38,8 @@ export default class Actions extends Block<ActionsProps> {
                         type: 'button',
                         onClick: props.handlerShowRemoveAction,
                     }),
-                ] as unknown as Block[],
-            }) as unknown as Block,
+                ] as Block[],
+            }) as Block,
         });
     }
 

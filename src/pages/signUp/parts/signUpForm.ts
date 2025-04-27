@@ -122,7 +122,7 @@ export default class SignUpForm extends Block<SignUpFormProps> {
                             },
                         });
                     },
-                }) as unknown as Block,
+                }) as Block,
                 LoginInput: new LabelInput({
                     'theme-default': true,
                     name: 'login',
@@ -155,7 +155,7 @@ export default class SignUpForm extends Block<SignUpFormProps> {
                             },
                         });
                     },
-                }) as unknown as Block,
+                }) as Block,
                 FirstNameInput: new LabelInput({
                     'theme-default': true,
                     name: 'first_name',
@@ -188,7 +188,7 @@ export default class SignUpForm extends Block<SignUpFormProps> {
                             },
                         });
                     },
-                }) as unknown as Block,
+                }) as Block,
                 SecondNameInput: new LabelInput({
                     'theme-default': true,
                     name: 'second_name',
@@ -221,7 +221,7 @@ export default class SignUpForm extends Block<SignUpFormProps> {
                             },
                         });
                     },
-                }) as unknown as Block,
+                }) as Block,
                 PhoneInput: new LabelInput({
                     'theme-default': true,
                     name: 'phone',
@@ -254,7 +254,7 @@ export default class SignUpForm extends Block<SignUpFormProps> {
                             },
                         });
                     },
-                }) as unknown as Block,
+                }) as Block,
                 PasswordInput: new LabelInput({
                     'theme-default': true,
                     name: 'password',
@@ -287,7 +287,7 @@ export default class SignUpForm extends Block<SignUpFormProps> {
                             },
                         });
                     },
-                }) as unknown as Block,
+                }) as Block,
                 ConfirmPasswordInput: new LabelInput({
                     'theme-default': true,
                     name: 'confirm_password',
@@ -320,12 +320,12 @@ export default class SignUpForm extends Block<SignUpFormProps> {
                             },
                         });
                     },
-                }) as unknown as Block,
+                }) as Block,
                 SignInButton: new Button({
                     'theme-default': true,
                     label: 'Зарегистрироваться',
                     type: 'submit',
-                }) as unknown as Block,
+                }) as Block,
             },
         );
     }
