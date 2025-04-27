@@ -2,7 +2,6 @@ export type InputType = 'text' | 'email' | 'password' | 'file';
 
 export interface AppStore {
     user: User | null;
-    editProfile: EditProfile | null;
 }
 
 interface UserProps {
@@ -18,11 +17,4 @@ interface User {
     isLoading: boolean;
     isError: boolean;
     user: UserProps;
-}
-
-interface EditProfile {
-    isLoading: boolean;
-    isError: boolean;
-    form: UserProps;
-    errors: UserProps;
 }

@@ -39,11 +39,15 @@ export default class AuthService {
     }
 
     async getUser(): Promise<void> {
+        if (this.store.getState<AppStore>().user?.user) {
+            return;
+        }
+
         try {
             const { status, response } = await this.authApi.me();
 
             if (status === 200) {
-                Store.getInstance().set('user.user', response);
+                this.store.set('user.user', response);
             } else if ('reason' in response) {
                 throw new Error(response.reason);
             }
