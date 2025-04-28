@@ -14,13 +14,6 @@ export default class SignUpPage extends Block {
                 }) as Block,
             },
         );
-
-        const store = Store.getInstance();
-
-        store.on(StoreEvents.Updated, () => {
-            this.setProps(store.getState());
-            console.log('Store updated', store.getState());
-        });
     }
 
     // language=Handlebars

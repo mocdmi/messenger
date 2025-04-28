@@ -4,7 +4,7 @@ import { isErrorsEmpty } from '@helpers';
 import styles from '../styles.module.css';
 import { EditPasswordProps, InputKey } from '../types';
 
-const validators = {
+const validators: Record<InputKey, (value: unknown) => string> = {
     oldPassword: (value: unknown) => Validator.validate((value ?? '') as string).isPassword(),
     newPassword: (value: unknown) => Validator.validate((value ?? '') as string).isPassword(),
     newPasswordConfirm: (value: unknown) =>

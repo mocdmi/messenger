@@ -5,7 +5,7 @@ import { AuthService } from '@services';
 import styles from '../styles.module.css';
 import { LoginFormProps, InputKey } from '../types';
 
-const validators = {
+const validators: Record<InputKey, (value: unknown) => string> = {
     login: (value: unknown) => Validator.validate((value ?? '') as string).isLogin(),
     password: (value: unknown) => Validator.validate((value ?? '') as string).isPassword(),
 };

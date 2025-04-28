@@ -4,7 +4,7 @@ import { isErrorsEmpty } from '@helpers';
 import { EditProfileProps, InputKey } from '../types';
 import styles from '../styles.module.css';
 
-const validators = {
+const validators: Record<InputKey, (value: unknown) => string> = {
     email: (value: unknown) => Validator.validate((value ?? '') as string).isEmail(),
     login: (value: unknown) => Validator.validate((value ?? '') as string).isLogin(),
     first_name: (value: unknown) => Validator.validate((value ?? '') as string).isName(),
