@@ -1,5 +1,5 @@
 import { Panel } from '@components';
-import { Block, Store, StoreEvents } from '@core';
+import { Block } from '@core';
 import PanelInner from './parts/panelInner';
 import styles from './styles.module.css';
 

@@ -1,10 +1,11 @@
-export { default as Block } from './block';
-export { default as EventBus } from './eventBus';
-export { default as Validator } from './validator';
+export { default as Block } from './Block';
+export { default as EventBus } from './EventBus';
+export { default as Validator } from './Validator';
 export { default as HTTPTransport } from './httpTransport';
-export { default as Router } from './router';
+export { default as Router } from './Router';
 export { default as Route } from './route';
 export { default as BaseAPI } from './baseApi';
-export { default as Store } from './store';
+export { default as Store } from './Store';
 export { StoreEvents } from './types';
 export type { Attributes, BlockConstructor } from './types';
+export { BaseForm } from './BaseForm';

@@ -1,234 +1,135 @@
-import { Button, LabelInput } from '@components';
-import { Block, Validator } from '@core';
+import { BaseForm, Validator } from '@core';
 import { isErrorsEmpty } from '@helpers';
 import styles from '../styles.module.css';
 import { SignUpFormProps, InputKey } from '../types';
 import { AuthService } from '@services';
 
-const validators: Record<InputKey, (value: string) => string> = {
-    email: (value: string) => Validator.validate(value).isEmail(),
-    login: (value: string) => Validator.validate(value).isLogin(),
-    firstName: (value: string) => Validator.validate(value).isName(),
-    secondName: (value: string) => Validator.validate(value).isName(),
-    phone: (value: string) => Validator.validate(value).isPhone(),
-    password: (value: string) => Validator.validate(value).isPassword(),
-    confirmPassword: (value: string) => Validator.validate(value).isPassword(),
-};
-
-const formFieldsMap = {
-    email: {
-        component: 'EmailInput',
-        type: 'email',
-        label: 'Почта',
-        autocomplete: 'email',
+const formConfig = {
+    formFields: {
+        email: {
+            component: 'EmailInput',
+            type: 'email',
+            label: 'Почта',
+            autocomplete: 'email',
+        },
+        login: {
+            component: 'LoginInput',
+            type: 'text',
+            label: 'Логин',
+            autocomplete: 'username',
+        },
+        firstName: {
+            component: 'FirstNameInput',
+            type: 'text',
+            label: 'Имя',
+            autocomplete: 'given-name',
+        },
+        secondName: {
+            component: 'SecondNameInput',
+            type: 'text',
+            label: 'Фамилия',
+            autocomplete: 'family-name',
+        },
+        phone: {
+            component: 'PhoneInput',
+            type: 'text',
+            label: 'Телефон',
+            autocomplete: 'tel',
+        },
+        password: {
+            component: 'PasswordInput',
+            type: 'password',
+            label: 'Пароль',
+            autocomplete: 'current-password',
+        },
+        confirmPassword: {
+            component: 'ConfirmPasswordInput',
+            type: 'password',
+            label: 'Пароль (ещё раз)',
+            autocomplete: 'new-password',
+        },
     },
-    login: {
-        component: 'LoginInput',
-        type: 'text',
-        label: 'Логин',
-        autocomplete: 'username',
-    },
-    firstName: {
-        component: 'FirstNameInput',
-        type: 'text',
-        label: 'Имя',
-        autocomplete: 'given-name',
-    },
-    secondName: {
-        component: 'SecondNameInput',
-        type: 'text',
-        label: 'Фамилия',
-        autocomplete: 'family-name',
-    },
-    phone: {
-        component: 'PhoneInput',
-        type: 'text',
-        label: 'Телефон',
-        autocomplete: 'tel',
-    },
-    password: {
-        component: 'PasswordInput',
-        type: 'password',
-        label: 'Пароль',
-        autocomplete: 'current-password',
-    },
-    confirmPassword: {
-        component: 'ConfirmPasswordInput',
-        type: 'password',
-        label: 'Пароль (ещё раз)',
-        autocomplete: 'new-password',
+    validators: {
+        email: (value: string) => Validator.validate((value ?? '') as string).isEmail(),
+        login: (value: string) => Validator.validate((value ?? '') as string).isLogin(),
+        firstName: (value: string) => Validator.validate((value ?? '') as string).isName(),
+        secondName: (value: string) => Validator.validate((value ?? '') as string).isName(),
+        phone: (value: string) => Validator.validate((value ?? '') as string).isPhone(),
+        password: (value: string) => Validator.validate((value ?? '') as string).isPassword(),
+        confirmPassword: (value: string) =>
+            Validator.validate((value ?? '') as string).isPassword(),
     },
 } as const;
 
-export default class SignUpForm extends Block<SignUpFormProps> {
+export default class SignUpForm extends BaseForm<SignUpFormProps, InputKey> {
     private readonly authService = new AuthService();
 
     constructor() {
-        const children: Record<string, Block> = {};
-
-        Object.entries(formFieldsMap).forEach(
-            ([fieldName, { component, type, label, autocomplete }]) => {
-                const inputKey = fieldName as InputKey;
-
-                children[component] = new LabelInput({
-                    name: inputKey,
+        const initialProps: SignUpFormProps = {
+            form: {
+                email: {
                     value: '',
-                    type: type as 'text' | 'password' | 'email',
-                    label: label,
-                    'theme-default': true,
-                    autocomplete: autocomplete,
-                    onChange: (e: Event) => this.handleInputChange(e, inputKey),
-                    onBlur: (e: Event) => this.handleInputBlur(e, inputKey, component),
-                }) as Block;
-            },
-        );
-
-        children.SignInButton = new Button({
-            'theme-default': true,
-            label: 'Зарегистрироваться',
-            type: 'submit',
-        }) as Block;
-
-        super(
-            'form',
-            {
-                form: {
-                    email: {
-                        value: '',
-                        error: '',
-                    },
-                    login: {
-                        value: '',
-                        error: '',
-                    },
-                    firstName: {
-                        value: '',
-                        error: '',
-                    },
-                    secondName: {
-                        value: '',
-                        error: '',
-                    },
-                    phone: {
-                        value: '',
-                        error: '',
-                    },
-                    password: {
-                        value: '',
-                        error: '',
-                    },
-                    confirmPassword: {
-                        value: '',
-                        error: '',
-                    },
-                },
-                attrs: {
-                    action: '#',
-                    method: 'POST',
-                },
-                events: {
-                    submit: (e: Event) => this.submitHandle(e),
-                },
-            },
-            children,
-        );
-    }
-
-    private submitHandle(e: Event) {
-        e.preventDefault();
-        const errors: Record<string, string> = {};
-
-        Object.values(formFieldsMap).forEach(({ component }) => {
-            const input = this.children[component] as Block;
-            if (input) {
-                input.setProps({
                     error: '',
-                });
-            }
-        });
+                },
+                login: {
+                    value: '',
+                    error: '',
+                },
+                firstName: {
+                    value: '',
+                    error: '',
+                },
+                secondName: {
+                    value: '',
+                    error: '',
+                },
+                phone: {
+                    value: '',
+                    error: '',
+                },
+                password: {
+                    value: '',
+                    error: '',
+                },
+                confirmPassword: {
+                    value: '',
+                    error: '',
+                },
+            },
+        };
 
-        Object.entries(this.props.form).forEach(([key, { value }]) => {
-            if (key in validators) {
-                const typedKey = key as keyof typeof validators;
-                const error = validators[typedKey](value);
+        super(initialProps, formConfig, { label: 'Зарегистрироваться' });
+    }
 
-                if (error) {
-                    const fieldConfig = formFieldsMap[key as InputKey];
-                    if (fieldConfig) {
-                        const input = this.children[fieldConfig.component] as Block;
-
-                        errors[key] = error;
-
-                        input.setProps({
-                            error: error,
-                        });
-                    }
-                }
-            }
-        });
-
+    onSubmit(_e: Event, errors: Record<string, string>) {
         if (isErrorsEmpty(errors)) {
-            console.log(this.props.form);
+            const formData = {
+                email: this.props.form.email.value,
+                login: this.props.form.login.value,
+                firstName: this.props.form.firstName.value,
+                secondName: this.props.form.secondName.value,
+                phone: this.props.form.phone.value,
+                password: this.props.form.password.value,
+            };
+
+            console.log(formData);
         }
-    }
-
-    private handleInputChange(e: Event, fieldName: InputKey) {
-        const el = e.target as HTMLInputElement;
-
-        this.setProps({
-            ...this.props,
-            form: {
-                ...this.props.form,
-                [fieldName]: {
-                    ...this.props.form[fieldName],
-                    value: el.value,
-                },
-            },
-        });
-    }
-
-    private handleInputBlur(e: Event, fieldName: InputKey, componentName: string) {
-        const el = e.target as HTMLInputElement;
-        const input = this.children[componentName] as LabelInput;
-        let error = '';
-
-        if (fieldName in validators) {
-            const validator = validators[fieldName as keyof typeof validators];
-            error = validator(el.value);
-        }
-
-        input.setProps({
-            ...input.props,
-            error: error,
-        });
-
-        this.setProps({
-            ...this.props,
-            form: {
-                ...this.props.form,
-                [fieldName]: {
-                    ...this.props.form[fieldName],
-                    value: el.value,
-                    error: error,
-                },
-            },
-        });
     }
 
     // language=Handlebars
     render(): string {
         return `
-            ${Object.values(formFieldsMap)
+            ${Object.values(formConfig.formFields)
                 .map(
                     ({ component }) => `
-                <div class="${styles.field}">
-                    {{{${component}}}}
-                </div>
-            `,
+                    <div class="${styles.field}">
+                        {{{${component}}}}
+                    </div>
+                `,
                 )
                 .join('')}
             <div class="${styles.submit}">
-                {{{SignInButton}}}
+                {{{SubmitButton}}}
             </div>
         `;
     }
