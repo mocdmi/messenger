@@ -1,4 +1,4 @@
-import Block from './Block';
+import { Block } from '@core';
 import { Button, LabelInput } from '@components';
 
 export type InputType = 'text' | 'password' | 'email';
@@ -30,7 +30,7 @@ export type SubmitButtonProps = {
     label: string;
 };
 
-export abstract class BaseForm<
+export default abstract class BaseForm<
     TProps extends BaseFormProps,
     TKey extends string = string,
 > extends Block<TProps> {

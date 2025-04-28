@@ -2,7 +2,6 @@ import { BaseForm, Validator } from '@core';
 import { isErrorsEmpty } from '@helpers';
 import styles from '../styles.module.css';
 import { SignUpFormProps, InputKey } from '../types';
-import { AuthService } from '@services';
 
 const formConfig = {
     formFields: {
@@ -62,8 +61,6 @@ const formConfig = {
 } as const;
 
 export default class SignUpForm extends BaseForm<SignUpFormProps, InputKey> {
-    private readonly authService = new AuthService();
-
     constructor() {
         const initialProps: SignUpFormProps = {
             form: {
