@@ -27,7 +27,7 @@ const formFieldsMap = {
         label: 'Повторите новый пароль',
         autocomplete: 'new-password',
     },
-};
+} as const;
 
 export default class EditForm extends Block<EditPasswordProps> {
     constructor(props: EditPasswordProps) {

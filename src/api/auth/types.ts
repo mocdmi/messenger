@@ -18,7 +18,6 @@ interface UserResponse extends BaseUserDto {
 
 export type UserResponseDto = UserResponse | ErrorResponse;
 
-// Регистрация
 export interface SignUpRequestDto extends BaseUserDto {
     password: string;
 }
@@ -29,7 +28,6 @@ interface SignUpResponse {
 
 export type SignUpResponseDto = SignUpResponse | ErrorResponse;
 
-// Логин
 export interface SignInRequestDto {
     login: string;
     password: string;
