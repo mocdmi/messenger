@@ -3,8 +3,11 @@ import { Link } from '@components';
 import { ROUTER } from '@const';
 import { Block } from '@core';
 import styles from '../styles.module.css';
+import { AuthService } from '@services';
 
 export default class ProfileInner extends Block<ProfileProps> {
+    private readonly authService = new AuthService();
+
     constructor(props: ProfileProps) {
         super('div', props, {
             EditLink: new Link({
@@ -20,7 +23,11 @@ export default class ProfileInner extends Block<ProfileProps> {
             LogoutLink: new Link({
                 'theme-danger': true,
                 label: 'Выйти',
-                to: '#',
+                href: '#',
+                onClick: (e: Event) => {
+                    e.preventDefault();
+                    this.authService.logout();
+                },
             }) as Block,
         });
     }

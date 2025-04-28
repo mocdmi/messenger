@@ -61,6 +61,7 @@ export default class AuthService {
             const { status } = await this.authApi.logout();
 
             if (status === 200) {
+                this.store.set('user.user', null);
                 this.router.go(ROUTER.login);
             } else {
                 throw new Error(`Error logout. Status: ${status}`);

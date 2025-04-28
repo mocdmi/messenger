@@ -23,6 +23,6 @@ export default class AuthApi extends BaseAPI {
     }
 
     async logout() {
-        return authApiInstance.post('/user');
+        return authApiInstance.post('/logout');
     }
 }
