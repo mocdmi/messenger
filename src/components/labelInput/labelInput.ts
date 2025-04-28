@@ -18,6 +18,7 @@ export interface LabelInputProps {
     name: string;
     value: string;
     error?: string;
+    autocomplete?: string;
     onChange?: (e: Event) => void;
     onBlur?: (e: Event) => void;
 }
@@ -47,6 +48,7 @@ export default class LabelInput extends Block<LabelInputProps> {
                     name: props.name,
                     value: props.value,
                     placeholder: '',
+                    autocomplete: props.autocomplete,
                     onChange: props.onChange,
                     onBlur: props.onBlur,
                 }) as Block,

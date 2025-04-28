@@ -9,7 +9,6 @@ import { ErrorContext } from './context/types/ErrorContext';
 
 Store.getInstance().createStore<AppStore>({
     user: null,
-    editProfile: null,
 });
 
 const router = Router.getInstance().createApp('#app');

@@ -1,10 +1,8 @@
 import { Button, LabelInput } from '@components';
 import { Block, Validator } from '@core';
 import { isErrorsEmpty } from '@helpers';
-import { EditProfileProps } from '../types';
+import { EditProfileProps, InputKey } from '../types';
 import styles from '../styles.module.css';
-
-type InputKey = 'email' | 'login' | 'first_name' | 'second_name' | 'display_name' | 'phone';
 
 const validators = {
     email: (value: unknown) => Validator.validate((value ?? '') as string).isEmail(),
@@ -20,31 +18,37 @@ const formFieldsMap = {
         component: 'EmailInput',
         label: 'Почта',
         type: 'email',
+        autocomplete: 'email',
     },
     login: {
         component: 'LoginInput',
         label: 'Логин',
         type: 'text',
+        autocomplete: 'username',
     },
     first_name: {
         component: 'FirstNameInput',
         label: 'Имя',
         type: 'text',
+        autocomplete: 'given-name',
     },
     second_name: {
         component: 'SecondNameInput',
         label: 'Фамилия',
         type: 'text',
+        autocomplete: 'family-name',
     },
     display_name: {
         component: 'ChatNameInput',
         label: 'Имя в чате',
         type: 'text',
+        autocomplete: 'nickname',
     },
     phone: {
         component: 'PhoneInput',
         label: 'Телефон',
         type: 'text',
+        autocomplete: 'tel',
     },
 } as const;
 
@@ -52,21 +56,24 @@ export default class EditForm extends Block<EditProfileProps> {
     constructor(props: EditProfileProps) {
         const children: Record<string, Block> = {};
 
-        Object.entries(formFieldsMap).forEach(([fieldName, { component: componentName, type }]) => {
-            const inputKey = fieldName as InputKey;
+        Object.entries(formFieldsMap).forEach(
+            ([fieldName, { component: componentName, type, autocomplete }]) => {
+                const inputKey = fieldName as InputKey;
 
-            children[componentName] = new LabelInput({
-                'theme-blank': true,
-                'align-right': true,
-                'placeholder-right': true,
-                name: inputKey,
-                value: (props.form[inputKey]?.value as string) ?? '',
-                type: type as 'email' | 'text',
-                label: '',
-                onChange: (e: Event) => this.handleInputChange(e, inputKey),
-                onBlur: (e: Event) => this.handleInputBlur(e, inputKey, componentName),
-            }) as Block;
-        });
+                children[componentName] = new LabelInput({
+                    'theme-blank': true,
+                    'align-right': true,
+                    'placeholder-right': true,
+                    name: inputKey,
+                    value: (props.form[inputKey]?.value as string) ?? '',
+                    type: type as 'email' | 'text',
+                    label: '',
+                    autocomplete: autocomplete,
+                    onChange: (e: Event) => this.handleInputChange(e, inputKey),
+                    onBlur: (e: Event) => this.handleInputBlur(e, inputKey, componentName),
+                }) as Block;
+            },
+        );
 
         children.SendButton = new Button({
             'theme-default': true,

@@ -1,211 +1,175 @@
 import { Button, LabelInput } from '@components';
-import { ProfileContext } from '../../../context/types/ProfileContext';
 import { Block, Validator } from '@core';
-import { isErrorsEmpty, validateOnSubmit } from '@helpers';
+import { isErrorsEmpty } from '@helpers';
 import styles from '../styles.module.css';
+import { EditPasswordProps, InputKey } from '../types';
 
-interface EditFormProps extends ProfileContext {
-    formState: {
-        oldPassword: string;
-        newPassword: string;
-        newPasswordConfirm: string;
-    };
-    errors: {
-        oldPassword: string;
-        newPassword: string;
-        newPasswordConfirm: string;
-    };
-}
+const validators = {
+    oldPassword: (value: unknown) => Validator.validate((value ?? '') as string).isPassword(),
+    newPassword: (value: unknown) => Validator.validate((value ?? '') as string).isPassword(),
+    newPasswordConfirm: (value: unknown) =>
+        Validator.validate((value ?? '') as string).isPassword(),
+};
 
-const validators: ((value: string) => string)[] = [
-    (value: string) => Validator.validate(value).isPassword(),
-    (value: string) => Validator.validate(value).isPassword(),
-    (value: string) => Validator.validate(value).isPassword(),
-];
+const formFieldsMap = {
+    oldPassword: {
+        component: 'OldPasswordInput',
+        label: 'Старый пароль',
+        autocomplete: 'current-password',
+    },
+    newPassword: {
+        component: 'NewPasswordInput',
+        label: 'Новый пароль',
+        autocomplete: 'new-password',
+    },
+    newPasswordConfirm: {
+        component: 'NewPasswordConfirmInput',
+        label: 'Повторите новый пароль',
+        autocomplete: 'new-password',
+    },
+};
 
-export default class EditForm extends Block<EditFormProps> {
-    constructor(props: ProfileContext) {
+export default class EditForm extends Block<EditPasswordProps> {
+    constructor(props: EditPasswordProps) {
+        const children: Record<string, Block> = {};
+
+        Object.entries(formFieldsMap).forEach(
+            ([fieldName, { component: componentName, autocomplete }]) => {
+                const inputKey = fieldName as InputKey;
+
+                children[componentName] = new LabelInput({
+                    'theme-blank': true,
+                    'align-right': true,
+                    'placeholder-right': true,
+                    type: 'password',
+                    name: inputKey,
+                    value: (props.form[inputKey]?.value as string) ?? '',
+                    autocomplete: autocomplete,
+                    onChange: (e: Event) => this.handleInputChange(e, inputKey),
+                    onBlur: (e: Event) => this.handleInputBlur(e, inputKey, componentName),
+                }) as Block;
+            },
+        );
+
+        children.SendButton = new Button({
+            'theme-default': true,
+            type: 'submit',
+            label: 'Сохранить',
+        }) as Block;
+
         super(
             'form',
             {
                 ...props,
-                formState: {
-                    oldPassword: props.password,
-                    newPassword: '',
-                    newPasswordConfirm: '',
-                },
-                errors: {
-                    oldPassword: '',
-                    newPassword: '',
-                    newPasswordConfirm: '',
-                },
                 attrs: {
                     action: '#',
                     method: 'POST',
                 },
                 events: {
-                    submit: (e) => {
-                        e.preventDefault();
-                        const el = e.target as HTMLFormElement;
-
-                        validateOnSubmit(
-                            validators,
-                            this.props.formState,
-                            this.props.errors,
-                            this.children,
-                            (name: string, error: string) => {
-                                this.setProps({
-                                    ...this.props,
-                                    errors: {
-                                        ...this.props.errors,
-                                        [name]: error,
-                                    },
-                                });
-                            },
-                        );
-
-                        if (isErrorsEmpty(this.props.errors)) {
-                            console.log(this.props.formState);
-                            el.reset();
-                        }
-                    },
+                    submit: (e: Event) => this.submitHandler(e),
                 },
             },
-            {
-                OldPasswordInput: new LabelInput({
-                    'theme-blank': true,
-                    'align-right': true,
-                    'placeholder-right': true,
-                    type: 'password',
-                    name: 'oldPassword',
-                    value: props.password,
-                    onChange: (e: Event) => {
-                        const el = e.target as HTMLInputElement;
-
-                        this.setProps({
-                            ...this.props,
-                            formState: {
-                                ...this.props.formState,
-                                oldPassword: el.value,
-                            },
-                        });
-                    },
-                    onBlur: (e: Event) => {
-                        const el = e.target as HTMLInputElement;
-                        const input = this.children.OldPasswordInput as unknown as LabelInput;
-                        const error = Validator.validate(el.value).isPassword();
-
-                        input.setProps({ ...input.props, error: error });
-
-                        this.setProps({
-                            ...this.props,
-                            errors: {
-                                ...this.props.errors,
-                                oldPassword: error,
-                            },
-                        });
-                    },
-                }) as Block,
-                NewPasswordInput: new LabelInput({
-                    'theme-blank': true,
-                    'align-right': true,
-                    'placeholder-right': true,
-                    type: 'password',
-                    name: 'newPassword',
-                    value: '',
-                    onChange: (e: Event) => {
-                        const el = e.target as HTMLInputElement;
-
-                        this.setProps({
-                            ...this.props,
-                            formState: {
-                                ...this.props.formState,
-                                newPassword: el.value,
-                            },
-                        });
-                    },
-                    onBlur: (e: Event) => {
-                        const el = e.target as HTMLInputElement;
-                        const input = this.children.NewPasswordInput as unknown as LabelInput;
-                        const error = Validator.validate(el.value).isPassword();
-
-                        input.setProps({ ...input.props, error: error });
-
-                        this.setProps({
-                            ...this.props,
-                            errors: {
-                                ...this.props.errors,
-                                newPassword: error,
-                            },
-                        });
-                    },
-                }) as Block,
-                NewPasswordConfirmInput: new LabelInput({
-                    'theme-blank': true,
-                    'align-right': true,
-                    'placeholder-right': true,
-                    type: 'password',
-                    name: 'newPasswordConfirm',
-                    value: '',
-                    onChange: (e: Event) => {
-                        const el = e.target as HTMLInputElement;
-
-                        this.setProps({
-                            ...this.props,
-                            formState: {
-                                ...this.props.formState,
-                                newPasswordConfirm: el.value,
-                            },
-                        });
-                    },
-                    onBlur: (e: Event) => {
-                        const el = e.target as HTMLInputElement;
-                        const input = this.children
-                            .NewPasswordConfirmInput as unknown as LabelInput;
-                        const error = Validator.validate(el.value).isPassword();
-
-                        input.setProps({ ...input.props, error: error });
-
-                        this.setProps({
-                            ...this.props,
-                            errors: {
-                                ...this.props.errors,
-                                newPasswordConfirm: error,
-                            },
-                        });
-                    },
-                }) as Block,
-                SendButton: new Button({
-                    'theme-default': true,
-                    type: 'submit',
-                    label: 'Сохранить',
-                }) as Block,
-            },
+            children,
         );
+    }
+
+    private handleInputChange(e: Event, fieldName: InputKey) {
+        const el = e.target as HTMLInputElement;
+
+        this.setProps({
+            ...this.props,
+            form: {
+                ...this.props.form,
+                [fieldName]: {
+                    ...this.props.form[fieldName],
+                    value: el.value,
+                },
+            },
+        });
+    }
+
+    private handleInputBlur(e: Event, fieldName: InputKey, componentName: string) {
+        const el = e.target as HTMLInputElement;
+        const input = this.children[componentName] as LabelInput;
+        let error = '';
+
+        if (fieldName in validators) {
+            const validator = validators[fieldName as keyof typeof validators];
+            error = validator(el.value);
+        }
+
+        input.setProps({
+            ...input.props,
+            error: error,
+        });
+
+        this.setProps({
+            ...this.props,
+            form: {
+                ...this.props.form,
+                [fieldName]: {
+                    ...this.props.form[fieldName],
+                    value: el.value,
+                    error: error,
+                },
+            },
+        });
+    }
+
+    private submitHandler(e: Event) {
+        e.preventDefault();
+        const errors: Record<string, string> = {};
+
+        Object.values(formFieldsMap).forEach(({ component }) => {
+            const input = this.children[component] as Block;
+            if (input) {
+                input.setProps({
+                    error: '',
+                });
+            }
+        });
+
+        Object.entries(this.props.form).forEach(([key, { value }]) => {
+            if (key in validators) {
+                const typedKey = key as keyof typeof validators;
+                const error = validators[typedKey](value);
+
+                if (error) {
+                    const fieldConfig = formFieldsMap[key as InputKey];
+                    if (fieldConfig) {
+                        const input = this.children[fieldConfig.component] as Block;
+
+                        errors[key] = error;
+
+                        input.setProps({
+                            error: error,
+                        });
+                    }
+                }
+            }
+        });
+
+        if (isErrorsEmpty(errors)) {
+            console.log(this.props.form);
+        }
     }
 
     // language=Handlebars
     render(): string {
         return `
             <div class="${styles.detail}">
-                <div class="${styles.row}">
-                    <div class="${styles.label}">Старый пароль</div>
-                    <div class="${styles.value}">
-                        {{{OldPasswordInput}}}
-                    </div>
-                </div>
-                <div class="${styles.row}">
-                    <div class="${styles.label}">Новый пароль</div>
-                    <div class="${styles.value}">
-                        {{{NewPasswordInput}}}
-                    </div>
-                </div>
-                <div class="${styles.row}">
-                    <div class="${styles.label}">Повторите новый пароль</div>
-                    <div class="${styles.value}">
-                        {{{NewPasswordConfirmInput}}}
-                    </div>
-                </div>
+            ${Object.values(formFieldsMap)
+                .map(
+                    ({ component, label }) => `
+                        <div class="${styles.row}">
+                            <div class="${styles.label}">${label}</div>
+                            <div class="${styles.value}">
+                                {{{${component}}}}
+                            </div>
+                        </div>
+                    `,
+                )
+                .join('')}
             </div>
             <div class="${styles.save}">
                 {{{SendButton}}}

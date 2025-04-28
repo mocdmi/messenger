@@ -7,6 +7,7 @@ interface InputAttrs {
     value: string;
     accept?: string;
     placeholder?: string;
+    autocomplete?: string;
 }
 
 interface InputProps extends InputAttrs {
@@ -25,6 +26,7 @@ export default class Input extends Block<InputProps, InputAttrs> {
                 value: props.value,
                 accept: props.accept,
                 placeholder: props.placeholder,
+                autocomplete: props.autocomplete ?? 'off',
             },
             events: {
                 ...(props.onChange ? { change: props.onChange } : {}),
