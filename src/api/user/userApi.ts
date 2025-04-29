@@ -1,11 +1,11 @@
 import { BaseAPI, HTTPTransport } from '@core';
+import { UserResponseDto } from '@api';
 import {
-    UserResponseDto,
     PasswordUpdateRequestDto,
     PasswordUpdateResponseDto,
     SearchUserRequestDto,
     UserUpdateRequestDto,
-} from '@api';
+} from './types';
 
 export default class UserApi extends BaseAPI {
     apiInstance = new HTTPTransport('/user');

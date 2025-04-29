@@ -1,11 +1,6 @@
 import { BaseAPI, HTTPTransport } from '@core';
-import {
-    UserResponseDto,
-    SignInRequestDto,
-    SignUpRequestDto,
-    SignUpResponseDto,
-    SignInResponseDto,
-} from '@api';
+import { UserResponseDto } from '@api';
+import { SignInRequestDto, SignInResponseDto, SignUpRequestDto, SignUpResponseDto } from './types';
 
 export default class AuthApi extends BaseAPI {
     apiInstance = new HTTPTransport('/auth');
