@@ -1,3 +1,4 @@
+export { default as UserApi } from './userApi';
 export type {
     PasswordUpdateRequestDto,
     PasswordUpdateResponseDto,
