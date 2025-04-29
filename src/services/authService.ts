@@ -44,7 +44,7 @@ export default class AuthService {
         }
 
         try {
-            const { status, response } = await this.authApi.me();
+            const { status, response } = await this.authApi.request();
 
             if (status === 200) {
                 this.store.set('user.user', response);

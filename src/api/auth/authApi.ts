@@ -1,28 +1,28 @@
 import { BaseAPI, HTTPTransport } from '@core';
 import {
+    UserResponseDto,
     SignInRequestDto,
     SignUpRequestDto,
     SignUpResponseDto,
     SignInResponseDto,
-    UserResponseDto,
-} from '../auth';
-
-const authApiInstance = new HTTPTransport('/auth');
+} from '@api';
 
 export default class AuthApi extends BaseAPI {
+    apiInstance = new HTTPTransport('/auth');
+
     async create(data: SignUpRequestDto) {
-        return authApiInstance.post<SignUpRequestDto, SignUpResponseDto>('/signup', { data });
+        return this.apiInstance.post<SignUpRequestDto, SignUpResponseDto>('/signup', { data });
     }
 
     async login(data: SignInRequestDto) {
-        return authApiInstance.post<SignInRequestDto, SignInResponseDto>('/signin', { data });
+        return this.apiInstance.post<SignInRequestDto, SignInResponseDto>('/signin', { data });
     }
 
-    async me() {
-        return authApiInstance.get<void, UserResponseDto>('/user');
+    async request() {
+        return this.apiInstance.get<void, UserResponseDto>('/user');
     }
 
     async logout() {
-        return authApiInstance.post('/logout');
+        return this.apiInstance.post('/logout');
     }
 }
