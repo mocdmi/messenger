@@ -3,10 +3,10 @@ interface ErrorResponse {
 }
 
 interface BaseUserDto {
+    email: string;
+    login: string;
     first_name: string;
     second_name: string;
-    login: string;
-    email: string;
     phone: string;
 }
 
@@ -33,4 +33,4 @@ export interface SignInRequestDto {
     password: string;
 }
 
-export type SignInResponseDto = object | ErrorResponse;
+export type SignInResponseDto = string | ErrorResponse;

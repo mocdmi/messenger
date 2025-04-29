@@ -1,5 +1,6 @@
 import { BaseForm, Validator } from '@core';
 import { isErrorsEmpty } from '@helpers';
+import { AuthService } from '@services';
 import styles from '../styles.module.css';
 import { SignUpFormProps, InputKey } from '../types';
 
@@ -61,6 +62,8 @@ const formConfig = {
 } as const;
 
 export default class SignUpForm extends BaseForm<SignUpFormProps, InputKey> {
+    private authService = new AuthService();
+
     constructor() {
         const initialProps: SignUpFormProps = {
             form: {
@@ -98,18 +101,18 @@ export default class SignUpForm extends BaseForm<SignUpFormProps, InputKey> {
         super(initialProps, formConfig, { label: 'Зарегистрироваться' });
     }
 
-    onSubmit(_e: Event, errors: Record<string, string>) {
+    async onSubmit(_e: Event, errors: Record<string, string>) {
         if (isErrorsEmpty(errors)) {
             const formData = {
                 email: this.props.form.email.value,
                 login: this.props.form.login.value,
-                firstName: this.props.form.firstName.value,
-                secondName: this.props.form.secondName.value,
+                first_name: this.props.form.firstName.value,
+                second_name: this.props.form.secondName.value,
                 phone: this.props.form.phone.value,
                 password: this.props.form.password.value,
             };
 
-            console.log(formData);
+            await this.authService.signUp(formData);
         }
     }
 

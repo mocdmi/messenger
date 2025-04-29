@@ -30,7 +30,7 @@ export default class AuthService {
 
             if (status === 200) {
                 this.router.go(ROUTER.messenger);
-            } else if ('reason' in response) {
+            } else if (typeof response === 'object' && 'reason' in response) {
                 throw new Error(response.reason);
             }
         } catch (error) {
