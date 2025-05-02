@@ -32,6 +32,7 @@ class ProfilePage extends Block<ProfileProps> {
             const profile = this.children.Profile as Block;
 
             if (profile) {
+                const Avatar = profile.children.Avatar as Block;
                 const bodyChildren = profile.children.Body;
 
                 if (Array.isArray(bodyChildren) && bodyChildren.length > 0) {
@@ -40,6 +41,10 @@ class ProfilePage extends Block<ProfileProps> {
                     if (profileInner) {
                         profileInner.setProps(newProps);
                     }
+                }
+
+                if (Avatar) {
+                    Avatar.setProps({ avatar: newProps.avatar });
                 }
             }
         }

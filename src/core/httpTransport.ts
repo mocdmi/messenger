@@ -89,7 +89,7 @@ export default class HttpTransport {
 
             const updatedHeaders =
                 typeof data === 'object' && !(data instanceof FormData)
-                    ? { ...headers, 'Content-Type': 'multipart/form-data' }
+                    ? { ...headers, 'Content-Type': 'application/json' }
                     : headers;
 
             for (const prop in updatedHeaders) {
