@@ -3,18 +3,30 @@ import { Button } from '../../button';
 import { Input } from '../../input';
 import styles from '../styles.module.css';
 
-export default class UploadForm extends Block {
-    constructor() {
+interface UploadFormProps {
+    fileName?: string;
+    onSubmit?: (file: File) => void;
+}
+
+export default class UploadForm extends Block<UploadFormProps> {
+    constructor(props: UploadFormProps) {
         super(
             'form',
             {
                 attrs: {
                     method: 'POST',
                     action: '#',
+                    'content-type': 'multipart/form-data',
                 },
                 events: {
-                    submit: (e) => {
+                    submit: async (e) => {
                         e.preventDefault();
+
+                        const file = (e.target as HTMLFormElement).avatar.files[0];
+
+                        if (file) {
+                            props.onSubmit?.(file);
+                        }
                     },
                 },
             },
@@ -25,6 +37,14 @@ export default class UploadForm extends Block {
                     accept: 'image/*',
                     name: 'avatar',
                     value: '',
+                    onChange: (e: Event) => {
+                        const input = e.target as HTMLInputElement;
+
+                        this.setProps({
+                            ...props,
+                            fileName: input.files?.[0]?.name,
+                        });
+                    },
                 }) as Block,
                 SendButton: new Button({
                     'theme-default': true,
@@ -39,10 +59,16 @@ export default class UploadForm extends Block {
     render(): string {
         return `
             <label class="${styles.uploadAvatar}">
-                <div class="${styles.label}">
-                    Выбрать файл на<br />
-                    компьютере
+                {{#if fileName}}
+                    <div class="${styles.label}">
+                        {{fileName}}
+                    </div>
+                {{else}}
+                    <div class="${styles.label}">
+                        Выбрать файл на<br />
+                        компьютере
                 </div>
+                {{/if}}
                 {{{FileInput}}}
             </label>
             <div class="${styles.actionSubmit}">

@@ -13,7 +13,8 @@ class EditProfilePage extends Block<EditProfileProps> {
     constructor(props: EditProfileProps) {
         super('div', props, {
             EditProfile: new Profile({
-                name: (props.name as string) || 'Пользователь',
+                name: props.name || 'Пользователь',
+                avatar: props.avatar || '',
                 Children: new EditForm(props) as Block,
             }) as Block,
         });
@@ -44,7 +45,7 @@ class EditProfilePage extends Block<EditProfileProps> {
                 }
 
                 if (Avatar) {
-                    Avatar.setProps({ name: newProps.name as string });
+                    Avatar.setProps({ name: newProps.name, avatar: newProps.avatar });
                 }
             }
 

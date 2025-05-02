@@ -2,6 +2,7 @@ export type InputKey = 'email' | 'login' | 'first_name' | 'second_name' | 'displ
 
 export interface EditProfileProps {
     name: string;
+    avatar: string;
     form: Record<InputKey, ProfileForm>;
 }
 

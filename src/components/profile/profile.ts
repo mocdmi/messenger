@@ -6,6 +6,7 @@ import styles from './styles.module.css';
 
 interface ProfileProps {
     name?: string;
+    avatar: string;
     Children: Block | Block[];
     router?: Router;
 }

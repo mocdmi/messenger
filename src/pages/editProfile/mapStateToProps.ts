@@ -6,6 +6,7 @@ export default function mapStateToProps(state: AppStore): EditProfileProps {
 
     return {
         name: (user?.first_name as string) || '',
+        avatar: user?.avatar || '',
         form: {
             email: {
                 value: user?.email,

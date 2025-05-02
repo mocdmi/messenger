@@ -1,4 +1,5 @@
 export interface ProfileProps {
+    avatar: string;
     items: ProfileItem[];
 }
 

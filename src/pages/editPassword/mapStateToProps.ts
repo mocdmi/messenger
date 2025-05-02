@@ -6,6 +6,7 @@ export default function mapStateToProps(state: AppStore): EditPasswordProps {
 
     return {
         name: (user?.first_name as string) || '',
+        avatar: user?.avatar || '',
         form: {
             oldPassword: {
                 value: '',

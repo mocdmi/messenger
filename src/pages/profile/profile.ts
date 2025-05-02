@@ -13,6 +13,7 @@ class ProfilePage extends Block<ProfileProps> {
     constructor(props: ProfileProps) {
         super('div', props, {
             Profile: new Profile({
+                avatar: props.avatar,
                 Children: new ProfileInner(props) as Block,
             }) as Block,
         });

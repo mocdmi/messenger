@@ -88,8 +88,8 @@ export default class HttpTransport {
             xhr.withCredentials = true;
 
             const updatedHeaders =
-                typeof data === 'object'
-                    ? { ...headers, 'Content-Type': 'application/json' }
+                typeof data === 'object' && !(data instanceof FormData)
+                    ? { ...headers, 'Content-Type': 'multipart/form-data' }
                     : headers;
 
             for (const prop in updatedHeaders) {
@@ -107,7 +107,7 @@ export default class HttpTransport {
                     | FormData
                     | URLSearchParams
                     | null =
-                    typeof data === 'object' && !(data instanceof Document)
+                    typeof data === 'object' && !(data instanceof FormData)
                         ? JSON.stringify(data)
                         : (data as Body);
 

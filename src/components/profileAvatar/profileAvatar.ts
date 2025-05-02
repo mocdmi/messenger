@@ -4,13 +4,18 @@ import { Popup } from '../popup';
 import UploadForm from './parts/uploadForm';
 import styles from './styles.module.css';
 import noPhoto from '@assets/images/no-photo.svg';
+import { UserService } from '@services';
+import { API_URL } from '@const';
 
 interface ProfileAvatarProps {
     name?: string;
+    avatar: string;
     popupShow?: boolean;
 }
 
 export default class ProfileAvatar extends Block<ProfileAvatarProps> {
+    private readonly userService = new UserService();
+
     constructor(props: ProfileAvatarProps) {
         super(
             'div',
@@ -21,7 +26,11 @@ export default class ProfileAvatar extends Block<ProfileAvatarProps> {
             {
                 UploadForm: new Popup({
                     title: 'Загрузите файл',
-                    Children: new UploadForm() as Block,
+                    Children: new UploadForm({
+                        onSubmit: async (file: File) => {
+                            await this.userService.updateAvatar(file);
+                        },
+                    }) as Block,
                     handlerHidePopup: () => {
                         this.setProps({
                             ...props,
@@ -48,7 +57,11 @@ export default class ProfileAvatar extends Block<ProfileAvatarProps> {
     render(): string {
         return `
             <div class="${styles.photoWrap}">
-                <img src="${noPhoto}" class="${styles.photo}" alt="{{name}}" />
+                {{#if avatar}}
+                    <img src="${API_URL}/resources/{{avatar}}" class="${styles.photo}" alt="{{name}}" />
+                {{else}}
+                    <img src="${noPhoto}" class="${styles.photo}" alt="{{name}}" />
+                {{/if}}
                 <div class="${styles.editAvatar}">
                     {{{OpenPopupButton}}}
                 </div>

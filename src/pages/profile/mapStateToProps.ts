@@ -5,6 +5,7 @@ export default function mapStateToProps(state: AppStore): ProfileProps {
     const user = state.user?.user;
 
     return {
+        avatar: user?.avatar || '',
         items: [
             {
                 label: 'Почта',

@@ -13,6 +13,7 @@ class EditPasswordPage extends Block<EditPasswordProps> {
         super('div', props, {
             EditPassword: new Profile({
                 name: (props.name as string) || 'Пользователь',
+                avatar: props.avatar,
                 Children: new EditForm(props) as Block,
             }) as Block,
         });
