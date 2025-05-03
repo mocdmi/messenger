@@ -4,7 +4,7 @@ export type UserUpdateRequestDto = BaseUserDto;
 
 export interface PasswordUpdateRequestDto {
     oldPassword: string;
-    confirmPassword: string;
+    newPassword: string;
 }
 
 export type PasswordUpdateResponseDto = string | ErrorResponse;

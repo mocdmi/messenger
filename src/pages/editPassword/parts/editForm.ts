@@ -3,6 +3,7 @@ import { Block, Validator } from '@core';
 import { isErrorsEmpty } from '@helpers';
 import styles from '../styles.module.css';
 import { EditPasswordProps, InputKey } from '../types';
+import { PasswordUpdateRequestDto } from '@api';
 
 const validators: Record<InputKey, (value: unknown) => string> = {
     oldPassword: (value: unknown) => Validator.validate((value ?? '') as string).isPassword(),
@@ -149,8 +150,20 @@ export default class EditForm extends Block<EditPasswordProps> {
             }
         });
 
+        if (this.props.form.newPassword.value !== this.props.form.newPasswordConfirm.value) {
+            errors.newPasswordConfirm = 'Пароли не совпадают';
+        }
+
         if (isErrorsEmpty(errors)) {
-            console.log(this.props.form);
+            const form = this.props.form;
+
+            const data: PasswordUpdateRequestDto = {
+                oldPassword: form.oldPassword.value as string,
+                newPassword: form.newPassword.value as string,
+            };
+
+            this.props.onSubmit?.(data);
+            (e.target as HTMLFormElement).reset();
         }
     }
 

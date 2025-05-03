@@ -1,20 +1,27 @@
 import { Block } from '@core';
-import { Profile } from '@components';
-import EditForm from './parts/editForm';
-import { EditPasswordProps } from './types';
-import { AuthService } from '@services';
-import mapStateToProps from './mapStateToProps';
 import { connect } from '@helpers';
+import { PasswordUpdateRequestDto } from '@api';
+import { Profile } from '@components';
+import { AuthService, UserService } from '@services';
+import mapStateToProps from './mapStateToProps';
+import { EditPasswordProps } from './types';
+import EditForm from './parts/editForm';
 
 class EditPasswordPage extends Block<EditPasswordProps> {
     private readonly authService = new AuthService();
+    private readonly userService = new UserService();
 
     constructor(props: EditPasswordProps) {
         super('div', props, {
             EditPassword: new Profile({
                 name: (props.name as string) || 'Пользователь',
                 avatar: props.avatar,
-                Children: new EditForm(props) as Block,
+                Children: new EditForm({
+                    ...props,
+                    onSubmit: async (data: PasswordUpdateRequestDto) => {
+                        await this.userService.editPassword(data);
+                    },
+                }) as Block,
             }) as Block,
         });
     }

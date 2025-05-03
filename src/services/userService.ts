@@ -1,6 +1,6 @@
 import { UserApi } from '@api';
 import { Store } from '@core';
-import { UserUpdateRequestDto } from 'src/api/user/types';
+import { PasswordUpdateRequestDto, UserUpdateRequestDto } from 'src/api/user/types';
 
 export default class UserService {
     private readonly store = Store.getInstance();
@@ -33,6 +33,18 @@ export default class UserService {
                 this.store.set('user.user', response);
             } else if ('reason' in response) {
                 throw new Error(response.reason);
+            }
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+    async editPassword(data: PasswordUpdateRequestDto) {
+        try {
+            const { status } = await this.userApi.updatePassword(data);
+
+            if (status !== 200) {
+                throw new Error('Error edit password');
             }
         } catch (error) {
             console.error(error);
