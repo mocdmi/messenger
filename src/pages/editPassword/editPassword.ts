@@ -51,7 +51,7 @@ class EditPasswordPage extends Block<EditPasswordProps> {
                 }
 
                 if (Avatar) {
-                    Avatar.setProps({ name: newProps.name as string });
+                    Avatar.setProps({ name: newProps.name as string, avatar: newProps.avatar });
                 }
             }
 
