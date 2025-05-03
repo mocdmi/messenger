@@ -28,7 +28,7 @@ export default class ProfileAvatar extends Block<ProfileAvatarProps> {
                     title: 'Загрузите файл',
                     Children: new UploadForm({
                         onSubmit: async (file: File) => {
-                            await this.userService.updateAvatar(file);
+                            await this.userService.editAvatar(file);
                         },
                     }) as Block,
                     handlerHidePopup: () => {

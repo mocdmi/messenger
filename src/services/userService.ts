@@ -1,5 +1,6 @@
 import { UserApi } from '@api';
 import { Store } from '@core';
+import { UserUpdateRequestDto } from 'src/api/user/types';
 
 export default class UserService {
     private readonly store = Store.getInstance();
@@ -7,7 +8,21 @@ export default class UserService {
 
     constructor() {}
 
-    async updateAvatar(file: File) {
+    async editUser(data: UserUpdateRequestDto) {
+        try {
+            const { status, response } = await this.userApi.update(data);
+
+            if (status === 200) {
+                this.store.set('user.user', response);
+            } else if ('reason' in response) {
+                throw new Error(response.reason);
+            }
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+    async editAvatar(file: File) {
         const formData = new FormData();
         formData.append('avatar', file);
 

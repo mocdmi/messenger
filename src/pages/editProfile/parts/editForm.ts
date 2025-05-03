@@ -1,7 +1,7 @@
 import { Button, LabelInput } from '@components';
 import { Block, Validator } from '@core';
 import { isErrorsEmpty } from '@helpers';
-import { EditProfileProps, InputKey } from '../types';
+import { EditProfileProps, InputKey, ProfileFormInput } from '../types';
 import styles from '../styles.module.css';
 
 const validators: Record<InputKey, (value: unknown) => string> = {
@@ -174,7 +174,15 @@ export default class EditForm extends Block<EditProfileProps> {
         });
 
         if (isErrorsEmpty(errors)) {
-            console.log(this.props.form);
+            const data = Object.entries(this.props.form).reduce(
+                (acc, [key, value]) => {
+                    acc[key as InputKey] = value.value as string;
+                    return acc;
+                },
+                {} as Record<InputKey, string>,
+            );
+
+            this.props.onSubmit?.(data);
         }
     }
 

@@ -1,21 +1,28 @@
 import { Profile } from '@components';
 import { Block } from '@core';
-import { AuthService } from '@services';
+import { AuthService, UserService } from '@services';
 import { EditProfileProps } from './types';
 import EditForm from './parts/editForm';
 import { connect } from '@helpers';
 import { AppStore } from '@types';
+import { UserUpdateRequestDto } from '@api';
 import mapStateToProps from './mapStateToProps';
 
 class EditProfilePage extends Block<EditProfileProps> {
     private readonly authService = new AuthService();
+    private readonly userService = new UserService();
 
     constructor(props: EditProfileProps) {
         super('div', props, {
             EditProfile: new Profile({
                 name: props.name || 'Пользователь',
                 avatar: props.avatar || '',
-                Children: new EditForm(props) as Block,
+                Children: new EditForm({
+                    ...props,
+                    onSubmit: (form: UserUpdateRequestDto) => {
+                        this.userService.editUser(form);
+                    },
+                }) as Block,
             }) as Block,
         });
     }
