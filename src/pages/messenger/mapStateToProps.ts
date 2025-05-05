@@ -6,6 +6,7 @@ export default function mapStateToProps(state: AppStore): ChatProps {
         showActions: false,
         showAddAction: false,
         showRemoveAction: false,
+        selectedChatName: state.selectedChat?.title || '',
         chats: state.chats?.chats || [],
     };
 }

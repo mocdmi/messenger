@@ -83,7 +83,7 @@ class Messenger extends Block<ChatProps> {
                 <header class="${styles.header}">
                     <div class="${styles.info}">
                         <div class="${styles.avatar}"></div>
-                        <h2 class="${styles.name}">Вадим</h2>
+                        <h2 class="${styles.name}">{{selectedChatName}}</h2>
                     </div>
                     {{{Actions}}}
                 </header>

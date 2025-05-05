@@ -1,7 +1,9 @@
 import { Button, LabelInput } from '@components';
-import { Block, Validator } from '@core';
+import { Block, Store, Validator } from '@core';
 import { isErrorsEmpty, validateOnSubmit } from '@helpers';
 import styles from '../styles.module.css';
+import { ChatsService } from '@services';
+import { AppStore } from '@types';
 
 interface AddContactFormProps {
     formState: {
@@ -16,7 +18,11 @@ const validators: ((value: string) => string)[] = [
     (value: string) => Validator.validate(value).isRequired(),
 ];
 
+// TODO: переписать на класс BaseForm
 export default class AddContactForm extends Block<AddContactFormProps> {
+    private readonly chatsService = new ChatsService();
+    private readonly store = Store.getInstance();
+
     constructor() {
         super(
             'form',
@@ -53,7 +59,14 @@ export default class AddContactForm extends Block<AddContactFormProps> {
                         );
 
                         if (isErrorsEmpty(this.props.errors)) {
-                            console.log(this.props.formState);
+                            const chatId = this.store.getState<AppStore>().selectedChat?.id;
+
+                            if (chatId) {
+                                this.chatsService.addUsersToChat(chatId, [
+                                    Number(this.props.formState.login),
+                                ]);
+                            }
+
                             el.reset();
                         }
                     },

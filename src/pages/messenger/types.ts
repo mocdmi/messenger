@@ -1,3 +1,4 @@
+// TODO: разнести по компонентам
 export interface Chat {
     id: number;
     title: string;
@@ -12,5 +13,6 @@ export interface ChatProps {
     showActions: boolean;
     showAddAction: boolean;
     showRemoveAction: boolean;
+    selectedChatName: string;
     chats: Chat[];
 }
