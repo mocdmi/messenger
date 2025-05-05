@@ -23,7 +23,7 @@ interface User {
     user: UserProps;
 }
 
-interface Chat {
+export interface Chat {
     id: number;
     title: string;
     lastMessage: string;
@@ -39,7 +39,7 @@ interface Chats {
     chats: Chat[];
 }
 
-interface ChatUsers {
+export interface ChatUser {
     id: number;
     avatar: string;
     first_name: string;
@@ -49,5 +49,5 @@ interface SelectedChat {
     isLoading: boolean;
     isError: boolean;
     chat: Chat;
-    users: ChatUsers[];
+    users: ChatUser[];
 }

@@ -30,6 +30,7 @@ const formFieldsMap = {
     },
 } as const;
 
+// TODO: переписать на BaseForm
 export default class EditForm extends Block<EditPasswordProps> {
     constructor(props: EditPasswordProps) {
         const children: Record<string, Block> = {};

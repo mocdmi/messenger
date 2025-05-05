@@ -52,6 +52,7 @@ const formFieldsMap = {
     },
 } as const;
 
+// TODO: переписать на BaseForm
 export default class EditForm extends Block<EditProfileProps> {
     constructor(props: EditProfileProps) {
         const children: Record<string, Block> = {};

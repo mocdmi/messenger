@@ -8,8 +8,7 @@ import {
     GetChatUsersRequestDto,
 } from '@api';
 import { Store } from '@core';
-import { AppStore } from '@types';
-import { Chat } from 'src/pages/messenger/types';
+import { AppStore, ChatUser, Chat } from '@types';
 
 export default class ChatsService {
     private readonly apiInstance = new ChatsApi();
@@ -41,9 +40,11 @@ export default class ChatsService {
                 }, []);
 
                 this.store.set('chats.chats', chats);
+            } else {
+                throw new Error(`Error get chats. Status: ${status}`);
             }
         } catch (error) {
-            console.error(error);
+            throw new Error(error as string);
         }
     }
 
@@ -56,9 +57,11 @@ export default class ChatsService {
                 console.log(response);
             } else if ('reason' in response) {
                 throw new Error(response.reason);
+            } else {
+                throw new Error(`Error create chat. Status: ${status}`);
             }
         } catch (error) {
-            console.error(error);
+            throw new Error(error as string);
         }
     }
 
@@ -89,9 +92,11 @@ export default class ChatsService {
                 console.log(response);
             } else if (typeof response === 'object' && 'reason' in response) {
                 throw new Error(response.reason);
+            } else {
+                throw new Error(`Error add users to chat. Status: ${status}`);
             }
         } catch (error) {
-            console.error(error);
+            throw new Error(error as string);
         }
     }
 
@@ -107,9 +112,11 @@ export default class ChatsService {
                 console.log(response);
             } else if (typeof response === 'object' && 'reason' in response) {
                 throw new Error(response.reason);
+            } else {
+                throw new Error(`Error delete users from chat. Status: ${status}`);
             }
         } catch (error) {
-            console.error(error);
+            throw new Error(error as string);
         }
     }
 
@@ -119,12 +126,22 @@ export default class ChatsService {
             const { status, response } = await this.apiInstance.getChatUsers(data);
 
             if (status === 200) {
-                console.log(response);
+                const users = response.reduce<ChatUser[]>((acc, user) => {
+                    acc.push({
+                        id: user.id,
+                        avatar: user.avatar,
+                        first_name: user.first_name,
+                    });
+
+                    return acc;
+                }, []);
+
+                this.store.set('selectedChat.users', users);
             } else {
                 throw new Error(`Error get chat users. Status: ${status}`);
             }
         } catch (error) {
-            console.error(error);
+            throw new Error(error as string);
         }
     }
 
@@ -138,7 +155,7 @@ export default class ChatsService {
                 throw new Error(`Error get chat token. Status: ${status}`);
             }
         } catch (error) {
-            console.error(error);
+            throw new Error(error as string);
         }
     }
 }

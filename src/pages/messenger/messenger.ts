@@ -14,13 +14,14 @@ import { AppStore } from '@types';
 class Messenger extends Block<ChatProps> {
     private readonly chatsService = new ChatsService();
     private readonly store = Store.getInstance();
+
     constructor(props: ChatProps) {
         super('div', props, {
             Sidebar: new Sidebar(props) as Block,
-            PopupAddContact: new Popup({
+            PopupAddUser: new Popup({
                 title: 'Добавить пользователя',
                 Children: new AddUserForm({
-                    onSubmit: (userId: number) => this.addUserToChat(userId),
+                    onSubmit: (userId: number) => this.addUserToChatHandler(userId),
                 }) as Block,
                 hidePopupHandler: () => {
                     this.setProps({
@@ -78,17 +79,15 @@ class Messenger extends Block<ChatProps> {
         return false;
     }
 
-    private async addUserToChat(userId: number) {
+    private async addUserToChatHandler(userId: number) {
         const chatId = this.store.getState<AppStore>().selectedChat?.chat?.id;
 
         if (chatId) {
             try {
                 await this.chatsService.addUsersToChat(chatId, [userId]);
-
-                const users = this.store.getState<AppStore>().selectedChat?.users ?? [];
-                this.store.set('selectedChat.users', [...users, userId]);
+                await this.chatsService.getChatUsers(chatId);
             } catch (error) {
-                console.error(error);
+                this.store.set('selectedChat.isError', (error as Error).message);
             }
         }
     }
@@ -112,7 +111,7 @@ class Messenger extends Block<ChatProps> {
                 </div>
                 {{{MessageForm}}}
                 {{#if showAddAction}}
-                    {{{PopupAddContact}}}
+                    {{{PopupAddUser}}}
                 {{/if}}
                 {{#if showRemoveAction}}
                     {{{PopupRemoveContact}}}

@@ -1,9 +1,11 @@
 import { Block, Store } from '@core';
 import styles from './styles.module.css';
 import { Chat as ChatProps } from 'src/pages/messenger/types';
+import { ChatsService } from '@services';
 
 export default class Chat extends Block<ChatProps> {
     private readonly store = Store.getInstance();
+    private readonly chatsService = new ChatsService();
 
     constructor(props: ChatProps) {
         super('section', {
@@ -15,7 +17,7 @@ export default class Chat extends Block<ChatProps> {
         });
     }
 
-    private clickHandler() {
+    private async clickHandler() {
         this.store.set('selectedChat.chat', {
             id: this.props.id,
             title: this.props.title,
@@ -23,6 +25,7 @@ export default class Chat extends Block<ChatProps> {
             newMessagesNum: this.props.newMessagesNum,
             avatar: this.props.avatar,
         });
+        await this.chatsService.getChatUsers(this.props.id);
     }
 
     // language=Handlebars

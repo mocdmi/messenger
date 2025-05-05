@@ -56,6 +56,11 @@ export default class AddUserForm extends BaseForm<UserActionFormProps, InputKey>
                 `,
                 )
                 .join('')}
+            {{#if isError}}
+                <div class="${styles.error}">
+                    {{isError}}
+                </div>
+            {{/if}}
             <div class="${styles.actionSubmit}">
                 {{{SubmitButton}}}
             </div>

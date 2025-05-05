@@ -18,9 +18,11 @@ export default class AuthService {
                 this.router.go(ROUTER.messenger);
             } else if ('reason' in response) {
                 throw new Error(response.reason);
+            } else {
+                throw new Error(`Error sign up. Status: ${status}`);
             }
         } catch (error) {
-            console.error(error);
+            throw new Error(error as string);
         }
     }
 
@@ -32,9 +34,11 @@ export default class AuthService {
                 this.router.go(ROUTER.messenger);
             } else if (typeof response === 'object' && 'reason' in response) {
                 throw new Error(response.reason);
+            } else {
+                throw new Error(`Error login. Status: ${status}`);
             }
         } catch (error) {
-            console.error(error);
+            throw new Error(error as string);
         }
     }
 
@@ -50,9 +54,11 @@ export default class AuthService {
                 this.store.set('user.user', response);
             } else if ('reason' in response) {
                 throw new Error(response.reason);
+            } else {
+                throw new Error(`Error get user. Status: ${status}`);
             }
         } catch (error) {
-            console.error(error);
+            throw new Error(error as string);
         }
     }
 
@@ -67,7 +73,7 @@ export default class AuthService {
                 throw new Error(`Error logout. Status: ${status}`);
             }
         } catch (error) {
-            console.error(error);
+            throw new Error(error as string);
         }
     }
 }
