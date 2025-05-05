@@ -1,7 +1,7 @@
 import { Button, LabelInput } from '@components';
 import { Block, Validator } from '@core';
 import { isErrorsEmpty } from '@helpers';
-import { EditProfileProps, InputKey, ProfileFormInput } from '../types';
+import { EditProfileProps, InputKey } from '../types';
 import styles from '../styles.module.css';
 
 const validators: Record<InputKey, (value: unknown) => string> = {

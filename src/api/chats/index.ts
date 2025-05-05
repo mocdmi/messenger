@@ -12,6 +12,5 @@ export type {
     DeleteUsersFromChatResponseDto,
     GetChatUsersRequestDto,
     GetChatUsersResponseDto,
-    GetChatTokenRequestDto,
     GetChatTokenResponseDto,
 } from './types';

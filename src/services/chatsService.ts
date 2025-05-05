@@ -29,7 +29,7 @@ export default class ChatsService {
                 const chats = response.reduce<Chat[]>((acc, chat) => {
                     acc.push({
                         id: chat.id,
-                        name: chat.title,
+                        title: chat.title,
                         lastMessage: chat.last_message?.content,
                         date: chat.last_message?.time,
                         newMessagesNum: chat.unread_count,

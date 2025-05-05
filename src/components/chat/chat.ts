@@ -1,16 +1,9 @@
 import { Block } from '@core';
 import styles from './styles.module.css';
+import { Chat as IChat } from 'src/pages/messenger/types';
 
-interface ContactCardProps {
-    name: string;
-    lastMessage: string;
-    date: string;
-    newMessagesNum?: number;
-    active?: boolean;
-}
-
-export default class Chat extends Block<ContactCardProps> {
-    constructor(props: ContactCardProps) {
+export default class Chat extends Block<IChat> {
+    constructor(props: IChat) {
         super('section', {
             ...props,
             className: styles.card,
@@ -24,7 +17,7 @@ export default class Chat extends Block<ContactCardProps> {
                 <div class="${styles.avatarWrap}">
                     <div class="${styles.avatar}"></div>
                 </div>
-                <h2 class="${styles.name}">{{name}}</h2>
+                <h2 class="${styles.title}">{{title}}</h2>
                 <div class="${styles.lastMessage}">{{lastMessage}}</div>
                 <div class="${styles.date}">{{date}}</div>
                 {{#if newMessagesNum}}<div class="${styles.newCount}">{{newMessagesNum}}</div>{{/if}}
