@@ -1,9 +1,22 @@
 export type InputType = 'text' | 'email' | 'password' | 'file';
 
 export interface AppStore {
-    user?: User | null;
-    chats?: Chats | null;
-    selectedChat?: SelectedChat | null;
+    user: {
+        isLoading: boolean;
+        isError: boolean;
+        user: UserProps;
+    };
+    chats: {
+        isLoading: boolean;
+        isError: boolean;
+        chats: Chat[];
+    };
+    selectedChat: {
+        isLoading: boolean;
+        isError: boolean;
+        chat: Chat;
+        users: ChatUser[];
+    };
 }
 
 interface UserProps {
@@ -17,12 +30,6 @@ interface UserProps {
     avatar: string;
 }
 
-interface User {
-    isLoading: boolean;
-    isError: boolean;
-    user: UserProps;
-}
-
 export interface Chat {
     id: number;
     title: string;
@@ -33,21 +40,8 @@ export interface Chat {
     avatar: string;
 }
 
-interface Chats {
-    isLoading: boolean;
-    isError: boolean;
-    chats: Chat[];
-}
-
 export interface ChatUser {
     id: number;
     avatar: string;
     first_name: string;
-}
-
-interface SelectedChat {
-    isLoading: boolean;
-    isError: boolean;
-    chat: Chat;
-    users: ChatUser[];
 }

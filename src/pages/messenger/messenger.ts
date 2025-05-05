@@ -4,7 +4,7 @@ import { connect } from '@helpers';
 import Actions from './parts/actions';
 import AddUserForm from './parts/addUserForm';
 import MessageForm from './parts/messageForm';
-import RemoveChatForm from './parts/removeChatForm';
+import RemoveChatForm from './parts/removeUserForm';
 import styles from './styles.module.css';
 import mapStateToProps from './mapStateToProps';
 import { ChatProps } from './types';
@@ -32,7 +32,9 @@ class Messenger extends Block<ChatProps> {
             }) as Block,
             PopupRemoveContact: new Popup({
                 title: 'Удалить пользователя',
-                Children: new RemoveChatForm() as Block,
+                Children: new RemoveChatForm({
+                    onSubmit: (userId: number) => this.removeUserToChatHandler(userId),
+                }) as Block,
                 hidePopupHandler: () => {
                     this.setProps({
                         ...props,
@@ -48,12 +50,16 @@ class Messenger extends Block<ChatProps> {
                         ...props,
                         showAddAction: true,
                     });
+
+                    this.store.set('selectedChat.isError', '');
                 },
                 showRemoveActionHandler: () => {
                     this.setProps({
                         ...props,
-                        showAddAction: true,
+                        showRemoveAction: true,
                     });
+
+                    this.store.set('selectedChat.isError', '');
                 },
             }) as Block,
         });
@@ -79,18 +85,41 @@ class Messenger extends Block<ChatProps> {
         return false;
     }
 
-    private async addUserToChatHandler(userId: number) {
-        const chatId = this.store.getState<AppStore>().selectedChat?.chat?.id;
-
-        if (chatId) {
+    private addUserToChatHandler = async (userId: number) => {
+        if (this.props.selectedChatId) {
             try {
-                await this.chatsService.addUsersToChat(chatId, [userId]);
-                await this.chatsService.getChatUsers(chatId);
+                await this.chatsService.addUsersToChat(this.props.selectedChatId, [userId]);
+                await this.chatsService.getChatUsers(this.props.selectedChatId);
+
+                this.setProps({
+                    ...this.props,
+                    showAddAction: false,
+                });
             } catch (error) {
                 this.store.set('selectedChat.isError', (error as Error).message);
             }
+        } else {
+            this.store.set('selectedChat.isError', 'Выберите чат');
         }
-    }
+    };
+
+    private removeUserToChatHandler = async (userId: number) => {
+        if (this.props.selectedChatId) {
+            try {
+                await this.chatsService.deleteUsersFromChat(this.props.selectedChatId, [userId]);
+                await this.chatsService.getChatUsers(this.props.selectedChatId);
+
+                this.setProps({
+                    ...this.props,
+                    showRemoveAction: false,
+                });
+            } catch (error) {
+                this.store.set('selectedChat.isError', (error as Error).message);
+            }
+        } else {
+            this.store.set('selectedChat.isError', 'Выберите чат');
+        }
+    };
 
     // language=Handlebars
     render(): string {
@@ -98,7 +127,9 @@ class Messenger extends Block<ChatProps> {
             <div class="${styles.main}">
                 <header class="${styles.header}">
                     <div class="${styles.info}">
+                        {{#if selectedChatName}}
                         <div class="${styles.avatar}"></div>
+                        {{/if}}
                         <h2 class="${styles.name}">{{selectedChatName}}</h2>
                     </div>
                     {{{Actions}}}

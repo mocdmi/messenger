@@ -86,6 +86,7 @@ export default class ChatsService {
                 chatId,
                 users: userIds,
             };
+
             const { status, response } = await this.apiInstance.addUsersToChat(data);
 
             if (status === 200) {

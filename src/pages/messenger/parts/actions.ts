@@ -30,13 +30,25 @@ export default class Actions extends Block<ActionsProps> {
                         icon: 'add',
                         label: 'Добавить пользователя',
                         type: 'button',
-                        onClick: props.showAddActionHandler,
+                        onClick: () => {
+                            this.props.showAddActionHandler();
+                            this.setProps({
+                                ...props,
+                                showActions: !this.props.showActions,
+                            });
+                        },
                     }),
                     new Button({
                         icon: 'remove',
                         label: 'Удалить пользователя',
                         type: 'button',
-                        onClick: props.showRemoveActionHandler,
+                        onClick: () => {
+                            this.props.showRemoveActionHandler();
+                            this.setProps({
+                                ...props,
+                                showActions: !this.props.showActions,
+                            });
+                        },
                     }),
                 ] as Block[],
             }) as Block,

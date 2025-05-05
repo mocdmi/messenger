@@ -1,7 +1,8 @@
 import { BaseForm } from '@core';
 import { isErrorsEmpty } from '@helpers';
 import styles from '../styles.module.css';
-import { InputKey, UserActionFormProps, UserActionProps } from './type';
+import { InputKey, UserActionProps } from './type';
+import { UserActionFormProps } from './type';
 
 const formConfig = {
     formFields: {
@@ -16,7 +17,7 @@ const formConfig = {
     },
 } as const;
 
-export default class AddUserForm extends BaseForm<UserActionFormProps, InputKey> {
+export default class RemoveChatForm extends BaseForm<UserActionFormProps, InputKey> {
     constructor(props: UserActionProps) {
         const initialProps: UserActionFormProps = {
             form: {
@@ -33,7 +34,7 @@ export default class AddUserForm extends BaseForm<UserActionFormProps, InputKey>
                 ...initialProps,
             },
             formConfig,
-            { label: 'Добавить' },
+            { label: 'Удалить' },
         );
     }
 

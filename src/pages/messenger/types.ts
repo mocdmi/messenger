@@ -14,5 +14,7 @@ export interface ChatProps {
     showAddAction: boolean;
     showRemoveAction: boolean;
     selectedChatName: string;
+    selectedChatId: number;
+    selectedChatAvatar: string;
     chats: Chat[];
 }
