@@ -59,7 +59,7 @@ export default class RemoveChatForm extends Block<RemoveChatFormProps> {
                         );
 
                         if (isErrorsEmpty(this.props.errors)) {
-                            const chatId = this.store.getState<AppStore>().selectedChat?.id;
+                            const chatId = this.store.getState<AppStore>().selectedChat?.chat.id;
 
                             if (chatId) {
                                 this.chatsService.deleteUsersFromChat(chatId, [

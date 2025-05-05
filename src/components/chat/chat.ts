@@ -16,7 +16,7 @@ export default class Chat extends Block<ChatProps> {
     }
 
     private clickHandler() {
-        this.store.set('selectedChat', {
+        this.store.set('selectedChat.chat', {
             id: this.props.id,
             title: this.props.title,
             date: this.props.date,

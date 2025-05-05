@@ -1,8 +1,8 @@
 import { Sidebar, Popup } from '@components';
-import { Block } from '@core';
+import { Block, Store } from '@core';
 import { connect } from '@helpers';
 import Actions from './parts/actions';
-import AddContactForm from './parts/addContactForm';
+import AddUserForm from './parts/addUserForm';
 import MessageForm from './parts/messageForm';
 import RemoveChatForm from './parts/removeChatForm';
 import styles from './styles.module.css';
@@ -13,13 +13,15 @@ import { AppStore } from '@types';
 
 class Messenger extends Block<ChatProps> {
     private readonly chatsService = new ChatsService();
-
+    private readonly store = Store.getInstance();
     constructor(props: ChatProps) {
         super('div', props, {
             Sidebar: new Sidebar(props) as Block,
             PopupAddContact: new Popup({
                 title: 'Добавить пользователя',
-                Children: new AddContactForm() as Block,
+                Children: new AddUserForm({
+                    onSubmit: (userId: number) => this.addUserToChat(userId),
+                }) as Block,
                 hidePopupHandler: () => {
                     this.setProps({
                         ...props,
@@ -74,6 +76,21 @@ class Messenger extends Block<ChatProps> {
         }
 
         return false;
+    }
+
+    private async addUserToChat(userId: number) {
+        const chatId = this.store.getState<AppStore>().selectedChat?.chat?.id;
+
+        if (chatId) {
+            try {
+                await this.chatsService.addUsersToChat(chatId, [userId]);
+
+                const users = this.store.getState<AppStore>().selectedChat?.users ?? [];
+                this.store.set('selectedChat.users', [...users, userId]);
+            } catch (error) {
+                console.error(error);
+            }
+        }
     }
 
     // language=Handlebars
