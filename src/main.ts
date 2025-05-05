@@ -8,7 +8,22 @@ import { ChatContext } from './context/types/ChatContext';
 import { ErrorContext } from './context/types/ErrorContext';
 
 Store.getInstance().createStore<AppStore>({
-    user: null,
+    user: {
+        isLoading: false,
+        isError: false,
+        user: null,
+    },
+    chats: {
+        isLoading: false,
+        isError: false,
+        chats: null,
+    },
+    selectedChat: {
+        isLoading: false,
+        isError: false,
+        chat: null,
+        users: null,
+    },
 });
 
 const router = Router.getInstance().createApp('#app');

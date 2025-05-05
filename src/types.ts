@@ -4,18 +4,18 @@ export interface AppStore {
     user: {
         isLoading: boolean;
         isError: boolean;
-        user: UserProps;
+        user: UserProps | null;
     };
     chats: {
         isLoading: boolean;
         isError: boolean;
-        chats: Chat[];
+        chats: Chat[] | null;
     };
     selectedChat: {
         isLoading: boolean;
         isError: boolean;
-        chat: Chat;
-        users: ChatUser[];
+        chat: Chat | null;
+        users: ChatUser[] | null;
     };
 }
 
