@@ -24,6 +24,10 @@ export default function connect<TStore extends object, TProps extends object>(
                     }
 
                     state = newState;
+
+                    if (process.env.NODE_ENV === 'development') {
+                        console.log('state:', JSON.stringify(store.getState(), null, 2));
+                    }
                 };
 
                 Store.getInstance().on(StoreEvents.Updated, this.onChangeStoreCallback);

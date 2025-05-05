@@ -31,7 +31,7 @@ export default class ProfileAvatar extends Block<ProfileAvatarProps> {
                             await this.userService.editAvatar(file);
                         },
                     }) as Block,
-                    handlerHidePopup: () => {
+                    hidePopupHandler: () => {
                         this.setProps({
                             ...props,
                             popupShow: false,

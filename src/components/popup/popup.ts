@@ -16,7 +16,7 @@ export default class Popup extends Block<PopupProps> {
                         const el = e.target as HTMLElement;
 
                         if (el.classList.contains(styles.substrate)) {
-                            props.handlerHidePopup();
+                            props.hidePopupHandler();
                         }
                     },
                 },

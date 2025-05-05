@@ -3,6 +3,7 @@ export type InputType = 'text' | 'email' | 'password' | 'file';
 export interface AppStore {
     user?: User | null;
     chats?: Chats | null;
+    selectedChat?: ChatProps | null;
 }
 
 interface UserProps {

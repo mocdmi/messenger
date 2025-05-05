@@ -20,7 +20,7 @@ class Messenger extends Block<ChatProps> {
             PopupAddContact: new Popup({
                 title: 'Добавить пользователя',
                 Children: new AddContactForm() as Block,
-                handlerHidePopup: () => {
+                hidePopupHandler: () => {
                     this.setProps({
                         ...props,
                         showAddAction: false,
@@ -30,7 +30,7 @@ class Messenger extends Block<ChatProps> {
             PopupRemoveContact: new Popup({
                 title: 'Удалить пользователя',
                 Children: new RemoveChatForm() as Block,
-                handlerHidePopup: () => {
+                hidePopupHandler: () => {
                     this.setProps({
                         ...props,
                         showRemoveAction: false,
@@ -40,13 +40,13 @@ class Messenger extends Block<ChatProps> {
             MessageForm: new MessageForm() as Block,
             Actions: new Actions({
                 showActions: props.showActions,
-                handlerShowAddAction: () => {
+                showAddActionHandler: () => {
                     this.setProps({
                         ...props,
                         showAddAction: true,
                     });
                 },
-                handlerShowRemoveAction: () => {
+                showRemoveActionHandler: () => {
                     this.setProps({
                         ...props,
                         showAddAction: true,

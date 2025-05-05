@@ -4,8 +4,8 @@ import styles from '../styles.module.css';
 
 interface ActionsProps {
     showActions: boolean;
-    handlerShowAddAction: () => void;
-    handlerShowRemoveAction: () => void;
+    showAddActionHandler: () => void;
+    showRemoveActionHandler: () => void;
 }
 
 export default class Actions extends Block<ActionsProps> {
@@ -30,13 +30,13 @@ export default class Actions extends Block<ActionsProps> {
                         icon: 'add',
                         label: 'Добавить пользователя',
                         type: 'button',
-                        onClick: props.handlerShowAddAction,
+                        onClick: props.showAddActionHandler,
                     }),
                     new Button({
                         icon: 'remove',
                         label: 'Удалить пользователя',
                         type: 'button',
-                        onClick: props.handlerShowRemoveAction,
+                        onClick: props.showRemoveActionHandler,
                     }),
                 ] as Block[],
             }) as Block,

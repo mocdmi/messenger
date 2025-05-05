@@ -1,12 +1,27 @@
-import { Block } from '@core';
+import { Block, Store } from '@core';
 import styles from './styles.module.css';
-import { Chat as IChat } from 'src/pages/messenger/types';
+import { Chat as ChatProps } from 'src/pages/messenger/types';
 
-export default class Chat extends Block<IChat> {
-    constructor(props: IChat) {
+export default class Chat extends Block<ChatProps> {
+    private readonly store = Store.getInstance();
+
+    constructor(props: ChatProps) {
         super('section', {
             ...props,
             className: styles.card,
+            events: {
+                click: () => this.clickHandler(),
+            },
+        });
+    }
+
+    private clickHandler() {
+        this.store.set('selectedChat', {
+            id: this.props.id,
+            title: this.props.title,
+            date: this.props.date,
+            newMessagesNum: this.props.newMessagesNum,
+            avatar: this.props.avatar,
         });
     }
 
