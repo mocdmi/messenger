@@ -1,8 +1,7 @@
-import { AuthApi } from '@api';
+import { AuthApi, SignInRequestDto, SignUpRequestDto } from '@api';
 import { ROUTER } from '@const';
 import { Router, Store } from '@core';
 import { AppStore } from '@types';
-import { SignInRequestDto, SignUpRequestDto } from '../api/auth';
 
 export default class AuthService {
     private readonly authApi = new AuthApi();

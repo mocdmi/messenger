@@ -1,19 +1,19 @@
 import { Sidebar, Popup } from '@components';
-import { ChatContext } from '../../context/types/ChatContext';
 import { Block } from '@core';
+import { connect } from '@helpers';
 import Actions from './parts/actions';
 import AddContactForm from './parts/addContactForm';
 import MessageForm from './parts/messageForm';
 import RemoveChatForm from './parts/removeChatForm';
 import styles from './styles.module.css';
+import mapStateToProps from './mapStateToProps';
+import { ChatProps } from './types';
+import { ChatsService } from '@services';
+import { AppStore } from '@types';
 
-interface ChatProps extends ChatContext {
-    showActions: boolean;
-    showAddAction: boolean;
-    showRemoveAction: boolean;
-}
+class Messenger extends Block<ChatProps> {
+    private readonly chatsService = new ChatsService();
 
-export default class Messenger extends Block<ChatProps> {
     constructor(props: ChatProps) {
         super('div', props, {
             Sidebar: new Sidebar(props) as Block,
@@ -56,6 +56,26 @@ export default class Messenger extends Block<ChatProps> {
         });
     }
 
+    componentDidMount() {
+        this.chatsService.getChats();
+    }
+
+    componentDidUpdate(oldProps: ChatProps, newProps: ChatProps): boolean {
+        if (oldProps !== newProps) {
+            const chats = this.children.Sidebar as Block;
+
+            if (chats) {
+                chats.setProps({
+                    chats: newProps.chats,
+                });
+            }
+
+            return true;
+        }
+
+        return false;
+    }
+
     // language=Handlebars
     render(): string {
         return `
@@ -84,3 +104,5 @@ export default class Messenger extends Block<ChatProps> {
         `;
     }
 }
+
+export default connect<AppStore, ChatProps>(mapStateToProps)(Messenger);

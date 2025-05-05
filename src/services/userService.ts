@@ -1,6 +1,5 @@
-import { UserApi } from '@api';
+import { UserApi, PasswordUpdateRequestDto, UserUpdateRequestDto } from '@api';
 import { Store } from '@core';
-import { PasswordUpdateRequestDto, UserUpdateRequestDto } from 'src/api/user/types';
 
 export default class UserService {
     private readonly store = Store.getInstance();
@@ -8,7 +7,7 @@ export default class UserService {
 
     constructor() {}
 
-    async editUser(data: UserUpdateRequestDto) {
+    async editUser(data: UserUpdateRequestDto): Promise<void> {
         try {
             const { status, response } = await this.userApi.update(data);
 
@@ -22,7 +21,7 @@ export default class UserService {
         }
     }
 
-    async editAvatar(file: File) {
+    async editAvatar(file: File): Promise<void> {
         const formData = new FormData();
         formData.append('avatar', file);
 
@@ -39,12 +38,12 @@ export default class UserService {
         }
     }
 
-    async editPassword(data: PasswordUpdateRequestDto) {
+    async editPassword(data: PasswordUpdateRequestDto): Promise<void> {
         try {
             const { status } = await this.userApi.updatePassword(data);
 
             if (status !== 200) {
-                throw new Error('Error edit password');
+                throw new Error(`Error edit password. Status: ${status}`);
             }
         } catch (error) {
             console.error(error);

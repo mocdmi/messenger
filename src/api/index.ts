@@ -1,4 +1,7 @@
 export { AuthApi } from './auth';
 export { UserApi } from './user';
-export type { BaseUserDto, UserResponseDto, ErrorResponse } from './types';
-export type { UserUpdateRequestDto, PasswordUpdateRequestDto } from './user/types';
+export { ChatsApi } from './chats';
+export type * from './types';
+export type * from './auth/types';
+export type * from './user/types';
+export type * from './chats/types';

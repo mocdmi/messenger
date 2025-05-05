@@ -25,20 +25,35 @@ export default function isEqual<T extends object>(
     lhs: T | ArrayOrObject,
     rhs: T | ArrayOrObject,
 ): boolean {
-    for (const [key, value] of Object.entries(lhs)) {
-        const rightValue = (rhs as PlainObject)[key];
-
-        if (isArrayOrObject(value) && isArrayOrObject(rightValue)) {
-            if (isEqual(value, rightValue)) {
-                continue;
-            }
+    if (isArray(lhs) && isArray(rhs)) {
+        if (lhs.length !== rhs.length) {
             return false;
         }
 
-        if (value !== rightValue) {
-            return false;
-        }
+        return lhs.every((value, index) =>
+            isEqual(value as ArrayOrObject, rhs[index] as ArrayOrObject),
+        );
     }
 
-    return true;
+    if (isPlainObject(lhs) && isPlainObject(rhs)) {
+        const lhsKeys = Object.keys(lhs);
+        const rhsKeys = Object.keys(rhs);
+
+        if (lhsKeys.length !== rhsKeys.length) {
+            return false;
+        }
+
+        return lhsKeys.every((key) => {
+            const rightValue = rhs[key];
+            const leftValue = lhs[key];
+
+            if (isArrayOrObject(leftValue) && isArrayOrObject(rightValue)) {
+                return isEqual(leftValue, rightValue);
+            }
+
+            return leftValue === rightValue;
+        });
+    }
+
+    return lhs === rhs;
 }

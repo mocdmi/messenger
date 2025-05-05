@@ -2,6 +2,7 @@ export type InputType = 'text' | 'email' | 'password' | 'file';
 
 export interface AppStore {
     user: User | null;
+    chats: Chats | null;
 }
 
 interface UserProps {
@@ -19,4 +20,20 @@ interface User {
     isLoading: boolean;
     isError: boolean;
     user: UserProps;
+}
+
+interface ChatProps {
+    id: number;
+    name: string;
+    lastMessage: string;
+    date: string;
+    newMessagesNum?: number;
+    active?: boolean;
+    avatar: string;
+}
+
+interface Chats {
+    isLoading: boolean;
+    isError: boolean;
+    chats: ChatProps[];
 }

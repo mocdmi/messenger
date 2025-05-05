@@ -1,13 +1,13 @@
 import { ROUTER } from '@const';
-import { ChatContext, IChat } from '../../context/types/ChatContext';
 import { Block } from '@core';
 import { Chat } from '../chat';
 import { Link } from '../link';
 import SearchForm from './parts/searchForm';
 import styles from './styles.module.css';
+import { ChatProps, Chat as IChat } from 'src/pages/messenger/types';
 
-export default class Sidebar extends Block<ChatContext> {
-    constructor(props: ChatContext) {
+export default class Sidebar extends Block<ChatProps> {
+    constructor(props: ChatProps) {
         super(
             'nav',
             {
@@ -15,9 +15,7 @@ export default class Sidebar extends Block<ChatContext> {
                 className: styles.contacts,
             },
             {
-                Chats: props.chats.map((contact: IChat) => {
-                    return new Chat(contact) as Block;
-                }),
+                Chats: props.chats.map((chat: IChat) => new Chat(chat)) as Block[],
                 ProfileLink: new Link({
                     'theme-default': true,
                     label: 'Профиль',
@@ -27,6 +25,16 @@ export default class Sidebar extends Block<ChatContext> {
                 SearchForm: new SearchForm() as Block,
             },
         );
+    }
+
+    componentDidUpdate(oldProps: ChatProps, newProps: ChatProps): boolean {
+        if (oldProps !== newProps) {
+            this.children.Chats = newProps.chats.map((chat: IChat) => new Chat(chat)) as Block[];
+
+            return true;
+        }
+
+        return false;
     }
 
     // language=Handlebars
