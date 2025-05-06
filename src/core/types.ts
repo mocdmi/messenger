@@ -1,4 +1,4 @@
-import { Block } from '@core';
+import Block from './Block';
 
 export type Attributes<TAttrs> = {
     className?: string;
