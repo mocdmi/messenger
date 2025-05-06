@@ -11,13 +11,12 @@ export default class Chat extends Block<ChatProps> {
         super('section', {
             ...props,
             className: styles.card,
-            events: {
-                click: () => this.clickHandler(),
-            },
         });
+
+        this.getContent().addEventListener('click', this.clickHandler);
     }
 
-    private async clickHandler() {
+    private clickHandler = () => {
         this.store.set('selectedChat.chat', {
             id: this.props.id,
             title: this.props.title,
@@ -25,8 +24,9 @@ export default class Chat extends Block<ChatProps> {
             newMessagesNum: this.props.newMessagesNum,
             avatar: this.props.avatar,
         });
-        await this.chatsService.getChatUsers(this.props.id);
-    }
+
+        this.chatsService.getChatToken(this.props.id);
+    };
 
     // language=Handlebars
     render(): string {
