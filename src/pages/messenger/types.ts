@@ -1,20 +1,18 @@
-// TODO: разнести по компонентам
-export interface Chat {
+interface ChatProps {
     id: number;
     title: string;
     avatar: string;
     lastMessage: string;
     date: string;
     newMessagesNum?: number;
-    active?: boolean;
 }
 
-export interface ChatProps {
+export interface MessengerProps {
     showActions: boolean;
     showAddAction: boolean;
     showRemoveAction: boolean;
     selectedChatName: string;
     selectedChatId: number;
     selectedChatAvatar: string;
-    chats: Chat[];
+    chats: ChatProps[];
 }

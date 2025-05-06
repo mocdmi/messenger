@@ -1,7 +1,7 @@
 import { AppStore } from '@types';
-import { ChatProps } from './types';
+import { MessengerProps } from './types';
 
-export default function mapStateToProps(state: AppStore): ChatProps {
+export default function mapStateToProps(state: AppStore): MessengerProps {
     return {
         showActions: false,
         showAddAction: false,

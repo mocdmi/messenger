@@ -7,15 +7,15 @@ import MessageForm from './parts/messageForm';
 import RemoveChatForm from './parts/removeUserForm';
 import styles from './styles.module.css';
 import mapStateToProps from './mapStateToProps';
-import { ChatProps } from './types';
+import { MessengerProps } from './types';
 import { ChatsService } from '@services';
 import { AppStore } from '@types';
 
-class Messenger extends Block<ChatProps> {
+class Messenger extends Block<MessengerProps> {
     private readonly chatsService = new ChatsService();
     private readonly store = Store.getInstance();
 
-    constructor(props: ChatProps) {
+    constructor(props: MessengerProps) {
         super('div', props, {
             Sidebar: new Sidebar(props) as Block,
             PopupAddUser: new Popup({
@@ -69,7 +69,7 @@ class Messenger extends Block<ChatProps> {
         this.chatsService.getChats();
     }
 
-    componentDidUpdate(oldProps: ChatProps, newProps: ChatProps): boolean {
+    componentDidUpdate(oldProps: MessengerProps, newProps: MessengerProps): boolean {
         if (oldProps !== newProps) {
             const chats = this.children.Sidebar as Block;
 
@@ -152,4 +152,4 @@ class Messenger extends Block<ChatProps> {
     }
 }
 
-export default connect<AppStore, ChatProps>(mapStateToProps)(Messenger);
+export default connect<AppStore, MessengerProps>(mapStateToProps)(Messenger);

@@ -4,7 +4,7 @@ export interface AppStore {
     user: {
         isLoading: boolean;
         isError: boolean;
-        user: UserProps | null;
+        user: User | null;
     };
     chats: {
         isLoading: boolean;
@@ -19,7 +19,7 @@ export interface AppStore {
     };
 }
 
-interface UserProps {
+interface User {
     id: number;
     email: string;
     login: string;
@@ -36,7 +36,6 @@ export interface Chat {
     lastMessage: string;
     date: string;
     newMessagesNum?: number;
-    active?: boolean;
     avatar: string;
 }
 

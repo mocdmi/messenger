@@ -1,7 +1,15 @@
 import { Block, Store } from '@core';
 import styles from './styles.module.css';
-import { Chat as ChatProps } from 'src/pages/messenger/types';
 import { ChatsService } from '@services';
+
+interface ChatProps {
+    id: number;
+    title: string;
+    avatar: string;
+    lastMessage: string;
+    date: string;
+    newMessagesNum?: number;
+}
 
 export default class Chat extends Block<ChatProps> {
     private readonly store = Store.getInstance();
@@ -11,12 +19,14 @@ export default class Chat extends Block<ChatProps> {
         super('section', {
             ...props,
             className: styles.card,
+            events: {
+                click: () => this.clickHandler(),
+            },
         });
-
-        this.getContent().addEventListener('click', this.clickHandler);
     }
 
-    private clickHandler = () => {
+    private clickHandler = async () => {
+        console.log(this.props);
         this.store.set('selectedChat.chat', {
             id: this.props.id,
             title: this.props.title,
@@ -25,7 +35,7 @@ export default class Chat extends Block<ChatProps> {
             avatar: this.props.avatar,
         });
 
-        this.chatsService.getChatToken(this.props.id);
+        await this.chatsService.getChatUsers(this.props.id);
     };
 
     // language=Handlebars

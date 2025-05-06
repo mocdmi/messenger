@@ -4,10 +4,22 @@ import { Chat } from '../chat';
 import { Link } from '../link';
 import SearchForm from './parts/searchForm';
 import styles from './styles.module.css';
-import { ChatProps, Chat as IChat } from 'src/pages/messenger/types';
 
-export default class Sidebar extends Block<ChatProps> {
-    constructor(props: ChatProps) {
+interface ChatProps {
+    id: number;
+    title: string;
+    avatar: string;
+    lastMessage: string;
+    date: string;
+    newMessagesNum?: number;
+}
+
+interface MessengerProps {
+    chats: ChatProps[];
+}
+
+export default class Sidebar extends Block<MessengerProps> {
+    constructor(props: MessengerProps) {
         super(
             'nav',
             {
@@ -15,7 +27,7 @@ export default class Sidebar extends Block<ChatProps> {
                 className: styles.contacts,
             },
             {
-                Chats: props.chats.map((chat: IChat) => new Chat(chat)) as Block[],
+                Chats: props.chats.map((props: ChatProps) => new Chat(props)) as Block[],
                 ProfileLink: new Link({
                     'theme-default': true,
                     label: 'Профиль',
@@ -27,9 +39,11 @@ export default class Sidebar extends Block<ChatProps> {
         );
     }
 
-    componentDidUpdate(oldProps: ChatProps, newProps: ChatProps): boolean {
+    componentDidUpdate(oldProps: MessengerProps, newProps: MessengerProps): boolean {
         if (oldProps !== newProps) {
-            this.children.Chats = newProps.chats.map((chat: IChat) => new Chat(chat)) as Block[];
+            this.children.Chats = newProps.chats.map(
+                (props: ChatProps) => new Chat(props),
+            ) as Block[];
 
             return true;
         }

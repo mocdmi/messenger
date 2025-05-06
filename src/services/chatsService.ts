@@ -34,7 +34,6 @@ export default class ChatsService {
                         lastMessage: chat.last_message?.content,
                         date: chat.last_message?.time,
                         newMessagesNum: chat.unread_count,
-                        active: false,
                         avatar: chat.avatar,
                     });
 
