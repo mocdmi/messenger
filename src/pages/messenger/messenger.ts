@@ -24,10 +24,7 @@ class Messenger extends Block<ChatProps> {
                     onSubmit: (userId: number) => this.addUserToChatHandler(userId),
                 }) as Block,
                 hidePopupHandler: () => {
-                    this.setProps({
-                        ...props,
-                        showAddAction: false,
-                    });
+                    props.showAddAction = false;
                 },
             }) as Block,
             PopupRemoveContact: new Popup({
@@ -36,29 +33,18 @@ class Messenger extends Block<ChatProps> {
                     onSubmit: (userId: number) => this.removeUserToChatHandler(userId),
                 }) as Block,
                 hidePopupHandler: () => {
-                    this.setProps({
-                        ...props,
-                        showRemoveAction: false,
-                    });
+                    props.showRemoveAction = false;
                 },
             }) as Block,
             MessageForm: new MessageForm() as Block,
             Actions: new Actions({
                 showActions: props.showActions,
                 showAddActionHandler: () => {
-                    this.setProps({
-                        ...props,
-                        showAddAction: true,
-                    });
-
+                    props.showAddAction = true;
                     this.store.set('selectedChat.isError', '');
                 },
                 showRemoveActionHandler: () => {
-                    this.setProps({
-                        ...props,
-                        showRemoveAction: true,
-                    });
-
+                    props.showRemoveAction = true;
                     this.store.set('selectedChat.isError', '');
                 },
             }) as Block,
