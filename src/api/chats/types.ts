@@ -1,6 +1,6 @@
 import { BaseUserDto, ErrorResponse } from '../types';
 
-interface ChatUser {
+export interface ChatUser {
     id: number;
     first_name: string;
     second_name: string;
@@ -11,7 +11,7 @@ interface ChatUser {
     role: string;
 }
 
-interface Chat {
+export interface Chat {
     id: number;
     title: string;
     avatar: string;

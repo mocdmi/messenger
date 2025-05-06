@@ -1,13 +1,13 @@
 import { Block, Store } from '@core';
 import styles from './styles.module.css';
-import { Chat as ChatProps } from 'src/pages/messenger/types';
+import { Chat as ChatType } from 'src/pages/messenger/types';
 import { ChatsService } from '@services';
 
-export default class Chat extends Block<ChatProps> {
+export default class Chat extends Block<ChatType> {
     private readonly store = Store.getInstance();
     private readonly chatsService = new ChatsService();
 
-    constructor(props: ChatProps) {
+    constructor(props: ChatType) {
         super('section', {
             ...props,
             className: styles.card,

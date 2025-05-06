@@ -13,4 +13,6 @@ export type {
     GetChatUsersRequestDto,
     GetChatUsersResponseDto,
     GetChatTokenResponseDto,
+    Chat,
+    ChatUser,
 } from './types';
