@@ -1,6 +1,6 @@
 import { BaseUserDto, ErrorResponse } from '../types';
 
-export interface ChatUser {
+export interface ChatUserDto {
     id: number;
     first_name: string;
     second_name: string;
@@ -11,7 +11,7 @@ export interface ChatUser {
     role: string;
 }
 
-export interface Chat {
+export interface ChatDto {
     id: number;
     title: string;
     avatar: string;
@@ -29,7 +29,7 @@ export interface ChatRequestDto {
     limit?: number;
 }
 
-export type ChatResponseDto = Chat[];
+export type ChatResponseDto = ChatDto[];
 
 export interface CreateChatRequestDto {
     title: string;
@@ -77,7 +77,7 @@ export interface GetChatUsersRequestDto {
     email?: string;
 }
 
-export type GetChatUsersResponseDto = ChatUser[];
+export type GetChatUsersResponseDto = ChatUserDto[];
 
 export type GetChatTokenResponseDto = {
     token: string;

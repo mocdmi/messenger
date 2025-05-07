@@ -4,9 +4,7 @@ import { isEqual } from '@helpers';
 export default function connect<TStore extends object, TProps extends object>(
     mapStateToProps: (store: TStore) => TProps,
 ) {
-    return function <TAttrs extends object = object>(
-        block: BlockConstructor<TProps, TAttrs>,
-    ): BlockConstructor<TProps, TAttrs> {
+    return function (block: BlockConstructor<TProps>): BlockConstructor<TProps> {
         return class extends block {
             private readonly onChangeStoreCallback: () => void;
 

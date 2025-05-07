@@ -9,6 +9,7 @@ interface ChatProps {
     lastMessage: string;
     date: string;
     newMessagesNum?: number;
+    active?: boolean;
 }
 
 export default class Chat extends Block<ChatProps> {
@@ -26,7 +27,11 @@ export default class Chat extends Block<ChatProps> {
     }
 
     private clickHandler = async () => {
-        console.log(this.props);
+        this.setProps({
+            ...this.props,
+            active: true,
+        });
+
         this.store.set('selectedChat.chat', {
             id: this.props.id,
             title: this.props.title,

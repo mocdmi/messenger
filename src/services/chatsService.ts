@@ -6,8 +6,8 @@ import {
     AddUsersToChatRequestDto,
     DeleteUsersFromChatRequestDto,
     GetChatUsersRequestDto,
-    Chat as ChatDto,
-    ChatUser as ChatUserDto,
+    ChatDto,
+    ChatUserDto,
 } from '@api';
 import { Store } from '@core';
 import { AppStore, ChatUser, Chat } from '@types';
@@ -128,7 +128,7 @@ export default class ChatsService {
             const { status, response } = await this.apiInstance.getChatUsers(data);
 
             if (status === 200) {
-                const users = response.reduce<ChatUser[]>((acc: ChatUser[], user: ChatUserDto) => {
+                const users = response.reduce((acc: ChatUser[], user: ChatUserDto) => {
                     acc.push({
                         id: user.id,
                         avatar: user.avatar,
