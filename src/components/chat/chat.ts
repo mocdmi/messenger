@@ -19,7 +19,7 @@ export default class Chat extends Block<ChatProps> {
     constructor(props: ChatProps) {
         super('section', {
             ...props,
-            className: styles.card,
+            className: styles.chat,
             events: {
                 click: () => this.clickHandler(),
             },
@@ -27,11 +27,6 @@ export default class Chat extends Block<ChatProps> {
     }
 
     private clickHandler = async () => {
-        this.setProps({
-            ...this.props,
-            active: true,
-        });
-
         this.store.set('selectedChat.chat', {
             id: this.props.id,
             title: this.props.title,

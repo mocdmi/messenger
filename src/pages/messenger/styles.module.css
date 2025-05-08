@@ -40,7 +40,7 @@
     flex-grow: 1;
 }
 
-.info {
+.selectedChatInfo {
     display: flex;
     align-items: center;
     column-gap: 10px;
@@ -53,8 +53,7 @@
     background-color: var(--gray-color);
 }
 
-.name {
-    grid-area: name;
+.title {
     font-size: var(--font-size-m);
     font-weight: 600;
     margin: 0;

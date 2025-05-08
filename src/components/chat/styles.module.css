@@ -1,4 +1,4 @@
-.card {
+.chat {
     border-bottom: 1px solid var(--gray-color);
     margin: 0 10px;
     padding: 2px 0;
@@ -19,8 +19,7 @@
     margin: 0 -10px;
     padding: 10px;
 
-    &.active,
-    &:hover {
+    &.active {
         background: var(--active-group-color);
     }
 }

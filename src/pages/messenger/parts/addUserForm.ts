@@ -1,7 +1,7 @@
 import { BaseForm } from '@core';
 import { isErrorsEmpty } from '@helpers';
 import styles from '../styles.module.css';
-import { InputKey, UserActionFormProps, UserActionProps } from './type';
+import { InputKey, UserActionFormProps, UserActionProps } from './types';
 
 const formConfig = {
     formFields: {

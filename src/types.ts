@@ -3,17 +3,17 @@ export type InputType = 'text' | 'email' | 'password' | 'file';
 export interface AppStore {
     user: {
         isLoading: boolean;
-        isError: boolean;
+        isError: string;
         user: User | null;
     };
     chats: {
         isLoading: boolean;
-        isError: boolean;
+        isError: string;
         chats: Chat[] | null;
     };
     selectedChat: {
         isLoading: boolean;
-        isError: boolean;
+        isError: string;
         chat: Chat | null;
         users: ChatUser[] | null;
     };

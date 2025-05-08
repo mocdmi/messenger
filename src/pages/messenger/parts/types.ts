@@ -10,6 +10,4 @@ export interface UserActionFormProps {
     onSubmit?: (userId: number) => void;
 }
 
-export interface UserActionProps {
-    onSubmit: (userId: number) => void;
-}
+export type UserActionProps = Pick<UserActionFormProps, 'onSubmit'>;

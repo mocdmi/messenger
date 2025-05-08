@@ -1,5 +1,7 @@
 import { ROUTER } from '@const';
 import { Block } from '@core';
+import { connect } from '@helpers';
+import { AppStore } from '@types';
 import { Chat } from '../chat';
 import { Link } from '../link';
 import SearchForm from './parts/searchForm';
@@ -14,12 +16,17 @@ interface ChatProps {
     newMessagesNum?: number;
 }
 
-interface MessengerProps {
-    chats: ChatProps[];
+interface SidebarProps {
+    chats?: ChatProps[];
+    selectedChatId?: number;
 }
 
-export default class Sidebar extends Block<MessengerProps> {
-    constructor(props: MessengerProps) {
+class Sidebar extends Block<SidebarProps> {
+    constructor() {
+        const props = {
+            chats: [],
+        };
+
         super(
             'nav',
             {
@@ -39,13 +46,19 @@ export default class Sidebar extends Block<MessengerProps> {
         );
     }
 
-    componentDidUpdate(oldProps: MessengerProps, newProps: MessengerProps): boolean {
+    componentDidUpdate(oldProps: SidebarProps, newProps: SidebarProps): boolean {
         if (oldProps !== newProps) {
-            this.children.Chats = newProps.chats.map(
-                (props: ChatProps) => new Chat(props),
-            ) as Block[];
+            if (newProps.chats) {
+                this.children.Chats = newProps.chats.map(
+                    (props: ChatProps) =>
+                        new Chat({
+                            ...props,
+                            active: props.id === newProps.selectedChatId,
+                        }),
+                ) as Block[];
 
-            return true;
+                return true;
+            }
         }
 
         return false;
@@ -66,3 +79,12 @@ export default class Sidebar extends Block<MessengerProps> {
         `;
     }
 }
+
+function mapStateToProps(state: AppStore): SidebarProps {
+    return {
+        chats: state.chats.chats ?? [],
+        selectedChatId: state.selectedChat.chat?.id,
+    };
+}
+
+export default connect<AppStore, SidebarProps>(mapStateToProps)(Sidebar);
