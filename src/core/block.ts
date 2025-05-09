@@ -137,6 +137,7 @@ export default abstract class Block<
                     );
 
                     stub?.replaceWith(component.getContent());
+                    component.dispatchComponentDidMount();
                 });
             } else {
                 const stub: Element | null = fragment.content.querySelector(
@@ -144,6 +145,7 @@ export default abstract class Block<
                 );
 
                 stub?.replaceWith(child.getContent());
+                child.dispatchComponentDidMount();
             }
         });
 
@@ -151,7 +153,6 @@ export default abstract class Block<
     }
 
     private _render(): void {
-        this.componentWillUnmount();
         this.removeEvents();
 
         const block: DocumentFragment = this.compile();

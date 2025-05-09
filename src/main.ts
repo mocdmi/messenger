@@ -10,17 +10,17 @@ import { ErrorContext } from './context/types/ErrorContext';
 Store.getInstance().createStore<AppStore>({
     user: {
         isLoading: false,
-        isError: false,
+        isError: '',
         user: null,
     },
     chats: {
         isLoading: false,
-        isError: false,
+        isError: '',
         chats: null,
     },
     selectedChat: {
         isLoading: false,
-        isError: false,
+        isError: '',
         chat: null,
         users: null,
     },

@@ -43,6 +43,6 @@ export default class Route {
         }
 
         this.renderDom(this.rootQuery, this.block);
-        this.block.componentDidMount();
+        this.block.dispatchComponentDidMount();
     }
 }

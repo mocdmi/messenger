@@ -1,32 +1,33 @@
 import { Button, LabelInput } from '@components';
-import { Block, Validator } from '@core';
-import { isErrorsEmpty, validateOnSubmit } from '@helpers';
+import { Block, Validator, WebSocketClient } from '@core';
+import { connect, isErrorsEmpty, validateOnSubmit } from '@helpers';
+import { ChatsService } from '@services';
+import { AppStore } from '@types';
 import styles from '../styles.module.css';
 
 interface MessageFormProps {
-    formState: {
+    formState?: {
         message: string;
     };
-    errors: {
+    errors?: {
         message: string;
     };
+    chatId?: number;
+    userId?: number;
 }
 
 const validators: ((value: string) => string)[] = [
     (value: string) => Validator.validate(value).isRequired(),
 ];
 
-export default class MessageForm extends Block<MessageFormProps> {
+class MessageForm extends Block<MessageFormProps> {
+    private readonly chatsService = new ChatsService();
+    private wsClient: WebSocketClient | null = null;
+
     constructor() {
         super(
             'form',
             {
-                formState: {
-                    message: '',
-                },
-                errors: {
-                    message: '',
-                },
                 className: styles.message,
                 events: {
                     submit: (e) => {
@@ -50,7 +51,7 @@ export default class MessageForm extends Block<MessageFormProps> {
                         );
 
                         if (isErrorsEmpty(this.props.errors)) {
-                            console.log(this.props.formState);
+                            this.wsClient?.send('message', this.props.formState?.message);
                             el.reset();
                         }
                     },
@@ -101,6 +102,41 @@ export default class MessageForm extends Block<MessageFormProps> {
         );
     }
 
+    initWebsockets = async () => {
+        if (!this.props.chatId) {
+            throw new Error('Chat not found');
+        }
+
+        if (!this.props.userId) {
+            throw new Error('User not found');
+        }
+
+        const token = await this.chatsService.getChatToken(this.props.chatId);
+
+        this.wsClient = new WebSocketClient(
+            `/chats/${this.props.userId}/${this.props.chatId}/${token}`,
+        );
+
+        this.wsClient.connect();
+
+        this.wsClient.subscribe('message', (message) => {
+            console.log('New message: ', message);
+        });
+
+        this.wsClient.subscribe('error', (error) => {
+            console.error('WebSocket error: ', error);
+        });
+    };
+
+    componentDidUpdate(oldProps: MessageFormProps, newProps: MessageFormProps): boolean {
+        if (oldProps.chatId !== newProps.chatId) {
+            this.initWebsockets();
+            return true;
+        }
+
+        return false;
+    }
+
     // language=Handlebars
     render(): string {
         return `
@@ -111,3 +147,18 @@ export default class MessageForm extends Block<MessageFormProps> {
         `;
     }
 }
+
+function mapStateToProps(state: AppStore): MessageFormProps {
+    return {
+        formState: {
+            message: '',
+        },
+        errors: {
+            message: '',
+        },
+        chatId: state.selectedChat.chat?.id,
+        userId: state.user.user?.id,
+    };
+}
+
+export default connect(mapStateToProps)(MessageForm);

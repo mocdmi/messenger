@@ -147,12 +147,12 @@ export default class ChatsService {
         }
     }
 
-    async getChatToken(chatId: number): Promise<void> {
+    async getChatToken(chatId: number): Promise<string> {
         try {
             const { status, response } = await this.apiInstance.getChatToken(chatId);
 
             if (status === 200) {
-                console.log(response);
+                return response.token;
             } else {
                 throw new Error(`Error get chat token. Status: ${status}`);
             }

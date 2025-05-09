@@ -81,4 +81,4 @@ export type GetChatUsersResponseDto = ChatUserDto[];
 
 export type GetChatTokenResponseDto = {
     token: string;
-}[];
+};

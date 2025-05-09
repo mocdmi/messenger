@@ -8,3 +8,4 @@ export const ROUTER = {
 } as const;
 
 export const API_URL = 'https://ya-praktikum.tech/api/v2';
+export const WEB_SOCKET_URL = 'wss://ya-praktikum.tech/ws';
