@@ -1,10 +1,11 @@
 export { Sidebar } from './sidebar';
 export { LabelInput } from './labelInput';
 export { Input } from './input';
-export { Chat } from './chat';
+export { ChatCard } from './chatCard';
 export { Button } from './button';
 export { ProfileAvatar } from './profileAvatar';
 export { Link } from './link';
 export { Profile } from './profile';
 export { Panel } from './panel';
 export { Popup } from './popup';
+export { Chat } from './chat';

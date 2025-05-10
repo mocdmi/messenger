@@ -28,7 +28,7 @@ class MessageForm extends Block<MessageFormProps> {
         super(
             'form',
             {
-                className: styles.message,
+                className: styles.messageForm,
                 events: {
                     submit: (e) => {
                         e.preventDefault();
@@ -143,7 +143,9 @@ class MessageForm extends Block<MessageFormProps> {
             <div class="${styles.input}">
                 {{{MessageInput}}}
             </div>
-            {{{SendButton}}}
+            <div class="${styles.button}">
+                {{{SendButton}}}
+            </div>
         `;
     }
 }

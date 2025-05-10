@@ -2,7 +2,7 @@ import { ROUTER } from '@const';
 import { Block } from '@core';
 import { connect } from '@helpers';
 import { AppStore } from '@types';
-import { Chat } from '../chat';
+import { ChatCard } from '../chatCard';
 import { Link } from '../link';
 import SearchForm from './parts/searchForm';
 import styles from './styles.module.css';
@@ -31,10 +31,10 @@ class Sidebar extends Block<SidebarProps> {
             'nav',
             {
                 ...props,
-                className: styles.contacts,
+                className: styles.sidebar,
             },
             {
-                Chats: props.chats.map((props: ChatProps) => new Chat(props)) as Block[],
+                Chats: props.chats.map((props: ChatProps) => new ChatCard(props)) as Block[],
                 ProfileLink: new Link({
                     'theme-default': true,
                     label: 'Профиль',
@@ -51,7 +51,7 @@ class Sidebar extends Block<SidebarProps> {
             if (newProps.chats) {
                 this.children.Chats = newProps.chats.map(
                     (props: ChatProps) =>
-                        new Chat({
+                        new ChatCard({
                             ...props,
                             active: props.id === newProps.selectedChatId,
                         }),

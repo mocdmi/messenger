@@ -1,73 +1,44 @@
 .chat {
+    display: flex;
+    flex-direction: column;
+    row-gap: 20px;
+    width: 100%;
+    height: 100vh;
+    padding-right: 20px;
+}
+
+.chatActions {
+    display: flex;
+    align-items: center;
+    place-content: center space-between;
+    position: relative;
+    height: 54px;
     border-bottom: 1px solid var(--gray-color);
-    margin: 0 10px;
-    padding: 2px 0;
-
-    &:first-child {
-        border-top: 1px solid var(--gray-color);
-    }
+    column-gap: 10px;
 }
 
-.inner {
-    display: grid;
-    grid-template: max-content 1fr 20px / 47px 1fr max-content 20px;
-    grid-template-areas:
-        'avatar title date date'
-        'avatar last-message last-message .'
-        'avatar last-message last-message new-count';
-    gap: 4px 10px;
-    margin: 0 -10px;
-    padding: 10px;
-
-    &.active {
-        background: var(--active-group-color);
-    }
+.messages {
+    display: flex;
+    align-items: flex-start;
+    flex: 1;
+    align-content: center;
+    column-gap: 10px;
+    padding: 10px 0;
 }
 
-.avatarWrap {
-    grid-area: avatar;
-}
-
-.avatar {
-    width: 47px;
-    height: 47px;
-    border-radius: 50%;
-    background-color: var(--gray-color);
-}
-
-.title {
-    grid-area: title;
-    font-size: var(--font-size-m);
-    font-weight: 600;
-    margin: 0;
-}
-
-.lastMessage {
-    grid-area: last-message;
-    font-size: var(--font-size-s);
-    color: var(--dark-gray-color);
-    font-weight: 500;
-}
-
-.date {
-    grid-area: date;
-    font-size: var(--font-size-xs);
-    font-weight: 500;
-    color: var(--dark-gray-color);
-    text-align: right;
-}
-
-.newCount {
-    grid-area: new-count;
+.noMessages {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    background-color: var(--primary-color);
-    color: var(--light-color);
-    font-weight: 500;
-    font-size: var(--font-size-xs);
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
+    width: 100%;
+    height: 100%;
+    color: var(--dark-gray-color);
+    font-size: var(--font-size-s);
+    width: 100%;
+}
+
+.messageFormWrap {
+    border-top: 1px solid var(--gray-color);
+    padding: 10px 0;
 }

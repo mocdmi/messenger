@@ -1,8 +1,6 @@
 import { Sidebar } from '@components';
 import { Block } from '@core';
-import Actions from './parts/actions';
-import SelectedChatInfo from './parts/selectedChatInfo';
-import MessageForm from './parts/messageForm';
+import { Chat } from '@components';
 import styles from './styles.module.css';
 import { ChatsService, AuthService } from '@services';
 
@@ -16,10 +14,8 @@ export default class Messenger extends Block {
             {},
             {
                 // TODO: Сделать пропсы опциональными
-                SelectedChatInfo: new SelectedChatInfo({}) as Block,
                 Sidebar: new Sidebar({}) as Block,
-                MessageForm: new MessageForm({}) as Block,
-                Actions: new Actions({}) as Block,
+                Chat: new Chat({}) as Block,
             },
         );
     }
@@ -37,17 +33,12 @@ export default class Messenger extends Block {
     render(): string {
         return `
             <div class="${styles.main}">
-                <header class="${styles.header}">
-                    {{{SelectedChatInfo}}}
-                    {{{Actions}}}
-                </header>
-                <main class="${styles.chat}">
-                    <div class="${styles.noMessages}">Выберите чат, чтобы отправить сообщение</div>
-                </main>
-                <div class="${styles.sidebar}">
+                <div class="${styles.sidebarWrap}">
                     {{{Sidebar}}}
                 </div>
-                {{{MessageForm}}}
+                <div class="${styles.chatWrap}">
+                    {{{Chat}}}
+                </div>
             </div>
         `;
     }

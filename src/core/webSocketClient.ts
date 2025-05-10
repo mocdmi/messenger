@@ -2,6 +2,7 @@ import { WEB_SOCKET_URL } from '@const';
 import { EventBus } from '@core';
 
 type Queue<TContent = string> = { type: string; content: TContent };
+type QueueArray<TContent = string> = Array<Queue<TContent>>;
 
 export default class WebSocketClient {
     private static EVENTS = {
@@ -12,7 +13,7 @@ export default class WebSocketClient {
     private socket: WebSocket | null = null;
     private isConnected: boolean = false;
     private eventBus: EventBus = new EventBus();
-    private messagesQueue: Queue[] = [];
+    private messagesQueue: QueueArray = [];
     reconnectInterval: number = 3000;
     maxReconnectAttempts: number = 5;
     reconnectAttempts: number = 0;
@@ -42,18 +43,18 @@ export default class WebSocketClient {
                     }
 
                     this.eventBus.emit(type, content);
-                } catch (error: Error) {
+                } catch (error: unknown) {
                     this.eventBus.emit(WebSocketClient.EVENTS.ERROR, {
                         type: 'message',
-                        message: error.message,
+                        message: (error as Error).message,
                     });
                 }
             };
 
-            this.socket.onerror = (error: Error) => {
+            this.socket.onerror = () => {
                 this.eventBus.emit(WebSocketClient.EVENTS.ERROR, {
                     type: 'connection',
-                    message: error.message,
+                    message: 'An error occurred in the WebSocket connection.',
                 });
             };
 
@@ -85,10 +86,10 @@ export default class WebSocketClient {
                     });
                 }
             };
-        } catch (error: Error) {
+        } catch (error: unknown) {
             this.eventBus.emit(WebSocketClient.EVENTS.ERROR, {
                 type: 'initialisation',
-                message: error.message,
+                message: (error as Error).message,
             });
         }
     }
@@ -105,14 +106,14 @@ export default class WebSocketClient {
             try {
                 const message = JSON.stringify({ content, type });
                 this.socket.send(message);
-            } catch (error: Error) {
+            } catch (error: unknown) {
                 this.eventBus.emit(WebSocketClient.EVENTS.ERROR, {
                     type: 'send',
-                    message: error.message,
+                    message: (error as Error).message,
                 });
             }
         } else {
-            this.messagesQueue.push({ type, content });
+            (this.messagesQueue as QueueArray<TContent>).push({ type, content });
             this.eventBus.emit(WebSocketClient.EVENTS.ERROR, {
                 type: 'send',
                 message: 'WebSocket is not connected. Cannot send message.',
