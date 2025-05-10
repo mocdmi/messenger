@@ -1,11 +1,11 @@
 import { Profile } from '@components';
 import { Block } from '@core';
 import { AuthService, UserService } from '@services';
+import { UserDto } from '../../types';
 import { EditProfileProps } from './types';
 import EditForm from './parts/editForm';
 import { connect } from '@helpers';
-import { AppStore } from '@types';
-import { UserUpdateRequestDto } from '@api';
+import { AppStore } from '../../store';
 import mapStateToProps from './mapStateToProps';
 
 class EditProfilePage extends Block<EditProfileProps> {
@@ -19,7 +19,7 @@ class EditProfilePage extends Block<EditProfileProps> {
                 avatar: props.avatar || '',
                 Children: new EditForm({
                     ...props,
-                    onSubmit: (form: UserUpdateRequestDto) => {
+                    onSubmit: (form: UserDto) => {
                         this.userService.editUser(form);
                     },
                 }) as Block,

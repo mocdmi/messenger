@@ -1,4 +1,4 @@
-import { AppStore } from '@types';
+import { AppStore } from '../../store';
 import { EditPasswordProps } from './types';
 
 export default function mapStateToProps(state: AppStore): EditPasswordProps {

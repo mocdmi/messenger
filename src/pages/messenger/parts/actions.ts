@@ -2,7 +2,7 @@ import { Button, Panel, Popup } from '@components';
 import { Block, Store } from '@core';
 import { connect } from '@helpers';
 import { ChatsService } from '@services';
-import { AppStore } from '@types';
+import { AppStore } from '../../../store';
 import styles from '../styles.module.css';
 import AddUserForm from './addUserForm';
 import RemoveChatForm from './removeUserForm';

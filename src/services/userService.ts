@@ -1,23 +1,26 @@
-import { UserApi, PasswordUpdateRequestDto, UserUpdateRequestDto } from '@api';
+import { UserApi } from '@api';
 import { Store } from '@core';
+import { UpdateUserPasswordRequestDto, UserDto } from '../types';
 
 export default class UserService {
     private readonly store = Store.getInstance();
     private readonly userApi = new UserApi();
 
-    constructor() {}
-
-    async editUser(data: UserUpdateRequestDto): Promise<void> {
+    async editUser(data: UserDto): Promise<void> {
         try {
             const { status, response } = await this.userApi.update(data);
 
-            if (status === 200) {
-                this.store.set('user.user', response);
-            } else if ('reason' in response) {
+            if ('reason' in response) {
                 throw new Error(response.reason);
             }
-        } catch (error) {
-            console.error(error);
+
+            if (status !== 200) {
+                throw new Error(`Error edit user. Status: ${status}`);
+            }
+
+            this.store.set('user.user', response);
+        } catch (error: unknown) {
+            throw error;
         }
     }
 
@@ -28,25 +31,29 @@ export default class UserService {
         try {
             const { status, response } = await this.userApi.updateAvatar(formData);
 
-            if (status === 200) {
-                this.store.set('user.user', response);
-            } else if ('reason' in response) {
+            if ('reason' in response) {
                 throw new Error(response.reason);
             }
-        } catch (error) {
-            console.error(error);
+
+            if (status !== 200) {
+                throw new Error(`Error edit avatar. Status: ${status}`);
+            }
+
+            this.store.set('user.user', response);
+        } catch (error: unknown) {
+            throw error;
         }
     }
 
-    async editPassword(data: PasswordUpdateRequestDto): Promise<void> {
+    async editPassword(data: UpdateUserPasswordRequestDto): Promise<void> {
         try {
             const { status } = await this.userApi.updatePassword(data);
 
             if (status !== 200) {
                 throw new Error(`Error edit password. Status: ${status}`);
             }
-        } catch (error) {
-            console.error(error);
+        } catch (error: unknown) {
+            throw error;
         }
     }
 }

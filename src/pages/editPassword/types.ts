@@ -1,4 +1,4 @@
-import { PasswordUpdateRequestDto } from '@api';
+import { UpdateUserPasswordRequestDto } from '../../types';
 
 export type InputKey = 'oldPassword' | 'newPassword' | 'newPasswordConfirm';
 
@@ -6,7 +6,7 @@ export interface EditPasswordProps {
     name: string;
     avatar: string;
     form: Record<InputKey, ProfileForm>;
-    onSubmit?: (form: PasswordUpdateRequestDto) => void;
+    onSubmit?: (form: UpdateUserPasswordRequestDto) => void;
 }
 
 interface ProfileForm {

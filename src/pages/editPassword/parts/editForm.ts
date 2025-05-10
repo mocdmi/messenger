@@ -1,9 +1,9 @@
 import { Button, LabelInput } from '@components';
 import { Block, Validator } from '@core';
 import { isErrorsEmpty } from '@helpers';
+import { UpdateUserPasswordRequestDto } from '../../../types';
 import styles from '../styles.module.css';
 import { EditPasswordProps, InputKey } from '../types';
-import { PasswordUpdateRequestDto } from '@api';
 
 const validators: Record<InputKey, (value: unknown) => string> = {
     oldPassword: (value: unknown) => Validator.validate((value ?? '') as string).isPassword(),
@@ -158,7 +158,7 @@ export default class EditForm extends Block<EditPasswordProps> {
         if (isErrorsEmpty(errors)) {
             const form = this.props.form;
 
-            const data: PasswordUpdateRequestDto = {
+            const data: UpdateUserPasswordRequestDto = {
                 oldPassword: form.oldPassword.value as string,
                 newPassword: form.newPassword.value as string,
             };

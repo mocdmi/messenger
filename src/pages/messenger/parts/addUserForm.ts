@@ -16,7 +16,7 @@ const formConfig = {
     },
 } as const;
 
-export default class AddUserForm extends BaseForm<UserActionFormProps, InputKey> {
+class AddUserForm extends BaseForm<UserActionFormProps, InputKey> {
     constructor(props: UserActionProps) {
         const initialProps: UserActionFormProps = {
             form: {
@@ -68,3 +68,5 @@ export default class AddUserForm extends BaseForm<UserActionFormProps, InputKey>
         `;
     }
 }
+
+export default AddUserForm;

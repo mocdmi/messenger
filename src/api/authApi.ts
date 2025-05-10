@@ -1,6 +1,11 @@
 import { BaseAPI, HTTPTransport } from '@core';
-import { UserResponseDto } from '@api';
-import { SignInRequestDto, SignInResponseDto, SignUpRequestDto, SignUpResponseDto } from './types';
+import {
+    AuthUserResponseDto,
+    SignInRequestDto,
+    SignInResponseDto,
+    SignUpRequestDto,
+    SignUpResponseDto,
+} from '../types';
 
 export default class AuthApi extends BaseAPI {
     apiInstance = new HTTPTransport('/auth');
@@ -14,7 +19,7 @@ export default class AuthApi extends BaseAPI {
     }
 
     async request() {
-        return this.apiInstance.get<void, UserResponseDto>('/user');
+        return this.apiInstance.get<void, AuthUserResponseDto>('/user');
     }
 
     async logout() {

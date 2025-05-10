@@ -15,7 +15,7 @@ export default class Messenger extends Block {
             {
                 // TODO: Сделать пропсы опциональными
                 Sidebar: new Sidebar({}) as Block,
-                Chat: new Chat({}) as Block,
+                Chat: new Chat() as Block,
             },
         );
     }

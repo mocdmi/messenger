@@ -1,4 +1,5 @@
 import { Block } from '@core';
+import Actions from '../../pages/messenger/parts/actions';
 import MessageForm from '../../pages/messenger/parts/messageForm';
 import SelectedChatInfo from '../../pages/messenger/parts/selectedChatInfo';
 import styles from './styles.module.css';
@@ -11,7 +12,7 @@ export default class Chat extends Block {
                 className: styles.chat,
             },
             {
-                // Actions: new Actions({}) as Block,
+                Actions: new Actions({}) as Block,
                 SelectedChatInfo: new SelectedChatInfo({}) as Block,
                 MessageForm: new MessageForm({}) as Block,
             },

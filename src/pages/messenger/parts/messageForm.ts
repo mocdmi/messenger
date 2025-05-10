@@ -2,7 +2,7 @@ import { Button, LabelInput } from '@components';
 import { Block, Validator, WebSocketClient } from '@core';
 import { connect, isErrorsEmpty, validateOnSubmit } from '@helpers';
 import { ChatsService } from '@services';
-import { AppStore } from '@types';
+import { AppStore } from '../../../store';
 import styles from '../styles.module.css';
 
 interface MessageFormProps {

@@ -1,7 +1,7 @@
 import { ROUTER } from '@const';
 import { Block } from '@core';
 import { connect } from '@helpers';
-import { AppStore } from '@types';
+import { AppStore, Chat } from '../../store';
 import { ChatCard } from '../chatCard';
 import { Link } from '../link';
 import SearchForm from './parts/searchForm';
@@ -17,7 +17,7 @@ interface ChatProps {
 }
 
 interface SidebarProps {
-    chats?: ChatProps[];
+    chats?: Chat[];
     selectedChatId?: number;
 }
 

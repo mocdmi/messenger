@@ -1,8 +1,8 @@
 import { Block } from '@core';
 import { connect } from '@helpers';
-import { PasswordUpdateRequestDto } from '@api';
 import { Profile } from '@components';
 import { AuthService, UserService } from '@services';
+import { UpdateUserPasswordRequestDto } from '../../types';
 import mapStateToProps from './mapStateToProps';
 import { EditPasswordProps } from './types';
 import EditForm from './parts/editForm';
@@ -18,7 +18,7 @@ class EditPasswordPage extends Block<EditPasswordProps> {
                 avatar: props.avatar,
                 Children: new EditForm({
                     ...props,
-                    onSubmit: async (data: PasswordUpdateRequestDto) => {
+                    onSubmit: async (data: UpdateUserPasswordRequestDto) => {
                         await this.userService.editPassword(data);
                     },
                 }) as Block,

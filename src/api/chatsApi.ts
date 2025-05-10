@@ -1,19 +1,19 @@
 import { BaseAPI, HTTPTransport } from '@core';
 import {
-    ChatResponseDto,
+    AddUsersToChatRequestDto,
     ChatRequestDto,
-    CreateChatResponseDto,
     CreateChatRequestDto,
     DeleteChatRequestDto,
-    DeleteChatResponseDto,
-    AddUsersToChatRequestDto,
-    AddUsersToChatResponseDto,
     DeleteUsersFromChatRequestDto,
-    DeleteUsersFromChatResponseDto,
-    GetChatTokenResponseDto,
-    GetChatUsersResponseDto,
     GetChatUsersRequestDto,
-} from './types';
+    AddUsersToChatResponseDto,
+    ChatResponseDto,
+    CreateChatResponseDto,
+    DeleteChatResponseDto,
+    DeleteUsersFromChatResponseDto,
+    GetChatUsersResponseDto,
+    GetChatTokenResponseDto,
+} from '../types';
 
 export default class ChatsApi extends BaseAPI {
     apiInstance = new HTTPTransport('/chats');

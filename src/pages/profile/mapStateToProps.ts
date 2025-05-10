@@ -1,4 +1,4 @@
-import { AppStore } from '@types';
+import { AppStore } from '../../store';
 import { ProfileProps } from './types';
 
 export default function mapStateToProps(state: AppStore): ProfileProps {

@@ -1,6 +1,6 @@
 import { Block } from '@core';
 import { connect } from '@helpers';
-import { AppStore } from '@types';
+import { AppStore } from '../../../store';
 import styles from '../styles.module.css';
 
 interface TitleProps {

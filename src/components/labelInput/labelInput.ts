@@ -1,6 +1,6 @@
 import { Block } from '@core';
 import { Input } from '../input';
-import { InputType } from '@types';
+import { InputType } from '../../types';
 import styles from './styles.module.css';
 
 export interface LabelInputProps {
@@ -60,6 +60,8 @@ export default class LabelInput extends Block<LabelInputProps> {
         if (oldProps.value !== newProps.value) {
             const input = this.children.Input as Block;
             input.setProps({ value: newProps.value });
+
+            return true;
         }
 
         if (oldProps.error !== newProps.error) {
@@ -67,9 +69,11 @@ export default class LabelInput extends Block<LabelInputProps> {
                 ...this.props,
                 error: newProps.error,
             });
+
+            return true;
         }
 
-        return true;
+        return false;
     }
 
     // language=Handlebars
