@@ -1,6 +1,6 @@
-import { ChatsApi } from '@api';
-import { Store } from '@core';
-import { AppStore, Chat, ChatUser } from '../store';
+import { ChatsApi } from '@/api';
+import { Store } from '@/core';
+import { AppStore, Chat, ChatUser } from '@/store';
 import {
     AddUsersToChatRequestDto,
     ChatDto,
@@ -10,7 +10,7 @@ import {
     DeleteChatRequestDto,
     DeleteUsersFromChatRequestDto,
     GetChatUsersRequestDto,
-} from '../types';
+} from '@/types';
 
 export class ChatsService {
     private readonly apiInstance = new ChatsApi();

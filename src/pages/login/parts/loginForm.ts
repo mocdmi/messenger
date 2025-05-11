@@ -1,8 +1,8 @@
-import { BaseForm, Validator } from '@core';
-import { isErrorsEmpty } from '@helpers';
-import { AuthService } from '@services';
-import styles from '../styles.module.css';
+import { BaseForm, Validator } from '@/core';
+import { isErrorsEmpty } from '@/helpers';
+import { AuthService } from '@/services';
 import { LoginFormProps, InputKey } from '../types';
+import styles from '../styles.module.css';
 
 const formConfig = {
     formFields: {

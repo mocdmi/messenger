@@ -1,5 +1,5 @@
-import { Block } from '@core';
-import { Panel } from '../panel';
+import { Block } from '@/core';
+import { Panel } from '@/components';
 import { PopupProps } from './types';
 import Inner from './parts/inner';
 import styles from './styles.module.css';

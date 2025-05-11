@@ -1,5 +1,6 @@
-import { Block, BlockConstructor, Store, StoreEvents } from '@core';
-import { isEqual } from '@helpers';
+import { Block, Store } from '@/core';
+import { BlockConstructor, StoreEvents } from '@/types';
+import { isEqual } from '@/helpers';
 
 export default function connect<TStore extends object, TProps extends object>(
     mapStateToProps: (store: TStore) => TProps,

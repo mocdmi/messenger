@@ -1,8 +1,8 @@
-import { Sidebar } from '@components';
-import { Block } from '@core';
-import { Chat } from '@components';
+import { Sidebar } from '@/components';
+import { Block } from '@/core';
+import { Chat } from '@/components';
+import { ChatsService, AuthService } from '@/services';
 import styles from './styles.module.css';
-import { ChatsService, AuthService } from '@services';
 
 export default class Messenger extends Block {
     private readonly chatsService = new ChatsService();

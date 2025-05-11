@@ -1,4 +1,4 @@
-import { UserDto } from '../../types';
+import { UserDto } from '@/types';
 
 export type InputKey = 'email' | 'login' | 'first_name' | 'second_name' | 'display_name' | 'phone';
 

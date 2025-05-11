@@ -1,25 +1,23 @@
-import { Button, Panel, Popup } from '@components';
-import { Block, Store } from '@core';
-import { connect } from '@helpers';
-import { ChatsService } from '@services';
-import { AppStore } from '../../../store';
-import styles from '../styles.module.css';
-import AddUserForm from './addUserForm';
-import RemoveChatForm from './removeUserForm';
+import { Block, Store } from '@/core';
+import { Button, Panel, Popup, ChatActionsForm } from '@/components';
+import { connect } from '@/helpers';
+import { ChatsService } from '@/services';
+import { AppStore } from '@/store';
+import styles from './styles.module.css';
 
-interface ActionsProps {
+interface ChatActionsProps {
     showActions?: boolean;
     showAddAction?: boolean;
     showRemoveAction?: boolean;
     chatId?: number;
 }
 
-class Actions extends Block<ActionsProps> {
+class ChatActions extends Block<ChatActionsProps> {
     private readonly store = Store.getInstance();
     private readonly chatsService = new ChatsService();
 
     constructor() {
-        const props: ActionsProps = {
+        const props: ChatActionsProps = {
             showActions: false,
             showAddAction: false,
             showRemoveAction: false,
@@ -69,7 +67,8 @@ class Actions extends Block<ActionsProps> {
             }) as Block,
             PopupAddUser: new Popup({
                 title: 'Добавить пользователя',
-                Children: new AddUserForm({
+                Children: new ChatActionsForm({
+                    buttonTitle: 'Добавить',
                     onSubmit: (userId: number) => this.addUserToChatHandler(userId),
                 }) as Block,
                 hidePopupHandler: () => {
@@ -81,7 +80,8 @@ class Actions extends Block<ActionsProps> {
             }) as Block,
             PopupRemoveContact: new Popup({
                 title: 'Удалить пользователя',
-                Children: new RemoveChatForm({
+                Children: new ChatActionsForm({
+                    buttonTitle: 'Удалить',
                     onSubmit: (userId: number) => this.removeUserToChatHandler(userId),
                 }) as Block,
                 hidePopupHandler: () => {
@@ -133,11 +133,11 @@ class Actions extends Block<ActionsProps> {
     // language=Handlebars
     render(): string {
         return `
-            <div class="{{#if showActions}}${styles.showActionsButtonActive}{{/if}}">
+            <div class="{{#if showActions}}${styles.buttonActive}{{/if}}">
                 {{{ShowActionsButton}}}
             </div>
             {{#if showActions}}
-                <div class="${styles.actionsPopup}">
+                <div class="${styles.popup}">
                     {{{ActionsPanel}}}
                 </div>
             {{/if}}
@@ -151,10 +151,10 @@ class Actions extends Block<ActionsProps> {
     }
 }
 
-function mapStateToProps(state: AppStore): ActionsProps {
+function mapStateToProps(state: AppStore): ChatActionsProps {
     return {
         chatId: state.selectedChat.chat?.id,
     };
 }
 
-export default connect<AppStore, ActionsProps>(mapStateToProps)(Actions);
+export default connect<AppStore, ChatActionsProps>(mapStateToProps)(ChatActions);

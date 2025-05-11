@@ -1,4 +1,4 @@
-import { UpdateUserPasswordRequestDto } from '../../types';
+import { UpdateUserPasswordRequestDto } from '@/types';
 
 export type InputKey = 'oldPassword' | 'newPassword' | 'newPasswordConfirm';
 

@@ -1,10 +1,10 @@
-import { ROUTER } from '@const';
-import * as context from './context';
-import { Router } from '@core';
-import * as Pages from '@pages';
-import '@assets/styles/styles.css';
-import { ErrorContext } from './context/types/ErrorContext';
-import { initStore } from './store';
+import { ROUTER } from '@/const';
+import * as context from '@/context';
+import { Router } from '@/core';
+import * as Pages from '@/pages';
+import '@/assets/styles/styles.css';
+import { ErrorContext } from '@/context/types/ErrorContext';
+import { initStore } from '@/store';
 
 initStore();
 

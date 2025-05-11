@@ -1,7 +1,7 @@
-import { Button, LabelInput } from '@components';
-import { Block, Validator } from '@core';
-import { isErrorsEmpty } from '@helpers';
-import { UpdateUserPasswordRequestDto } from '../../../types';
+import { Button, LabelInput } from '@/components';
+import { Block, Validator } from '@/core';
+import { isErrorsEmpty } from '@/helpers';
+import { UpdateUserPasswordRequestDto } from '@/types';
 import styles from '../styles.module.css';
 import { EditPasswordProps, InputKey } from '../types';
 

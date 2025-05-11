@@ -1,14 +1,14 @@
-import { Button, LabelInput } from '@components';
-import { Block, Validator, WebSocketClient } from '@core';
-import { connect, isErrorsEmpty, validateOnSubmit } from '@helpers';
-import { ChatsService } from '@services';
-import { AppStore } from '../../../store';
+import { Button, LabelInput } from '@/components';
+import { Block, Validator, WebSocketClient } from '@/core';
+import { connect, isErrorsEmpty, validateOnSubmit } from '@/helpers';
+import { ChatsService } from '@/services';
+import { AppStore } from '@/store';
 import styles from '../styles.module.css';
 
 interface MessageFormProps {
     formState?: {
         message: string;
-    };
+    } | null;
     errors?: {
         message: string;
     };
@@ -28,6 +28,12 @@ class MessageForm extends Block<MessageFormProps> {
         super(
             'form',
             {
+                formState: {
+                    message: '',
+                },
+                errors: {
+                    message: '',
+                },
                 className: styles.messageForm,
                 events: {
                     submit: (e) => {
@@ -36,8 +42,8 @@ class MessageForm extends Block<MessageFormProps> {
 
                         validateOnSubmit(
                             validators,
-                            this.props.formState,
-                            this.props.errors,
+                            this.props.formState ?? { message: '' },
+                            this.props.errors ?? { message: '' },
                             this.children,
                             (name: string, error: string) => {
                                 this.setProps({

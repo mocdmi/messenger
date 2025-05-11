@@ -1,4 +1,5 @@
-import { Block, BlockConstructor, Router } from '@core';
+import { Block, Router } from '@/core';
+import { BlockConstructor } from '@/types';
 
 export default function withRouter<TProps extends object = object, TAttrs extends object = object>(
     block: BlockConstructor<TProps, TAttrs>,

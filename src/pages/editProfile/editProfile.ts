@@ -1,11 +1,11 @@
-import { Profile } from '@components';
-import { Block } from '@core';
-import { AuthService, UserService } from '@services';
-import { UserDto } from '../../types';
+import { Profile } from '@/components';
+import { Block } from '@/core';
+import { AuthService, UserService } from '@/services';
+import { UserDto } from '@/types';
 import { EditProfileProps } from './types';
 import EditForm from './parts/editForm';
-import { connect } from '@helpers';
-import { AppStore } from '../../store';
+import { connect } from '@/helpers';
+import { AppStore } from '@/store';
 import mapStateToProps from './mapStateToProps';
 
 class EditProfilePage extends Block<EditProfileProps> {

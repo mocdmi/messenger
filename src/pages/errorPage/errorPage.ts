@@ -1,8 +1,8 @@
-import { Link } from '@components';
-import { ErrorContext } from '../../context/types/ErrorContext';
-import { Block } from '@core';
+import { Link } from '@/components';
+import { ErrorContext } from '@/context/types/ErrorContext';
+import { Block } from '@/core';
+import { ROUTER } from '@/const';
 import styles from './styles.module.css';
-import { ROUTER } from '@const';
 
 export default class ErrorPage extends Block<ErrorContext> {
     constructor(props: ErrorContext) {

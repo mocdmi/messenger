@@ -1,11 +1,11 @@
-import { Profile } from '@components';
-import { Block } from '@core';
-import { connect } from '@helpers';
-import { AuthService } from '@services';
-import { AppStore } from '../../store';
+import { Profile } from '@/components';
+import { Block } from '@/core';
+import { connect } from '@/helpers';
+import { AuthService } from '@/services';
+import { AppStore } from '@/store';
 import ProfileInner from './parts/profileInner';
-import { ProfileProps } from './types';
 import mapStateToProps from './mapStateToProps';
+import { ProfileProps } from './types';
 
 class ProfilePage extends Block<ProfileProps> {
     private readonly authService = new AuthService();

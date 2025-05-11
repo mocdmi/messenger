@@ -7,15 +7,7 @@ export default defineConfig({
     },
     resolve: {
         alias: {
-            '@core': path.resolve(__dirname, './src/core'),
-            '@components': path.resolve(__dirname, './src/components'),
-            '@pages': path.resolve(__dirname, './src/pages'),
-            '@helpers': path.resolve(__dirname, './src/helpers'),
-            '@services': path.resolve(__dirname, './src/services'),
-            '@api': path.resolve(__dirname, './src/api'),
-            '@assets': path.resolve(__dirname, './src/assets'),
-            '@const': path.resolve(__dirname, './src/const.ts'),
-            '@types': path.resolve(__dirname, './src/types.ts')
+            '@': path.resolve(__dirname, 'src'),
         }
     }
 });

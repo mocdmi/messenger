@@ -1,8 +1,19 @@
-import { BaseForm } from '@core';
-import { isErrorsEmpty } from '@helpers';
-import styles from '../styles.module.css';
-import { InputKey, UserActionProps } from './types';
-import { UserActionFormProps } from './types';
+import { BaseForm } from '@/core';
+import { isErrorsEmpty } from '@/helpers';
+import styles from './styles.module.css';
+
+export type InputKey = 'login';
+
+export interface ChatActionsFormProps {
+    form: {
+        login: {
+            value: string;
+            error: string;
+        };
+    };
+    buttonTitle: string;
+    onSubmit?: (userId: number) => void;
+}
 
 const formConfig = {
     formFields: {
@@ -17,15 +28,16 @@ const formConfig = {
     },
 } as const;
 
-export default class RemoveChatForm extends BaseForm<UserActionFormProps, InputKey> {
-    constructor(props: UserActionProps) {
-        const initialProps: UserActionFormProps = {
+export default class ChatActionsForm extends BaseForm<ChatActionsFormProps, InputKey> {
+    constructor(props: Pick<ChatActionsFormProps, 'onSubmit' | 'buttonTitle'>) {
+        const initialProps: ChatActionsFormProps = {
             form: {
                 login: {
                     value: '',
                     error: '',
                 },
             },
+            buttonTitle: '',
         };
 
         super(
@@ -34,7 +46,7 @@ export default class RemoveChatForm extends BaseForm<UserActionFormProps, InputK
                 ...initialProps,
             },
             formConfig,
-            { label: 'Удалить' },
+            { label: props.buttonTitle },
         );
     }
 
@@ -52,18 +64,13 @@ export default class RemoveChatForm extends BaseForm<UserActionFormProps, InputK
             ${Object.values(formConfig.formFields)
                 .map(
                     ({ component }) => `
-                    <div class="${styles.actionField}">
+                    <div class="${styles.field}">
                         {{{${component}}}}
                     </div>
                 `,
                 )
                 .join('')}
-            {{#if isError}}
-                <div class="${styles.error}">
-                    {{isError}}
-                </div>
-            {{/if}}
-            <div class="${styles.actionSubmit}">
+            <div class="${styles.submit}">
                 {{{SubmitButton}}}
             </div>
         `;

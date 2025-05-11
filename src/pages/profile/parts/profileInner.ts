@@ -1,9 +1,9 @@
-import { ProfileProps } from '..';
-import { Link } from '@components';
-import { ROUTER } from '@const';
-import { Block } from '@core';
+import { Link } from '@/components';
+import { ROUTER } from '@/const';
+import { Block } from '@/core';
+import { AuthService } from '@/services';
+import { ProfileProps } from '../types';
 import styles from '../styles.module.css';
-import { AuthService } from '@services';
 
 export default class ProfileInner extends Block<ProfileProps> {
     private readonly authService = new AuthService();

@@ -20,15 +20,7 @@
     "strictNullChecks": true,
     "baseUrl": ".",
     "paths": {
-      "@core": ["src/core"],
-      "@components": ["src/components"],
-      "@pages": ["src/pages"],
-      "@helpers": ["src/helpers"],
-      "@services": ["src/services"],
-      "@api": ["src/api"],
-      "@assets": ["src/assets"],
-      "@const": ["src/const.ts"],
-      "@types": ["src/types.ts"]
+      "@/*": ["src/*"],
     }
   },
   "include": ["src"]

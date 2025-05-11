@@ -1,6 +1,5 @@
-import { Block } from '@core';
-import { Button } from '../../button';
-import { Input } from '../../input';
+import { Block } from '@/core';
+import { Button, Input } from '@/components';
 import styles from '../styles.module.css';
 
 interface UploadFormProps {

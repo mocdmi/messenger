@@ -1,4 +1,4 @@
-import { Route, BlockConstructor } from '@core';
+import { Route, BlockConstructor } from '@/core';
 
 export default class Router {
     private static instance: Router;

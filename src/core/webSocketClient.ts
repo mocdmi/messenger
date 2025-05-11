@@ -1,5 +1,5 @@
-import { WEB_SOCKET_URL } from '@const';
-import { EventBus } from '@core';
+import { WEB_SOCKET_URL } from '@/const';
+import { EventBus } from '@/core';
 
 type Queue<TContent = string> = { type: string; content: TContent };
 type QueueArray<TContent = string> = Array<Queue<TContent>>;

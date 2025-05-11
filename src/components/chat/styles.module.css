@@ -7,7 +7,7 @@
     padding-right: 20px;
 }
 
-.chatActions {
+.actions {
     display: flex;
     align-items: center;
     place-content: center space-between;
@@ -35,7 +35,6 @@
     height: 100%;
     color: var(--dark-gray-color);
     font-size: var(--font-size-s);
-    width: 100%;
 }
 
 .messageFormWrap {

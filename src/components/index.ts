@@ -9,3 +9,5 @@ export { Profile } from './profile';
 export { Panel } from './panel';
 export { Popup } from './popup';
 export { Chat } from './chat';
+export { ChatActionsForm } from './chatActionsForm';
+export { ChatActions } from './chatActions';

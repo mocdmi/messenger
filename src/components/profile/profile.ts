@@ -1,7 +1,6 @@
-import { Block, Router } from '@core';
-import { withRouter } from '@helpers';
-import { Link } from '../link';
-import { ProfileAvatar } from '../profileAvatar';
+import { Block, Router } from '@/core';
+import { withRouter } from '@/helpers';
+import { Link, ProfileAvatar } from '@/components';
 import styles from './styles.module.css';
 
 interface ProfileProps {

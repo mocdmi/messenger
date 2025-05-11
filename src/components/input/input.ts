@@ -1,5 +1,5 @@
-import { Block } from '@core';
-import { InputType } from '../../types';
+import { Block } from '@/core';
+import { InputType } from '@/types';
 
 interface InputAttrs {
     type: InputType;

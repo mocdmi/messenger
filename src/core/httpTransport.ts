@@ -1,4 +1,4 @@
-import { API_URL } from '@const';
+import { API_URL } from '@/const';
 
 interface Options<TReq> extends Partial<XMLHttpRequest> {
     headers?: Record<string, string>;

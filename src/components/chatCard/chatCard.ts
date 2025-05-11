@@ -1,6 +1,6 @@
-import { Block, Store } from '@core';
+import { Block, Store } from '@/core';
+import { ChatsService } from '@/services';
 import styles from './styles.module.css';
-import { ChatsService } from '@services';
 
 interface ChatCardProps {
     id: number;

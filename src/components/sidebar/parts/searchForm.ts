@@ -1,5 +1,5 @@
-import { Block } from '@core';
-import { LabelInput } from '../../labelInput';
+import { Block } from '@/core';
+import { LabelInput } from '@/components';
 import styles from '../styles.module.css';
 
 interface SearchFormProps {

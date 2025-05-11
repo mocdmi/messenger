@@ -1,7 +1,7 @@
-import { Block } from '@core';
-import Actions from '../../pages/messenger/parts/actions';
-import MessageForm from '../../pages/messenger/parts/messageForm';
-import SelectedChatInfo from '../../pages/messenger/parts/selectedChatInfo';
+import { Block } from '@/core';
+import { ChatActions } from '@/components';
+import MessageForm from '@/pages/messenger/parts/messageForm';
+import SelectedChatInfo from '@/pages/messenger/parts/selectedChatInfo';
 import styles from './styles.module.css';
 
 export default class Chat extends Block {
@@ -12,7 +12,7 @@ export default class Chat extends Block {
                 className: styles.chat,
             },
             {
-                Actions: new Actions({}) as Block,
+                Actions: new ChatActions({}) as Block,
                 SelectedChatInfo: new SelectedChatInfo({}) as Block,
                 MessageForm: new MessageForm({}) as Block,
             },
@@ -22,7 +22,7 @@ export default class Chat extends Block {
     // language=Handlebars
     render(): string {
         return `
-            <div class="${styles.chatActions}">
+            <div class="${styles.actions}">
                 {{{SelectedChatInfo}}}
                 {{{Actions}}}
             </div>

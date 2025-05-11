@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "dev:debug": "vite --debug",
     "build": "npm run lint && vite build",
     "preview": "vite preview",
     "start": "npm run build && vite preview",

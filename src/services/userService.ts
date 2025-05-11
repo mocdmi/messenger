@@ -1,6 +1,6 @@
-import { UserApi } from '@api';
-import { Store } from '@core';
-import { UpdateUserPasswordRequestDto, UserDto } from '../types';
+import { UserApi } from '@/api';
+import { Store } from '@/core';
+import { UpdateUserPasswordRequestDto, UserDto } from '@/types';
 
 export default class UserService {
     private readonly store = Store.getInstance();

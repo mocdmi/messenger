@@ -1,11 +1,10 @@
-import { Block } from '@core';
-import { Button } from '../button';
-import { Popup } from '../popup';
+import { Block } from '@/core';
+import { Button, Popup } from '@/components';
+import { UserService } from '@/services';
+import { API_URL } from '@/const';
+import noPhoto from '@/assets/images/no-photo.svg';
 import UploadForm from './parts/uploadForm';
 import styles from './styles.module.css';
-import noPhoto from '@assets/images/no-photo.svg';
-import { UserService } from '@services';
-import { API_URL } from '@const';
 
 interface ProfileAvatarProps {
     name?: string;

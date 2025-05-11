@@ -1,6 +1,6 @@
-import { Block } from '@core';
-import { Input } from '../input';
-import { InputType } from '../../types';
+import { Block } from '@/core';
+import { Input } from '@/components';
+import { InputType } from '@/types';
 import styles from './styles.module.css';
 
 export interface LabelInputProps {

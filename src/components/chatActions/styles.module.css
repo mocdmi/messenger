@@ -1,0 +1,11 @@
+.popup {
+    position: absolute;
+    right: 0;
+    top: 65px;
+}
+
+.buttonActive {
+    button {
+        background-color: var(--gray-color);
+    }
+}

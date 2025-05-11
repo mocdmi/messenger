@@ -1,9 +1,8 @@
-import { ROUTER } from '@const';
-import { Block } from '@core';
-import { connect } from '@helpers';
-import { AppStore, Chat } from '../../store';
-import { ChatCard } from '../chatCard';
-import { Link } from '../link';
+import { Block } from '@/core';
+import { ROUTER } from '@/const';
+import { connect } from '@/helpers';
+import { AppStore, Chat } from '@/store';
+import { ChatCard, Link } from '@/components';
 import SearchForm from './parts/searchForm';
 import styles from './styles.module.css';
 

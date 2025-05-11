@@ -1,8 +1,8 @@
-import { Link } from '@components';
-import { ROUTER } from '@const';
-import { Block } from '@core';
-import styles from '../styles.module.css';
+import { Link } from '@/components';
+import { ROUTER } from '@/const';
+import { Block } from '@/core';
 import LoginForm from './loginForm';
+import styles from '../styles.module.css';
 
 export default class PanelInner extends Block {
     constructor() {

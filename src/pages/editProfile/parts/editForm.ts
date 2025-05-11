@@ -1,6 +1,6 @@
-import { Button, LabelInput } from '@components';
-import { Block, Validator } from '@core';
-import { isErrorsEmpty } from '@helpers';
+import { Button, LabelInput } from '@/components';
+import { Block, Validator } from '@/core';
+import { isErrorsEmpty } from '@/helpers';
 import { EditProfileProps, InputKey } from '../types';
 import styles from '../styles.module.css';
 

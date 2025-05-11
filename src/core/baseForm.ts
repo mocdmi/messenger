@@ -1,9 +1,9 @@
-import { Block } from '@core';
-import { Button, LabelInput } from '@components';
+import Block from './block';
+import { Button, LabelInput } from '@/components';
 
 export type InputType = 'text' | 'password' | 'email';
 
-export interface FormField {
+interface FormField {
     component: string;
     label: string;
     type: InputType;
@@ -15,18 +15,18 @@ type FormFieldState = {
     error: string;
 };
 
-export interface BaseFormProps {
+interface BaseFormProps {
     form: Record<string, FormFieldState>;
 }
 
-export type FormValidator = (value: string) => string;
+type FormValidator = (value: string) => string;
 
-export interface FormConfig<TKey extends string> {
+interface FormConfig<TKey extends string> {
     formFields: Record<TKey, FormField>;
     validators: Record<TKey, FormValidator>;
 }
 
-export type SubmitButtonProps = {
+type SubmitButtonProps = {
     label: string;
 };
 
