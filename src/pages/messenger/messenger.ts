@@ -21,12 +21,12 @@ export default class Messenger extends Block {
     }
 
     componentDidMount() {
-        const init = async () => {
+        const getData = async () => {
             await this.authService.getUser();
             await this.chatsService.getChats();
         };
 
-        init();
+        getData();
     }
 
     // language=Handlebars

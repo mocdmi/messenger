@@ -1,10 +1,19 @@
-import { Block } from '@/core';
-import { ChatActions } from '@/components';
-import MessageForm from '@/pages/messenger/parts/messageForm';
-import SelectedChatInfo from '@/pages/messenger/parts/selectedChatInfo';
+import { Block, WebSocketClient } from '@/core';
+import { ChatHeader, ChatActions, SendMessageForm } from '@/components';
+import { connect, isErrorsEmpty } from '@/helpers';
+import { ChatsService } from '@/services';
+import { AppStore } from '@/store';
 import styles from './styles.module.css';
 
-export default class Chat extends Block {
+interface ChatProps {
+    chatId?: number;
+    userId?: number;
+}
+
+class Chat extends Block<ChatProps> {
+    private wsClient: WebSocketClient | null = null;
+    private readonly chatsService = new ChatsService();
+
     constructor() {
         super(
             'div',
@@ -13,19 +22,72 @@ export default class Chat extends Block {
             },
             {
                 Actions: new ChatActions({}) as Block,
-                SelectedChatInfo: new SelectedChatInfo({}) as Block,
-                MessageForm: new MessageForm({}) as Block,
+                ChatHeader: new ChatHeader({}) as Block,
+                MessageForm: new SendMessageForm({
+                    onSubmit: (e: Event, message: string, errors) =>
+                        this.handlerSubmitMessage(e, message, errors),
+                }) as Block,
             },
         );
+    }
+
+    handlerSubmitMessage = (e: Event, message: string, errors: Record<string, string>) => {
+        if (isErrorsEmpty(errors)) {
+            this.sendMessage(message);
+            (e.target as HTMLFormElement).reset();
+        }
+    };
+
+    sendMessage = (message: string) => {
+        if (this.wsClient) {
+            this.wsClient.send('message', message);
+        } else {
+            console.error('WebSocket client is not initialized');
+        }
+    };
+
+    initWebsockets = async () => {
+        if (!this.props.chatId) {
+            throw new Error('Chat not found');
+        }
+
+        if (!this.props.userId) {
+            throw new Error('User not found');
+        }
+
+        const token = await this.chatsService.getChatToken(this.props.chatId);
+
+        this.wsClient = new WebSocketClient(
+            `/chats/${this.props.userId}/${this.props.chatId}/${token}`,
+        );
+
+        this.wsClient.connect();
+
+        this.wsClient.subscribe('message', (message) => {
+            console.log('New message: ', message);
+        });
+
+        this.wsClient.subscribe('error', (error) => {
+            console.error('WebSocket error: ', error);
+        });
+    };
+
+    componentDidUpdate(oldProps: ChatProps, newProps: ChatProps): boolean {
+        if (oldProps.chatId !== newProps.chatId) {
+            this.initWebsockets();
+            return true;
+        }
+
+        return false;
     }
 
     // language=Handlebars
     render(): string {
         return `
-            <div class="${styles.actions}">
-                {{{SelectedChatInfo}}}
+            <header class="${styles.headerWrap}">
+                {{{ChatHeader}}}
                 {{{Actions}}}
-            </div>
+            </header>
             <main class="${styles.messages}">
                 <div class="${styles.noMessages}">Выберите чат, чтобы отправить сообщение</div>
             </main>
@@ -35,3 +97,12 @@ export default class Chat extends Block {
         `;
     }
 }
+
+function mapStateToProps(state: AppStore): ChatProps {
+    return {
+        chatId: state.selectedChat.chat?.id,
+        userId: state.user.user?.id,
+    };
+}
+
+export default connect(mapStateToProps)(Chat);

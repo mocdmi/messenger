@@ -1,4 +1,5 @@
-import { Block, BlockConstructor } from '@/core';
+import { Block } from '@/core';
+import { BlockConstructor } from '@/types';
 
 export default class Route {
     private readonly path: string;

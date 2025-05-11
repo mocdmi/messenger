@@ -8,17 +8,16 @@ export function initStore() {
         user: {
             user: null,
             isLoading: false,
-            error: null,
+            isError: '',
         },
         chats: {
             chats: null,
             isLoading: false,
-            error: null,
+            isError: '',
         },
         selectedChat: {
-            selectedChatId: null,
             isLoading: false,
-            error: null,
+            isError: '',
             chat: null,
             users: null,
         },

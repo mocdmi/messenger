@@ -1,4 +1,4 @@
-import { BaseForm } from '@/core';
+import { BaseForm } from '@/components';
 import { isErrorsEmpty } from '@/helpers';
 import styles from './styles.module.css';
 

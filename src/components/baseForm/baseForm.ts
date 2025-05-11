@@ -1,4 +1,4 @@
-import Block from './block';
+import { Block } from '@/core';
 import { Button, LabelInput } from '@/components';
 
 export type InputType = 'text' | 'password' | 'email';
@@ -30,6 +30,7 @@ type SubmitButtonProps = {
     label: string;
 };
 
+// TODO: Reset form fields values after submit
 export default abstract class BaseForm<
     TProps extends BaseFormProps,
     TKey extends string = string,
