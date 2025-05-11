@@ -1,28 +1,26 @@
 import { Block } from '@/core';
 import { connect } from '@/helpers';
 import { AppStore } from '@/store';
-import styles from '../styles.module.css';
+import styles from './styles.module.css';
 
-interface TitleProps {
+interface ChatHeaderProps {
     selectedChatTitle?: string;
     selectedChatAvatar?: string;
 }
 
-class SelectedChatInfo extends Block {
+class ChatHeader extends Block<ChatHeaderProps> {
     constructor() {
-        const props = {
+        super('div', {
             selectedChatTitle: '',
             selectedChatAvatar: '',
-        };
-
-        super('div', props);
+        });
     }
 
     // language=Handlebars
     render() {
         return `
             <div class="${styles.selectedChatInfo}">
-                {{#if selectedChatTitle}}
+                {{#if selectedChatAvatar}}
                     <div class="${styles.avatar}"></div>
                 {{/if}}
                 <h2 class="${styles.title}">{{selectedChatTitle}}</h2>
@@ -38,4 +36,4 @@ function mapStateToProps(state: AppStore) {
     };
 }
 
-export default connect<AppStore, TitleProps>(mapStateToProps)(SelectedChatInfo);
+export default connect<AppStore, ChatHeaderProps>(mapStateToProps)(ChatHeader);

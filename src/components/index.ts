@@ -1,4 +1,5 @@
 export { Sidebar } from './sidebar';
+export { BaseForm } from './baseForm';
 export { LabelInput } from './labelInput';
 export { Input } from './input';
 export { ChatCard } from './chatCard';
@@ -11,3 +12,4 @@ export { Popup } from './popup';
 export { Chat } from './chat';
 export { ChatActionsForm } from './chatActionsForm';
 export { ChatActions } from './chatActions';
+export { ChatHeader } from './chatHeader';

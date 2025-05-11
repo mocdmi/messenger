@@ -1,4 +1,5 @@
-import { BaseForm, Validator } from '@/core';
+import { Validator } from '@/core';
+import { BaseForm } from '@/components';
 import { isErrorsEmpty } from '@/helpers';
 import { AuthService } from '@/services';
 import { LoginFormProps, InputKey } from '../types';

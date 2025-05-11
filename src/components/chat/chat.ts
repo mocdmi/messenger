@@ -1,7 +1,6 @@
 import { Block } from '@/core';
-import { ChatActions } from '@/components';
+import { ChatHeader, ChatActions } from '@/components';
 import MessageForm from '@/pages/messenger/parts/messageForm';
-import SelectedChatInfo from '@/pages/messenger/parts/selectedChatInfo';
 import styles from './styles.module.css';
 
 export default class Chat extends Block {
@@ -13,7 +12,7 @@ export default class Chat extends Block {
             },
             {
                 Actions: new ChatActions({}) as Block,
-                SelectedChatInfo: new SelectedChatInfo({}) as Block,
+                ChatHeader: new ChatHeader({}) as Block,
                 MessageForm: new MessageForm({}) as Block,
             },
         );
@@ -22,10 +21,10 @@ export default class Chat extends Block {
     // language=Handlebars
     render(): string {
         return `
-            <div class="${styles.actions}">
-                {{{SelectedChatInfo}}}
+            <header class="${styles.headerWrap}">
+                {{{ChatHeader}}}
                 {{{Actions}}}
-            </div>
+            </header>
             <main class="${styles.messages}">
                 <div class="${styles.noMessages}">Выберите чат, чтобы отправить сообщение</div>
             </main>

@@ -1,0 +1,12 @@
+.avatar {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background-color: var(--gray-color);
+}
+
+.title {
+    font-size: var(--font-size-m);
+    font-weight: 600;
+    margin: 0;
+}

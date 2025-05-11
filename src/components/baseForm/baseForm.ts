@@ -1,4 +1,4 @@
-import Block from './block';
+import { Block } from '@/core';
 import { Button, LabelInput } from '@/components';
 
 export type InputType = 'text' | 'password' | 'email';
