@@ -74,7 +74,7 @@ class Chat extends Block<ChatProps> {
 
     componentDidUpdate(oldProps: ChatProps, newProps: ChatProps): boolean {
         if (oldProps.chatId !== newProps.chatId) {
-            this.initWebsockets();
+            void this.initWebsockets();
             return true;
         }
 
@@ -84,16 +84,20 @@ class Chat extends Block<ChatProps> {
     // language=Handlebars
     render(): string {
         return `
+            {{#if chatId}}
             <header class="${styles.headerWrap}">
                 {{{ChatHeader}}}
                 {{{Actions}}}
             </header>
             <main class="${styles.messages}">
-                <div class="${styles.noMessages}">Выберите чат, чтобы отправить сообщение</div>
+                <div class="${styles.noChat}">Выберите чат, чтобы отправить сообщение</div>
             </main>
             <div class="${styles.messageFormWrap}">
                 {{{MessageForm}}}
             </div>
+            {{else}}
+                <div class="${styles.noChat}">Выберите чат, чтобы отправить сообщение</div>
+            {{/if}}
         `;
     }
 }
