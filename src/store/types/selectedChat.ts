@@ -5,10 +5,17 @@ export interface SelectedChatState {
     isError: string;
     chat: Chat | null;
     users: ChatUser[] | null;
+    messages: ChatMessage[] | null;
 }
 
 export interface ChatUser {
     id: number;
     avatar: string;
     first_name: string;
+}
+
+export interface ChatMessage {
+    id: string;
+    message: string;
+    userId: string;
 }

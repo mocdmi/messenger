@@ -51,6 +51,10 @@ export default class AuthService {
         try {
             const { status, response } = await this.authApi.request();
 
+            if (status === 401) {
+                this.router.go(ROUTER.login);
+            }
+
             if ('reason' in response) {
                 throw new Error(response.reason);
             }

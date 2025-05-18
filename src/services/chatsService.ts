@@ -158,4 +158,11 @@ export class ChatsService {
             throw new Error(error as string);
         }
     }
+
+    async chatWsConnect(chatId: number, userId: number) {
+        const token = await this.getChatToken(chatId);
+        const wsClient = this.apiInstance.createChatWebSocket(chatId, userId, token);
+        wsClient.connect();
+        return wsClient;
+    }
 }

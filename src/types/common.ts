@@ -18,3 +18,5 @@ export type BlockConstructor<TProps extends object = object, TAttrs extends obje
 export enum StoreEvents {
     Updated = 'updated',
 }
+
+export type WebsocketError = string;

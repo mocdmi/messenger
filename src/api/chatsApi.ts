@@ -1,4 +1,4 @@
-import { BaseAPI, HTTPTransport } from '@/core';
+import { BaseAPI, HTTPTransport, WebSocketClient } from '@/core';
 import {
     AddUsersToChatRequestDto,
     ChatRequestDto,
@@ -13,6 +13,7 @@ import {
     DeleteUsersFromChatResponseDto,
     GetChatUsersResponseDto,
     GetChatTokenResponseDto,
+    GetMessageRequestDto,
 } from '@/types';
 
 export default class ChatsApi extends BaseAPI {
@@ -54,5 +55,9 @@ export default class ChatsApi extends BaseAPI {
 
     async getChatToken(chatId: number) {
         return this.apiInstance.post<void, GetChatTokenResponseDto>(`/token/${chatId}`);
+    }
+
+    createChatWebSocket(chatId: number, userId: number, token: string) {
+        return new WebSocketClient<GetMessageRequestDto>(`/chats/${userId}/${chatId}/${token}`);
     }
 }

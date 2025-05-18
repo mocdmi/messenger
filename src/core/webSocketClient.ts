@@ -1,10 +1,10 @@
 import { WEB_SOCKET_URL } from '@/const';
 import { EventBus } from '@/core';
 
-type Queue<TContent = string> = { type: string; content: TContent };
-type QueueArray<TContent = string> = Array<Queue<TContent>>;
+type Queue<TRequest = object> = { type: string; content: TRequest };
+type QueueArray<TRequest = object> = Array<Queue<TRequest>>;
 
-export default class WebSocketClient {
+export default class WebSocketClient<TRequest = object> {
     private static EVENTS = {
         ERROR: 'error',
     } as const;
@@ -36,7 +36,7 @@ export default class WebSocketClient {
 
             this.socket.onmessage = (event: MessageEvent) => {
                 try {
-                    const { type, content } = JSON.parse(event.data);
+                    const { type, ...content } = JSON.parse(event.data);
 
                     if (!type) {
                         throw new Error('Event type is not defined');
@@ -94,14 +94,14 @@ export default class WebSocketClient {
         }
     }
 
-    private sendMessagesQueue<TContent = string>() {
+    private sendMessagesQueue() {
         while (this.messagesQueue.length > 0 && this.isConnected) {
-            const { type, content } = this.messagesQueue.shift() as Queue<TContent>;
+            const { type, content } = this.messagesQueue.shift() as Queue<TRequest>;
             this.send(type, content);
         }
     }
 
-    send<TContent = string>(type: string, content: TContent) {
+    send(type: string, content: TRequest) {
         if (this.socket && this.isConnected) {
             try {
                 const message = JSON.stringify({ content, type });
@@ -113,7 +113,7 @@ export default class WebSocketClient {
                 });
             }
         } else {
-            (this.messagesQueue as QueueArray<TContent>).push({ type, content });
+            (this.messagesQueue as QueueArray<TRequest>).push({ type, content });
             this.eventBus.emit(WebSocketClient.EVENTS.ERROR, {
                 type: 'send',
                 message: 'WebSocket is not connected. Cannot send message.',
@@ -121,11 +121,11 @@ export default class WebSocketClient {
         }
     }
 
-    subscribe<TContent = string>(type: string, callback: (content: TContent) => void) {
+    subscribe<TResponse = string>(type: string, callback: (content: TResponse) => void) {
         this.eventBus.on(type, callback);
     }
 
-    unsubscribe<TContent = string>(type: string, callback: (content: TContent) => void) {
+    unsubscribe(type: string, callback: () => void) {
         this.eventBus.off(type, callback);
     }
 

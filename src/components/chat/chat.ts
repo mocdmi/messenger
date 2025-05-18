@@ -1,18 +1,26 @@
-import { Block, WebSocketClient } from '@/core';
-import { ChatHeader, ChatActions, SendMessageForm } from '@/components';
+import { Block, Store, WebSocketClient } from '@/core';
+import { ChatHeader, ChatActions, SendMessageForm, Messages } from '@/components';
 import { connect, isErrorsEmpty } from '@/helpers';
 import { ChatsService } from '@/services';
-import { AppStore } from '@/store';
+import { AppStore, ChatMessage } from '@/store';
+import {
+    GetMessageRequestDto,
+    GetMessageResponseDto,
+    GetOldMessagesResponseDto,
+    WebsocketError,
+} from '@/types';
 import styles from './styles.module.css';
 
 interface ChatProps {
     chatId?: number;
     userId?: number;
+    messages?: ChatMessage[] | null;
 }
 
 class Chat extends Block<ChatProps> {
-    private wsClient: WebSocketClient | null = null;
+    private wsClient: WebSocketClient<GetMessageRequestDto> | null = null;
     private readonly chatsService = new ChatsService();
+    private readonly store = Store.getInstance();
 
     constructor() {
         super(
@@ -23,6 +31,7 @@ class Chat extends Block<ChatProps> {
             {
                 Actions: new ChatActions({}) as Block,
                 ChatHeader: new ChatHeader({}) as Block,
+                Messages: new Messages({}) as Block,
                 MessageForm: new SendMessageForm({
                     onSubmit: (e: Event, message: string, errors) =>
                         this.handlerSubmitMessage(e, message, errors),
@@ -38,15 +47,52 @@ class Chat extends Block<ChatProps> {
         }
     };
 
-    sendMessage = (message: string) => {
-        if (this.wsClient) {
-            this.wsClient.send('message', message);
-        } else {
+    webSocketNotInitialized = () => {
+        if (!this.wsClient) {
             console.error('WebSocket client is not initialized');
+            return true;
         }
+
+        return false;
     };
 
-    initWebsockets = async () => {
+    sendMessage = (message: string) => {
+        if (this.webSocketNotInitialized()) return;
+        this.wsClient!.send('message', message);
+    };
+
+    getMessage = () => {
+        if (this.webSocketNotInitialized()) return;
+
+        this.wsClient!.subscribe<GetMessageResponseDto>('message', (content) => {
+            const message = {
+                id: content.id,
+                message: content.content,
+                userId: content.user_id,
+            };
+
+            this.store.set('selectedChat.messages', [...(this.props.messages ?? []), message]);
+        });
+    };
+
+    getOldMessages = () => {
+        if (this.webSocketNotInitialized()) return;
+
+        this.wsClient!.send('get old', '0');
+        this.wsClient!.subscribe<GetOldMessagesResponseDto>('get old', (content) => {
+            const messages = content.map((message) => {
+                return {
+                    id: message.id,
+                    message: message.content,
+                    userId: message.user_id,
+                };
+            });
+
+            this.store.set('selectedChat.messages', messages);
+        });
+    };
+
+    initWebSocket = async () => {
         if (!this.props.chatId) {
             throw new Error('Chat not found');
         }
@@ -55,26 +101,19 @@ class Chat extends Block<ChatProps> {
             throw new Error('User not found');
         }
 
-        const token = await this.chatsService.getChatToken(this.props.chatId);
+        this.wsClient = await this.chatsService.chatWsConnect(this.props.chatId, this.props.userId);
+        void this.getOldMessages();
+        void this.getMessage();
 
-        this.wsClient = new WebSocketClient(
-            `/chats/${this.props.userId}/${this.props.chatId}/${token}`,
-        );
-
-        this.wsClient.connect();
-
-        this.wsClient.subscribe('message', (message) => {
-            console.log('New message: ', message);
-        });
-
-        this.wsClient.subscribe('error', (error) => {
+        this.wsClient.subscribe<WebsocketError>('error', (error) => {
             console.error('WebSocket error: ', error);
         });
     };
 
     componentDidUpdate(oldProps: ChatProps, newProps: ChatProps): boolean {
         if (oldProps.chatId !== newProps.chatId) {
-            void this.initWebsockets();
+            this.store.set('selectedChat.messages', null);
+            void this.initWebSocket();
             return true;
         }
 
@@ -90,7 +129,7 @@ class Chat extends Block<ChatProps> {
                 {{{Actions}}}
             </header>
             <main class="${styles.messages}">
-                <div class="${styles.noChat}">Выберите чат, чтобы отправить сообщение</div>
+                <div class="${styles.noChat}">{{{Messages}}}</div>
             </main>
             <div class="${styles.messageFormWrap}">
                 {{{MessageForm}}}
@@ -106,7 +145,8 @@ function mapStateToProps(state: AppStore): ChatProps {
     return {
         chatId: state.selectedChat.chat?.id,
         userId: state.user.user?.id,
+        messages: state.selectedChat.messages,
     };
 }
 
-export default connect(mapStateToProps)(Chat);
+export default connect<AppStore, ChatProps>(mapStateToProps)(Chat);

@@ -20,6 +20,7 @@ export function initStore() {
             isError: '',
             chat: null,
             users: null,
+            messages: null,
         },
     });
 }

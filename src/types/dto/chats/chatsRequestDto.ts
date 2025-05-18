@@ -29,3 +29,5 @@ export interface GetChatUsersRequestDto {
     name?: string;
     email?: string;
 }
+
+export type GetMessageRequestDto = string;
