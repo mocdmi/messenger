@@ -30,7 +30,7 @@ type SubmitButtonProps = {
     label: string;
 };
 
-// TODO: Reset form fields values after submit
+// TODO: Не сбрасываются поля формы при повторной отправке
 export default abstract class BaseForm<
     TProps extends BaseFormProps,
     TKey extends string = string,

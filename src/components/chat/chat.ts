@@ -7,6 +7,7 @@ import {
     GetMessageRequestDto,
     GetMessageResponseDto,
     GetOldMessagesResponseDto,
+    OldMessageDto,
     WebsocketError,
 } from '@/types';
 import styles from './styles.module.css';
@@ -40,59 +41,68 @@ class Chat extends Block<ChatProps> {
         );
     }
 
-    handlerSubmitMessage = (e: Event, message: string, errors: Record<string, string>) => {
+    private handlerSubmitMessage(e: Event, message: string, errors: Record<string, string>) {
         if (isErrorsEmpty(errors)) {
             this.sendMessage(message);
             (e.target as HTMLFormElement).reset();
         }
-    };
+    }
 
-    webSocketNotInitialized = () => {
+    private webSocketNotInitialized() {
         if (!this.wsClient) {
             console.error('WebSocket client is not initialized');
             return true;
         }
 
         return false;
-    };
+    }
 
-    sendMessage = (message: string) => {
+    private sendMessage(message: string) {
         if (this.webSocketNotInitialized()) return;
         this.wsClient!.send('message', message);
+    }
+
+    private messageAdapter = (message: GetMessageResponseDto | OldMessageDto): ChatMessage => {
+        return {
+            id: Number(message.id),
+            message: message.content,
+            userId: Number(message.user_id),
+            time: new Date(message.time).toLocaleTimeString('ru-RU', {
+                hour: '2-digit',
+                minute: '2-digit',
+            }),
+            date: new Date(message.time).toLocaleDateString('ru-RU', {
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit',
+            }),
+            timestamp: new Date(message.time).getTime(),
+        };
     };
 
-    getMessage = () => {
+    private getMessages() {
         if (this.webSocketNotInitialized()) return;
 
-        this.wsClient!.subscribe<GetMessageResponseDto>('message', (content) => {
-            const message = {
-                id: content.id,
-                message: content.content,
-                userId: content.user_id,
-            };
+        this.wsClient!.subscribe<GetOldMessagesResponseDto | GetMessageResponseDto>(
+            'message',
+            (content) => {
+                let messages: ChatMessage[];
 
-            this.store.set('selectedChat.messages', [...(this.props.messages ?? []), message]);
-        });
-    };
+                if (Array.isArray(content)) {
+                    messages = content.map((message) => {
+                        return this.messageAdapter(message);
+                    });
+                } else {
+                    messages = [...(this.props.messages ?? []), this.messageAdapter(content)];
+                }
 
-    getOldMessages = () => {
-        if (this.webSocketNotInitialized()) return;
+                const sortedMessages = messages.sort((a, b) => a.timestamp - b.timestamp);
+                this.store.set('selectedChat.messages', sortedMessages);
+            },
+        );
+    }
 
-        this.wsClient!.send('get old', '0');
-        this.wsClient!.subscribe<GetOldMessagesResponseDto>('get old', (content) => {
-            const messages = content.map((message) => {
-                return {
-                    id: message.id,
-                    message: message.content,
-                    userId: message.user_id,
-                };
-            });
-
-            this.store.set('selectedChat.messages', messages);
-        });
-    };
-
-    initWebSocket = async () => {
+    private async initWebSocket() {
         if (!this.props.chatId) {
             throw new Error('Chat not found');
         }
@@ -102,13 +112,15 @@ class Chat extends Block<ChatProps> {
         }
 
         this.wsClient = await this.chatsService.chatWsConnect(this.props.chatId, this.props.userId);
-        void this.getOldMessages();
-        void this.getMessage();
+
+        void this.getMessages();
+
+        this.wsClient.send('get old', '0');
 
         this.wsClient.subscribe<WebsocketError>('error', (error) => {
             console.error('WebSocket error: ', error);
         });
-    };
+    }
 
     componentDidUpdate(oldProps: ChatProps, newProps: ChatProps): boolean {
         if (oldProps.chatId !== newProps.chatId) {
@@ -124,16 +136,16 @@ class Chat extends Block<ChatProps> {
     render(): string {
         return `
             {{#if chatId}}
-            <header class="${styles.headerWrap}">
-                {{{ChatHeader}}}
-                {{{Actions}}}
-            </header>
-            <main class="${styles.messages}">
-                <div class="${styles.noChat}">{{{Messages}}}</div>
-            </main>
-            <div class="${styles.messageFormWrap}">
-                {{{MessageForm}}}
-            </div>
+                <header class="${styles.headerWrap}">
+                    {{{ChatHeader}}}
+                    {{{Actions}}}
+                </header>
+                <main class="${styles.messagesWrap}">
+                    {{{Messages}}}
+                </main>
+                <div class="${styles.messageFormWrap}">
+                    {{{MessageForm}}}
+                </div>
             {{else}}
                 <div class="${styles.noChat}">Выберите чат, чтобы отправить сообщение</div>
             {{/if}}

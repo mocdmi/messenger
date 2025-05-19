@@ -1,0 +1,31 @@
+.messageBubble {
+    font-size: var(--font-size-s);
+    max-width: 380px;
+    width: 100%;
+    border-radius: 10px;
+    padding: 12px;
+}
+
+.incoming {
+    align-self: flex-end;
+    background-color: var(--active-group-color);
+    border-bottom-right-radius: 0;
+
+    .time {
+        color: var(--primary-color);
+    }
+}
+
+.outgoing {
+    background-color: var(--light-gray-color);
+    border-bottom-left-radius: 0;
+
+    .time {
+        color: var(--dark-gray-color);
+    }
+}
+
+.time {
+    font-size: 9px;
+    margin-top: 5px;
+}

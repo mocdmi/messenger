@@ -15,7 +15,10 @@ export interface ChatUser {
 }
 
 export interface ChatMessage {
-    id: string;
+    id: number;
     message: string;
-    userId: string;
+    userId: number;
+    time: string;
+    date: string;
+    timestamp: number;
 }

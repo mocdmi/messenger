@@ -50,7 +50,7 @@ export default class SendMessageForm extends Block<SendMessageFormProps> {
         );
     }
 
-    handleChange = (e: Event) => {
+    private handleChange(e: Event) {
         this.setProps({
             ...this.props,
             form: {
@@ -61,14 +61,12 @@ export default class SendMessageForm extends Block<SendMessageFormProps> {
                 },
             },
         });
-    };
+    }
 
-    handleBlur = (e: Event) => {
+    private handleBlur(e: Event) {
         const el = e.target as HTMLInputElement;
         const input = this.children.MessageInput as LabelInput;
-        let error = '';
-
-        error = Validator.validate(el.value).isRequired();
+        const error = Validator.validate(el.value).isRequired();
 
         input.setProps({
             ...input.props,
@@ -85,14 +83,12 @@ export default class SendMessageForm extends Block<SendMessageFormProps> {
                 },
             },
         });
-    };
+    }
 
-    submitHandle = (e: Event) => {
+    private submitHandle(e: Event) {
         e.preventDefault();
         const input = this.children.MessageInput as LabelInput;
-        let error = '';
-
-        error = Validator.validate(this.props.form.message.value).isRequired();
+        const error = Validator.validate(this.props.form.message.value).isRequired();
 
         input.setProps({
             ...input.props,
@@ -100,7 +96,7 @@ export default class SendMessageForm extends Block<SendMessageFormProps> {
         });
 
         this.props.onSubmit?.(e, this.props.form.message.value, { message: error });
-    };
+    }
 
     // language=Handlebars
     render(): string {

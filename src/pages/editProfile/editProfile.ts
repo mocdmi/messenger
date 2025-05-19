@@ -32,7 +32,7 @@ class EditProfilePage extends Block<EditProfileProps> {
             await this.authService.getUser();
         };
 
-        getUser();
+        void getUser();
     }
 
     componentDidUpdate(oldProps: EditProfileProps, newProps: EditProfileProps): boolean {

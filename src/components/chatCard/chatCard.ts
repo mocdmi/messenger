@@ -26,7 +26,7 @@ export default class ChatCard extends Block<ChatCardProps> {
         });
     }
 
-    private clickHandler = async () => {
+    private async clickHandler() {
         this.store.set('selectedChat.chat', {
             id: this.props.id,
             title: this.props.title,
@@ -36,7 +36,7 @@ export default class ChatCard extends Block<ChatCardProps> {
         });
 
         await this.chatsService.getChatUsers(this.props.id);
-    };
+    }
 
     // language=Handlebars
     render(): string {

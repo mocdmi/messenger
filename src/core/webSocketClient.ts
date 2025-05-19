@@ -36,13 +36,15 @@ export default class WebSocketClient<TRequest = object> {
 
             this.socket.onmessage = (event: MessageEvent) => {
                 try {
-                    const { type, ...content } = JSON.parse(event.data);
+                    const data = JSON.parse(event.data);
+
+                    const type: string = data.type ? data.type : 'message';
 
                     if (!type) {
                         throw new Error('Event type is not defined');
                     }
 
-                    this.eventBus.emit(type, content);
+                    this.eventBus.emit(type, data);
                 } catch (error: unknown) {
                     this.eventBus.emit(WebSocketClient.EVENTS.ERROR, {
                         type: 'message',

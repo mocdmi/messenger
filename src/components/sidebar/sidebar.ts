@@ -21,19 +21,15 @@ interface SidebarProps {
 }
 
 class Sidebar extends Block<SidebarProps> {
-    constructor() {
-        const props = {
-            chats: [],
-        };
-
+    constructor(props: SidebarProps) {
         super(
             'nav',
             {
-                ...props,
+                chats: [],
                 className: styles.sidebar,
             },
             {
-                Chats: props.chats.map((props: ChatProps) => new ChatCard(props)) as Block[],
+                Chats: props.chats?.map((props: ChatProps) => new ChatCard(props)) as Block[],
                 ProfileLink: new Link({
                     'theme-default': true,
                     label: 'Профиль',
@@ -49,7 +45,7 @@ class Sidebar extends Block<SidebarProps> {
         if (oldProps !== newProps) {
             if (newProps.chats) {
                 this.children.Chats = newProps.chats.map(
-                    (props: ChatProps) =>
+                    (props) =>
                         new ChatCard({
                             ...props,
                             active: props.id === newProps.selectedChatId,

@@ -15,3 +15,4 @@ export { ChatActions } from './chatActions';
 export { ChatHeader } from './chatHeader';
 export { SendMessageForm } from './sendMessageForm';
 export { Messages } from './messages';
+export { MessageBubble } from './messageBubble';
