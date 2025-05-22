@@ -14,7 +14,7 @@ export default class Messenger extends Block {
             {},
             {
                 // TODO: Сделать пропсы опциональными
-                Sidebar: new Sidebar({}) as Block,
+                Sidebar: new Sidebar({ chats: [] }) as Block,
                 Chat: new Chat({}) as Block,
             },
         );
@@ -26,7 +26,7 @@ export default class Messenger extends Block {
             await this.chatsService.getChats();
         };
 
-        getData();
+        void getData();
     }
 
     // language=Handlebars

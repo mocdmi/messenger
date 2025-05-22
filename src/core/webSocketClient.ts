@@ -1,14 +1,11 @@
 import { WEB_SOCKET_URL } from '@/const';
 import { EventBus } from '@/core';
+import { WebSocketEvents } from '@/types';
 
 type Queue<TRequest = object> = { type: string; content: TRequest };
 type QueueArray<TRequest = object> = Array<Queue<TRequest>>;
 
 export default class WebSocketClient<TRequest = object> {
-    private static EVENTS = {
-        ERROR: 'error',
-    } as const;
-
     private readonly url: string;
     private socket: WebSocket | null = null;
     private isConnected: boolean = false;
@@ -46,7 +43,7 @@ export default class WebSocketClient<TRequest = object> {
 
                     this.eventBus.emit(type, data);
                 } catch (error: unknown) {
-                    this.eventBus.emit(WebSocketClient.EVENTS.ERROR, {
+                    this.eventBus.emit(WebSocketEvents.Error, {
                         type: 'message',
                         message: (error as Error).message,
                     });
@@ -54,7 +51,7 @@ export default class WebSocketClient<TRequest = object> {
             };
 
             this.socket.onerror = () => {
-                this.eventBus.emit(WebSocketClient.EVENTS.ERROR, {
+                this.eventBus.emit(WebSocketEvents.Error, {
                     type: 'connection',
                     message: 'An error occurred in the WebSocket connection.',
                 });
@@ -64,12 +61,12 @@ export default class WebSocketClient<TRequest = object> {
                 this.isConnected = false;
 
                 if (event.wasClean) {
-                    this.eventBus.emit(WebSocketClient.EVENTS.ERROR, {
+                    this.eventBus.emit(WebSocketEvents.Warning, {
                         type: 'closed',
                         message: 'Connection closed cleanly',
                     });
                 } else {
-                    this.eventBus.emit(WebSocketClient.EVENTS.ERROR, {
+                    this.eventBus.emit(WebSocketEvents.Error, {
                         type: 'closed',
                         message: `Connection closed with error: ${event.code} ${event.reason}`,
                     });
@@ -82,14 +79,14 @@ export default class WebSocketClient<TRequest = object> {
                         this.connect();
                     }, this.reconnectInterval);
                 } else if (this.reconnectAttempts >= this.maxReconnectAttempts) {
-                    this.eventBus.emit(WebSocketClient.EVENTS.ERROR, {
+                    this.eventBus.emit(WebSocketEvents.Error, {
                         type: 'reconnect',
                         message: 'Max reconnect attempts reached',
                     });
                 }
             };
         } catch (error: unknown) {
-            this.eventBus.emit(WebSocketClient.EVENTS.ERROR, {
+            this.eventBus.emit(WebSocketEvents.Error, {
                 type: 'initialisation',
                 message: (error as Error).message,
             });
@@ -109,14 +106,14 @@ export default class WebSocketClient<TRequest = object> {
                 const message = JSON.stringify({ content, type });
                 this.socket.send(message);
             } catch (error: unknown) {
-                this.eventBus.emit(WebSocketClient.EVENTS.ERROR, {
+                this.eventBus.emit(WebSocketEvents.Error, {
                     type: 'send',
                     message: (error as Error).message,
                 });
             }
         } else {
             (this.messagesQueue as QueueArray<TRequest>).push({ type, content });
-            this.eventBus.emit(WebSocketClient.EVENTS.ERROR, {
+            this.eventBus.emit(WebSocketEvents.Error, {
                 type: 'send',
                 message: 'WebSocket is not connected. Cannot send message.',
             });
@@ -127,7 +124,7 @@ export default class WebSocketClient<TRequest = object> {
         this.eventBus.on(type, callback);
     }
 
-    unsubscribe(type: string, callback: () => void) {
+    unsubscribe<TResponse = string>(type: string, callback: (content: TResponse) => void) {
         this.eventBus.off(type, callback);
     }
 

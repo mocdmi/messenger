@@ -26,3 +26,13 @@
 .search {
     padding: 0 10px 14px;
 }
+
+.chatsWrap {
+    margin-bottom: 20px;
+}
+
+.createChat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}

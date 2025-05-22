@@ -19,4 +19,12 @@ export enum StoreEvents {
     Updated = 'updated',
 }
 
-export type WebsocketError = string;
+export enum WebSocketEvents {
+    Error = 'error',
+    Warning = 'warning',
+}
+
+export type WebsocketLog = {
+    type: string;
+    message: string;
+};

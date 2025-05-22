@@ -1,8 +1,8 @@
 export interface Chat {
     id: number;
     title: string;
-    lastMessage: string;
-    date: string;
+    lastMessage?: string;
+    lastMessageTime?: string;
     newMessagesNum?: number;
-    avatar: string;
+    avatar?: string;
 }

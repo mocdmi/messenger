@@ -5,9 +5,9 @@ import styles from './styles.module.css';
 interface ChatCardProps {
     id: number;
     title: string;
-    avatar: string;
-    lastMessage: string;
-    date: string;
+    avatar?: string;
+    lastMessage?: string;
+    lastMessageTime?: string;
     newMessagesNum?: number;
     active?: boolean;
 }
@@ -21,17 +21,30 @@ export default class ChatCard extends Block<ChatCardProps> {
             ...props,
             className: styles.chatCard,
             events: {
-                click: () => this.clickHandler(),
+                click: (e) => this.handleClick(e),
             },
         });
     }
 
-    private async clickHandler() {
+    private async handleClick(e: Event) {
+        const target = e.target as HTMLElement;
+
+        if (target.classList.contains(styles.removeButton)) {
+            try {
+                await this.chatsService.deleteChat(this.props.id);
+                await this.chatsService.getChats();
+
+                this.store.set('selectedChat.chat', null);
+
+                return;
+            } catch (error) {
+                console.error('Error deleting chat:', error);
+            }
+        }
+
         this.store.set('selectedChat.chat', {
             id: this.props.id,
             title: this.props.title,
-            date: this.props.date,
-            newMessagesNum: this.props.newMessagesNum,
             avatar: this.props.avatar,
         });
 
@@ -46,10 +59,12 @@ export default class ChatCard extends Block<ChatCardProps> {
                     <div class="${styles.avatar}"></div>
                 </div>
                 <h2 class="${styles.title}">{{title}}</h2>
-                <div class="${styles.lastMessage}">{{lastMessage}}</div>
-                <div class="${styles.date}">{{date}}</div>
+                {{#if lastMessage}}<div class="${styles.lastMessage}">{{lastMessage}}</div>{{/if}}
+                {{#if lastMessageTime}}<div class="${styles.date}">{{lastMessageTime}}</div>{{/if}}
                 {{#if newMessagesNum}}<div class="${styles.newCount}">{{newMessagesNum}}</div>{{/if}}
+                <button class="${styles.removeButton}" type="button">Удалить</button>
             </div>
+
         `;
     }
 }

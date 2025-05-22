@@ -9,11 +9,8 @@ interface ChatHeaderProps {
 }
 
 class ChatHeader extends Block<ChatHeaderProps> {
-    constructor() {
-        super('div', {
-            selectedChatTitle: '',
-            selectedChatAvatar: '',
-        });
+    constructor(props: ChatHeaderProps) {
+        super('div', props);
     }
 
     // language=Handlebars

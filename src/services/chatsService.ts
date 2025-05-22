@@ -1,6 +1,7 @@
 import { ChatsApi } from '@/api';
 import { Store } from '@/core';
-import { AppStore, Chat, ChatUser } from '@/store';
+import { formatDate } from '@/helpers';
+import { Chat, ChatUser } from '@/store';
 import {
     AddUsersToChatRequestDto,
     ChatDto,
@@ -17,8 +18,6 @@ export class ChatsService {
     private readonly store = Store.getInstance();
 
     async getChats(data: ChatRequestDto = {}): Promise<void> {
-        if (this.store.getState<AppStore>().chats?.chats) return;
-
         try {
             const { status, response } = await this.apiInstance.request(data);
 
@@ -31,7 +30,9 @@ export class ChatsService {
                     id: chat.id,
                     title: chat.title,
                     lastMessage: chat.last_message?.content,
-                    date: chat.last_message?.time,
+                    lastMessageTime: chat.last_message?.time
+                        ? formatDate(chat.last_message.time)
+                        : '',
                     newMessagesNum: chat.unread_count,
                     avatar: chat.avatar,
                 });
@@ -57,8 +58,6 @@ export class ChatsService {
             if (status !== 200) {
                 throw new Error(`Error create chat. Status: ${status}`);
             }
-
-            console.log(response);
         } catch (error: unknown) {
             throw error;
         }
@@ -67,13 +66,11 @@ export class ChatsService {
     async deleteChat(chatId: number): Promise<void> {
         try {
             const data: DeleteChatRequestDto = { chatId };
-            const { status, response } = await this.apiInstance.delete(data);
+            const { status } = await this.apiInstance.delete(data);
 
             if (status !== 200) {
                 throw new Error(`Error delete chat. Status: ${status}`);
             }
-
-            console.log(response);
         } catch (error: unknown) {
             throw error;
         }

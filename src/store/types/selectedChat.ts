@@ -3,7 +3,7 @@ import { Chat } from './chat';
 export interface SelectedChatState {
     isLoading: boolean;
     isError: string;
-    chat: Chat | null;
+    chat: SelectedChat | null;
     users: ChatUser[] | null;
     messages: ChatMessage[] | null;
 }
@@ -19,6 +19,7 @@ export interface ChatMessage {
     message: string;
     userId: number;
     time: string;
-    date: string;
     timestamp: number;
 }
+
+export type SelectedChat = Pick<Chat, 'id' | 'title' | 'avatar'>;

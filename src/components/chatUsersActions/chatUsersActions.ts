@@ -1,28 +1,22 @@
 import { Block, Store } from '@/core';
-import { Button, Panel, Popup, ChatActionsForm } from '@/components';
+import { Button, Panel, Popup, ChatUsersActionsForm } from '@/components';
 import { connect } from '@/helpers';
 import { ChatsService } from '@/services';
 import { AppStore } from '@/store';
 import styles from './styles.module.css';
 
-interface ChatActionsProps {
-    showActions?: boolean;
-    showAddAction?: boolean;
-    showRemoveAction?: boolean;
+interface ChatUsersActionsProps {
+    isShowActionsPanel?: boolean;
+    isShowAddPopup?: boolean;
+    isShowRemovePopup?: boolean;
     chatId?: number;
 }
 
-class ChatActions extends Block<ChatActionsProps> {
+class ChatUsersActions extends Block<ChatUsersActionsProps> {
     private readonly store = Store.getInstance();
     private readonly chatsService = new ChatsService();
 
-    constructor() {
-        const props: ChatActionsProps = {
-            showActions: false,
-            showAddAction: false,
-            showRemoveAction: false,
-        };
-
+    constructor(props: ChatUsersActionsProps) {
         super('div', props, {
             ShowActionsButton: new Button({
                 'theme-blank': true,
@@ -32,7 +26,7 @@ class ChatActions extends Block<ChatActionsProps> {
                 onClick: () => {
                     this.setProps({
                         ...props,
-                        showActions: !this.props.showActions,
+                        isShowActionsPanel: !this.props.isShowActionsPanel,
                     });
                 },
             }) as Block,
@@ -46,8 +40,8 @@ class ChatActions extends Block<ChatActionsProps> {
                         onClick: () => {
                             this.setProps({
                                 ...props,
-                                showActions: false,
-                                showAddAction: true,
+                                isShowActionsPanel: false,
+                                isShowAddPopup: true,
                             });
                         },
                     }),
@@ -58,8 +52,8 @@ class ChatActions extends Block<ChatActionsProps> {
                         onClick: () => {
                             this.setProps({
                                 ...props,
-                                showActions: false,
-                                showRemoveAction: true,
+                                isShowActionsPanel: false,
+                                isShowRemovePopup: true,
                             });
                         },
                     }),
@@ -67,27 +61,27 @@ class ChatActions extends Block<ChatActionsProps> {
             }) as Block,
             PopupAddUser: new Popup({
                 title: 'Добавить пользователя',
-                Children: new ChatActionsForm({
+                Children: new ChatUsersActionsForm({
                     buttonTitle: 'Добавить',
                     onSubmit: (userId: number) => this.addUserToChatHandler(userId),
                 }) as Block,
                 hidePopupHandler: () => {
                     this.setProps({
                         ...props,
-                        showAddAction: false,
+                        isShowAddPopup: false,
                     });
                 },
             }) as Block,
             PopupRemoveContact: new Popup({
                 title: 'Удалить пользователя',
-                Children: new ChatActionsForm({
+                Children: new ChatUsersActionsForm({
                     buttonTitle: 'Удалить',
                     onSubmit: (userId: number) => this.removeUserToChatHandler(userId),
                 }) as Block,
                 hidePopupHandler: () => {
                     this.setProps({
                         ...props,
-                        showRemoveAction: false,
+                        isShowRemovePopup: false,
                     });
                 },
             }) as Block,
@@ -102,7 +96,7 @@ class ChatActions extends Block<ChatActionsProps> {
 
                 this.setProps({
                     ...this.props,
-                    showAddAction: false,
+                    isShowAddPopup: false,
                 });
             } catch (error) {
                 this.store.set('selectedChat.isError', (error as Error).message);
@@ -120,7 +114,7 @@ class ChatActions extends Block<ChatActionsProps> {
 
                 this.setProps({
                     ...this.props,
-                    showRemoveAction: false,
+                    isShowRemovePopup: false,
                 });
             } catch (error) {
                 this.store.set('selectedChat.isError', (error as Error).message);
@@ -133,28 +127,28 @@ class ChatActions extends Block<ChatActionsProps> {
     // language=Handlebars
     render(): string {
         return `
-            <div class="{{#if showActions}}${styles.buttonActive}{{/if}}">
+            <div class="{{#if isShowActionsPanel}}${styles.buttonActive}{{/if}}">
                 {{{ShowActionsButton}}}
             </div>
-            {{#if showActions}}
+            {{#if isShowActionsPanel}}
                 <div class="${styles.popup}">
                     {{{ActionsPanel}}}
                 </div>
             {{/if}}
-            {{#if showAddAction}}
+            {{#if isShowAddPopup}}
                 {{{PopupAddUser}}}
             {{/if}}
-            {{#if showRemoveAction}}
+            {{#if isShowRemovePopup}}
                 {{{PopupRemoveContact}}}
             {{/if}}
         `;
     }
 }
 
-function mapStateToProps(state: AppStore): ChatActionsProps {
+function mapStateToProps(state: AppStore): ChatUsersActionsProps {
     return {
         chatId: state.selectedChat.chat?.id,
     };
 }
 
-export default connect<AppStore, ChatActionsProps>(mapStateToProps)(ChatActions);
+export default connect<AppStore, ChatUsersActionsProps>(mapStateToProps)(ChatUsersActions);

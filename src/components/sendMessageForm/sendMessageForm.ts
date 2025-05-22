@@ -26,7 +26,7 @@ export default class SendMessageForm extends Block<SendMessageFormProps> {
                 },
                 className: styles.messageForm,
                 events: {
-                    submit: (e) => this.submitHandle(e),
+                    submit: (e) => this.handleSubmit(e),
                 },
             },
             {
@@ -85,7 +85,7 @@ export default class SendMessageForm extends Block<SendMessageFormProps> {
         });
     }
 
-    private submitHandle(e: Event) {
+    private handleSubmit(e: Event) {
         e.preventDefault();
         const input = this.children.MessageInput as LabelInput;
         const error = Validator.validate(this.props.form.message.value).isRequired();

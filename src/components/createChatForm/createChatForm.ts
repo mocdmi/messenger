@@ -1,43 +1,42 @@
 import { BaseForm } from '@/components';
+import { Validator } from '@/core';
 import { isErrorsEmpty } from '@/helpers';
 import styles from './styles.module.css';
 
-export type InputKey = 'login';
+export type InputKey = 'chatName';
 
-export interface ChatActionsFormProps {
+export interface CreateChatFormProps {
     form: {
-        login: {
+        chatName: {
             value: string;
             error: string;
         };
     };
-    buttonTitle: string;
-    onSubmit?: (userId: number) => void;
+    onSubmit?: (chatName: string) => void;
 }
 
 const formConfig = {
     formFields: {
-        login: {
-            component: 'LoginInput',
-            label: 'Логин',
+        chatName: {
+            component: 'ChatNameInput',
+            label: 'Название чата',
             type: 'text',
         },
     },
     validators: {
-        login: () => '',
+        chatName: (value: string) => Validator.validate((value ?? '') as string).isRequired(),
     },
 } as const;
 
-export default class ChatActionsForm extends BaseForm<ChatActionsFormProps, InputKey> {
-    constructor(props: Pick<ChatActionsFormProps, 'onSubmit' | 'buttonTitle'>) {
-        const initialProps: ChatActionsFormProps = {
+export default class CreateChatForm extends BaseForm<CreateChatFormProps, InputKey> {
+    constructor(props: Pick<CreateChatFormProps, 'onSubmit'>) {
+        const initialProps: CreateChatFormProps = {
             form: {
-                login: {
+                chatName: {
                     value: '',
                     error: '',
                 },
             },
-            buttonTitle: '',
         };
 
         super(
@@ -46,14 +45,14 @@ export default class ChatActionsForm extends BaseForm<ChatActionsFormProps, Inpu
                 ...initialProps,
             },
             formConfig,
-            { label: props.buttonTitle },
+            { label: 'Добавить чат' },
         );
     }
 
     async onSubmit(e: Event, errors: Record<string, string>) {
         if (isErrorsEmpty(errors)) {
-            const userId = this.props.form.login.value;
-            this.props.onSubmit?.(Number(userId));
+            const chatName = this.props.form.chatName.value;
+            this.props.onSubmit?.(chatName);
             (e.target as HTMLFormElement).reset();
         }
     }

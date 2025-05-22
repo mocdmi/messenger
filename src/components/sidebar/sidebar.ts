@@ -2,22 +2,23 @@ import { Block } from '@/core';
 import { ROUTER } from '@/const';
 import { connect } from '@/helpers';
 import { AppStore, Chat } from '@/store';
-import { ChatCard, Link } from '@/components';
+import { CreateChat, ChatCard, Link } from '@/components';
 import SearchForm from './parts/searchForm';
 import styles from './styles.module.css';
 
 interface ChatProps {
     id: number;
     title: string;
-    avatar: string;
-    lastMessage: string;
-    date: string;
+    avatar?: string;
+    lastMessage?: string;
+    lastMessageTime?: string;
     newMessagesNum?: number;
 }
 
 interface SidebarProps {
     chats?: Chat[];
     selectedChatId?: number;
+    showAddAction?: boolean;
 }
 
 class Sidebar extends Block<SidebarProps> {
@@ -25,7 +26,7 @@ class Sidebar extends Block<SidebarProps> {
         super(
             'nav',
             {
-                chats: [],
+                ...props,
                 className: styles.sidebar,
             },
             {
@@ -37,6 +38,9 @@ class Sidebar extends Block<SidebarProps> {
                     modificator: styles.link,
                 }) as Block,
                 SearchForm: new SearchForm() as Block,
+                CreateChat: new CreateChat({
+                    isShowPopup: false,
+                }),
             },
         );
     }
@@ -66,10 +70,13 @@ class Sidebar extends Block<SidebarProps> {
                 {{{ProfileLink}}}
             </div>
             {{{SearchForm}}}
-            <div>
+            <div class="${styles.chatsWrap}">
                 {{#each Chats}}
                     {{{this}}}
                 {{/each}}
+            </div>
+            <div class="${styles.createChat}">
+                {{{CreateChat}}}
             </div>
         `;
     }

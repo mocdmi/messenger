@@ -30,7 +30,7 @@ type SubmitButtonProps = {
     label: string;
 };
 
-// TODO: Не сбрасываются поля формы при повторной отправке
+// TODO: Не сбрасываются поля формы при повторной отправке, когда поля уже пустые (запоминает старые значения)
 export default abstract class BaseForm<
     TProps extends BaseFormProps,
     TKey extends string = string,
@@ -76,7 +76,7 @@ export default abstract class BaseForm<
                     method: 'POST',
                 },
                 events: {
-                    submit: (e: Event) => this.submitHandle(e),
+                    submit: (e: Event) => this.handleSubmit(e),
                 },
             },
             children,
@@ -130,7 +130,7 @@ export default abstract class BaseForm<
         });
     }
 
-    private submitHandle(e: Event): void {
+    private handleSubmit(e: Event): void {
         e.preventDefault();
         const errors: Record<string, string> = {};
 

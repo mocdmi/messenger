@@ -20,7 +20,7 @@ class EditProfilePage extends Block<EditProfileProps> {
                 Children: new EditForm({
                     ...props,
                     onSubmit: (form: UserDto) => {
-                        this.userService.editUser(form);
+                        void this.userService.editUser(form);
                     },
                 }) as Block,
             }) as Block,

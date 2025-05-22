@@ -1,7 +1,6 @@
 import { AuthApi } from '@/api';
 import { ROUTER } from '@/const';
 import { Router, Store } from '@/core';
-import { AppStore } from '@/store';
 import { SignInRequestDto, SignUpRequestDto } from '@/types';
 
 export default class AuthService {
@@ -46,8 +45,6 @@ export default class AuthService {
     }
 
     async getUser(): Promise<void> {
-        if (this.store.getState<AppStore>().user?.user) return;
-
         try {
             const { status, response } = await this.authApi.request();
 

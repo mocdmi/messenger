@@ -14,7 +14,7 @@ class Messages extends Block<MessagesProps> {
         super(
             'div',
             {
-                messages: [],
+                ...props,
                 className: styles.messages,
             },
             {
