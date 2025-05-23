@@ -1,3 +1,4 @@
+import { ROUTER } from '@/const';
 import { Route } from '@/core';
 import { BlockConstructor } from '@/types';
 
@@ -32,7 +33,11 @@ export default class Router {
             }
         };
 
-        this.onRoute(window.location.pathname);
+        try {
+            this.onRoute(window.location.pathname);
+        } catch (_error: unknown) {
+            this.onRoute(ROUTER.notFound);
+        }
     }
 
     private onRoute(path: string): void {
@@ -71,6 +76,10 @@ export default class Router {
         } catch (error) {
             console.error(error);
         }
+    }
+
+    getCurrentRoute(): Route | null {
+        return this.currentRoute;
     }
 
     private getBlockByPath(path: string): Route | undefined {

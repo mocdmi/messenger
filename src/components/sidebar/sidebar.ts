@@ -2,7 +2,7 @@ import { Block } from '@/core';
 import { ROUTER } from '@/const';
 import { connect } from '@/helpers';
 import { AppStore, Chat } from '@/store';
-import { CreateChat, ChatCard, Link } from '@/components';
+import { CreateChat, ChatCard, Link, Loading } from '@/components';
 import SearchForm from './parts/searchForm';
 import styles from './styles.module.css';
 
@@ -13,12 +13,14 @@ interface ChatProps {
     lastMessage?: string;
     lastMessageTime?: string;
     newMessagesNum?: number;
+    createdBy: number;
 }
 
 interface SidebarProps {
     chats?: Chat[];
     selectedChatId?: number;
     showAddAction?: boolean;
+    isLoading?: boolean;
 }
 
 class Sidebar extends Block<SidebarProps> {
@@ -41,6 +43,10 @@ class Sidebar extends Block<SidebarProps> {
                 CreateChat: new CreateChat({
                     isShowPopup: false,
                 }),
+                Loading: new Loading({
+                    text: 'Загрузка списка чатов...',
+                    modificator: styles.loading,
+                }) as Block,
             },
         );
     }
@@ -70,6 +76,7 @@ class Sidebar extends Block<SidebarProps> {
                 {{{ProfileLink}}}
             </div>
             {{{SearchForm}}}
+            {{#if isLoading}}{{#unless Chats}}{{{Loading}}}{{/unless}}{{/if}}
             <div class="${styles.chatsWrap}">
                 {{#each Chats}}
                     {{{this}}}
@@ -86,6 +93,7 @@ function mapStateToProps(state: AppStore): SidebarProps {
     return {
         chats: state.chats.chats ?? [],
         selectedChatId: state.selectedChat.chat?.id,
+        isLoading: state.chats.isLoading,
     };
 }
 

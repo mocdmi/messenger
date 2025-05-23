@@ -1,19 +1,31 @@
 import { Panel } from '@/components';
 import { Block } from '@/core';
-import PanelInner from './parts/panelInner';
+import { AuthService } from '@/services';
+import SignUpFormContainer from './signUpFormContainer';
 import styles from './styles.module.css';
 
 export default class SignUpPage extends Block {
+    private readonly authService = new AuthService();
+
     constructor() {
         super(
             'div',
             {},
             {
                 Panel: new Panel({
-                    Children: new PanelInner(),
+                    'inner-class': styles.panel,
+                    Children: new SignUpFormContainer(),
                 }) as Block,
             },
         );
+    }
+
+    componentDidMount() {
+        const getData = async () => {
+            await this.authService.getUser();
+        };
+
+        void getData();
     }
 
     // language=Handlebars

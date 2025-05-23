@@ -38,18 +38,10 @@ export default class Input extends Block<InputProps, InputAttrs> {
     componentDidUpdate(oldProps: InputProps, newProps: InputProps): boolean {
         if (oldProps.value !== newProps.value) {
             const input = this.getContent() as HTMLInputElement;
-
-            if (input) {
-                input.value = newProps.value || '';
-            }
-
-            this.setProps({
-                ...this.props,
-                value: newProps.value,
-            });
+            input.value = newProps.value ?? '';
         }
 
-        return true;
+        return false;
     }
 
     // language=Handlebars

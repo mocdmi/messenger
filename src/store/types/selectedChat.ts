@@ -22,4 +22,4 @@ export interface ChatMessage {
     timestamp: number;
 }
 
-export type SelectedChat = Pick<Chat, 'id' | 'title' | 'avatar'>;
+export type SelectedChat = Pick<Chat, 'id' | 'title' | 'avatar' | 'createdBy'>;

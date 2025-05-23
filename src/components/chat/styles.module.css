@@ -46,4 +46,10 @@
 .messageFormWrap {
     border-top: 1px solid var(--gray-color);
     padding: 10px 0;
+
+    form {
+        display: flex;
+        align-items: center;
+        column-gap: 10px;
+    }
 }

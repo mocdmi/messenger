@@ -1,5 +1,6 @@
 import { CreateChatForm, Button, Popup } from '@/components';
-import { Block } from '@/core';
+import { initProps } from '@/components/createChatForm';
+import { Block, Store } from '@/core';
 import { ChatsService } from '@/services';
 
 interface CreateChatProps {
@@ -8,6 +9,7 @@ interface CreateChatProps {
 
 export default class CreateChat extends Block<CreateChatProps> {
     private readonly chatsService = new ChatsService();
+    private readonly store = Store.getInstance();
 
     constructor(props: CreateChatProps) {
         super('div', props, {
@@ -25,6 +27,7 @@ export default class CreateChat extends Block<CreateChatProps> {
             Popup: new Popup({
                 title: 'Добавить чат',
                 Children: new CreateChatForm({
+                    ...initProps,
                     onSubmit: (chatName: string) => this.handleAddChatSubmit(chatName),
                 }) as Block,
                 hidePopupHandler: () => {
@@ -40,15 +43,16 @@ export default class CreateChat extends Block<CreateChatProps> {
     private async handleAddChatSubmit(chatName: string) {
         try {
             await this.chatsService.createChat(chatName);
-            await this.chatsService.getChats();
 
             this.setProps({
                 ...this.props,
                 isShowPopup: false,
             });
-        } catch (error: unknown) {
-            console.error('Error creating chat:', error);
+        } catch (_error: unknown) {
+            this.store.set<string>('selectedChat', 'Ошибка при создании чата');
         }
+
+        await this.chatsService.getChats();
     }
 
     // language=Handlebars

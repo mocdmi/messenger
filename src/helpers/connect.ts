@@ -18,14 +18,12 @@ export default function connect<TStore extends object, TProps extends object>(
                 this.onChangeStoreCallback = () => {
                     const newState = mapStateToProps(store.getState());
 
-                    if (!isEqual<TProps>(state, newState)) {
-                        this.setProps({ ...newState });
-                    }
-
-                    state = newState;
-
                     if (process.env.NODE_ENV === 'development') {
                         console.log('state:', JSON.stringify(store.getState(), null, 2));
+                    }
+
+                    if (!isEqual<TProps>(state, newState)) {
+                        this.setProps({ ...newState });
                     }
                 };
 

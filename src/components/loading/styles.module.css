@@ -1,0 +1,8 @@
+.loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 60px;
+    font-size: var(--font-size-m);
+    color: var(--dark-gray-color);
+}

@@ -59,9 +59,11 @@ export default class LabelInput extends Block<LabelInputProps> {
     componentDidUpdate(oldProps: LabelInputProps, newProps: LabelInputProps): boolean {
         if (oldProps.value !== newProps.value) {
             const input = this.children.Input as Block;
-            input.setProps({ value: newProps.value });
 
-            return true;
+            input.setProps({
+                ...input.props,
+                value: newProps.value,
+            });
         }
 
         if (oldProps.error !== newProps.error) {

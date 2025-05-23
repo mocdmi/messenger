@@ -5,6 +5,7 @@ export const ROUTER = {
     editProfile: '/settings/edit-profile',
     editPassword: '/settings/edit-password',
     messenger: '/messenger',
+    notFound: '/404',
 } as const;
 
 export const API_URL = 'https://ya-praktikum.tech/api/v2';

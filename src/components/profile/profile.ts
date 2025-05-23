@@ -4,8 +4,6 @@ import { Link, ProfileAvatar } from '@/components';
 import styles from './styles.module.css';
 
 interface ProfileProps {
-    name?: string;
-    avatar: string;
     Children: Block | Block[];
     router?: Router;
 }
@@ -19,7 +17,11 @@ class Profile extends Block<ProfileProps> {
                 className: styles.profile,
             },
             {
-                Avatar: new ProfileAvatar(props) as Block,
+                Avatar: new ProfileAvatar({
+                    name: '',
+                    avatar: '',
+                    isShowUploadForm: false,
+                }) as Block,
                 Body: Array.isArray(props.Children) ? props.Children : [props.Children],
                 BackButton: new Link({
                     label: 'Back',

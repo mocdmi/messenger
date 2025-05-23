@@ -1,11 +1,15 @@
 import { Link } from '@/components';
-import { ErrorContext } from '@/context/types/ErrorContext';
 import { Block } from '@/core';
 import { ROUTER } from '@/const';
 import styles from './styles.module.css';
 
-export default class ErrorPage extends Block<ErrorContext> {
-    constructor(props: ErrorContext) {
+interface ErrorPageProps {
+    status: string;
+    message: string;
+}
+
+export default class ErrorPage extends Block<ErrorPageProps> {
+    constructor(props: ErrorPageProps) {
         super('div', props, {
             BackLink: new Link({
                 'theme-default': true,
@@ -19,8 +23,8 @@ export default class ErrorPage extends Block<ErrorContext> {
     render(): string {
         return `
             <main class="${styles.error}">
-                <h1 class="${styles.status}">{{status}}</h1>
-                <div class="${styles.message}">{{message}}</div>
+                <h1 class="${styles.status}">404</h1>
+                <div class="${styles.message}">Не туда попали</div>
                 {{{BackLink}}}
             </main>
         `;

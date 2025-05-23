@@ -1,111 +1,30 @@
-import { Button, LabelInput } from '@/components';
-import { Block, Validator } from '@/core';
+import { BaseForm } from '@/components';
+import { messageFormTheme } from '@/components/baseForm';
+import { isErrorsEmpty } from '@/helpers';
+import { config } from './config';
+import { InputKey, SendMessageFormProps } from './types';
 import styles from './styles.module.css';
 
-interface SendMessageFormProps {
-    form: {
-        message: {
-            value: string;
-            error: string;
-        };
-    };
-    onSubmit?: (e: Event, message: string, errors: Record<string, string>) => void;
-}
-
-export default class SendMessageForm extends Block<SendMessageFormProps> {
-    constructor(props: Pick<SendMessageFormProps, 'onSubmit'>) {
-        super(
-            'form',
-            {
-                ...props,
-                form: {
-                    message: {
-                        value: '',
-                        error: '',
-                    },
-                },
-                className: styles.messageForm,
-                events: {
-                    submit: (e) => this.handleSubmit(e),
-                },
-            },
-            {
-                MessageInput: new LabelInput({
-                    'theme-color': true,
-                    type: 'text',
-                    name: 'message',
-                    placeholder: 'Сообщение',
-                    rounded: true,
-                    value: '',
-                    onChange: (e: Event) => this.handleChange(e),
-                    onBlur: (e: Event) => this.handleBlur(e),
-                }) as Block,
-                SendButton: new Button({
-                    'theme-default': true,
-                    type: 'submit',
-                    rounded: true,
-                    icon: 'next',
-                }) as Block,
-            },
-        );
+export default class SendMessageForm extends BaseForm<SendMessageFormProps, InputKey> {
+    constructor(props: SendMessageFormProps) {
+        super(props, config, { label: '' }, (props) => messageFormTheme(props));
     }
 
-    private handleChange(e: Event) {
-        this.setProps({
-            ...this.props,
-            form: {
-                ...this.props.form,
-                message: {
-                    ...this.props.form.message,
-                    value: (e.target as HTMLInputElement).value,
-                },
-            },
-        });
-    }
-
-    private handleBlur(e: Event) {
-        const el = e.target as HTMLInputElement;
-        const input = this.children.MessageInput as LabelInput;
-        const error = Validator.validate(el.value).isRequired();
-
-        input.setProps({
-            ...input.props,
-            error: error,
-        });
-
-        this.setProps({
-            ...this.props,
-            form: {
-                ...this.props.form,
-                message: {
-                    value: el.value,
-                    error: error,
-                },
-            },
-        });
-    }
-
-    private handleSubmit(e: Event) {
-        e.preventDefault();
-        const input = this.children.MessageInput as LabelInput;
-        const error = Validator.validate(this.props.form.message.value).isRequired();
-
-        input.setProps({
-            ...input.props,
-            error: error,
-        });
-
-        this.props.onSubmit?.(e, this.props.form.message.value, { message: error });
+    async onSubmit(_e: Event, errors: Record<string, string>): Promise<void> {
+        if (isErrorsEmpty(errors)) {
+            this.props.onSubmit?.(this.props.form.message.value);
+            super.resetForm();
+        }
     }
 
     // language=Handlebars
     render(): string {
         return `
             <div class="${styles.input}">
-                {{{MessageInput}}}
+                {{{${config.formFields.message.component}}}}
             </div>
             <div class="${styles.button}">
-                {{{SendButton}}}
+                {{{SubmitButton}}}
             </div>
         `;
     }

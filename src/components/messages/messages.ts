@@ -1,4 +1,4 @@
-import { MessageBubble } from '@/components';
+import { Loading, MessageBubble } from '@/components';
 import { Block } from '@/core';
 import { connect } from '@/helpers';
 import { AppStore, ChatMessage } from '@/store';
@@ -7,6 +7,7 @@ import styles from './styles.module.css';
 interface MessagesProps {
     messages?: ChatMessage[] | null;
     currentUserId?: number;
+    isLoading?: boolean;
 }
 
 class Messages extends Block<MessagesProps> {
@@ -26,6 +27,9 @@ class Messages extends Block<MessagesProps> {
                             time: item.time,
                         }),
                 ) as Block[],
+                Loading: new Loading({
+                    text: 'Загрузка истории переписки...',
+                }) as Block,
             },
         );
     }
@@ -53,6 +57,7 @@ class Messages extends Block<MessagesProps> {
     // language=Handlebars
     render(): string {
         return `
+            {{#if isLoading}}{{{Loading}}}{{/if}}
             {{#each Messages}}
                 {{{this}}}
             {{/each}}
@@ -64,6 +69,7 @@ function mapStateToProps(state: AppStore): MessagesProps {
     return {
         messages: state.selectedChat.messages ?? [],
         currentUserId: state.user.user?.id,
+        isLoading: state.selectedChat.isLoading,
     };
 }
 

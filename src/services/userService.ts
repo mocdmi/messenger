@@ -1,5 +1,6 @@
 import { UserApi } from '@/api';
 import { Store } from '@/core';
+import { AppStore, UserState } from '@/store';
 import { UpdateUserPasswordRequestDto, UserDto } from '@/types';
 
 export default class UserService {
@@ -8,6 +9,12 @@ export default class UserService {
 
     async editUser(data: UserDto): Promise<void> {
         try {
+            this.store.set<UserState>('user', {
+                ...this.store.getState<AppStore>().user,
+                isLoading: true,
+                isError: '',
+            });
+
             const { status, response } = await this.userApi.update(data);
 
             if ('reason' in response) {
@@ -29,10 +36,18 @@ export default class UserService {
         formData.append('avatar', file);
 
         try {
+            this.store.set<UserState>('user', {
+                ...this.store.getState<AppStore>().user,
+                isLoading: true,
+                isError: '',
+            });
+
             const { status, response } = await this.userApi.updateAvatar(formData);
 
+            this.store.set<boolean>('user.isLoading', false);
+
             if ('reason' in response) {
-                throw new Error(response.reason);
+                this.store.set<string>('user.isError', response.reason);
             }
 
             if (status !== 200) {
@@ -47,7 +62,15 @@ export default class UserService {
 
     async editPassword(data: UpdateUserPasswordRequestDto): Promise<void> {
         try {
+            this.store.set<UserState>('user', {
+                ...this.store.getState<AppStore>().user,
+                isLoading: true,
+                isError: '',
+            });
+
             const { status } = await this.userApi.updatePassword(data);
+
+            this.store.set<boolean>('user.isLoading', false);
 
             if (status !== 200) {
                 throw new Error(`Error edit password. Status: ${status}`);

@@ -107,7 +107,10 @@ export default abstract class Block<
             return;
         }
 
+        const oldProps = { ...this.props };
         Object.assign(this.props, nextProps);
+
+        this.eventBus.emit(Block.EVENTS.FLOW_CDU, oldProps, this.props);
     };
 
     private compile(): DocumentFragment {

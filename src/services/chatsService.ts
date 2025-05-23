@@ -1,7 +1,7 @@
 import { ChatsApi } from '@/api';
 import { Store } from '@/core';
 import { formatDate } from '@/helpers';
-import { Chat, ChatUser } from '@/store';
+import { AppStore, Chat, ChatsState, ChatUser, SelectedChatState } from '@/store';
 import {
     AddUsersToChatRequestDto,
     ChatDto,
@@ -19,7 +19,15 @@ export class ChatsService {
 
     async getChats(data: ChatRequestDto = {}): Promise<void> {
         try {
+            this.store.set<ChatsState>('chats', {
+                ...this.store.getState<AppStore>().chats,
+                isLoading: true,
+                isError: '',
+            });
+
             const { status, response } = await this.apiInstance.request(data);
+
+            this.store.set<boolean>('chats.isLoading', false);
 
             if (status !== 200) {
                 throw new Error(`Error get chats. Status: ${status}`);
@@ -34,13 +42,14 @@ export class ChatsService {
                         ? formatDate(chat.last_message.time)
                         : '',
                     newMessagesNum: chat.unread_count,
+                    createdBy: chat.created_by,
                     avatar: chat.avatar,
                 });
 
                 return acc;
             }, []);
 
-            this.store.set('chats.chats', chats);
+            this.store.set<Chat[]>('chats.chats', chats);
         } catch (error: unknown) {
             throw error;
         }
@@ -48,11 +57,19 @@ export class ChatsService {
 
     async createChat(title: string): Promise<void> {
         try {
+            this.store.set<ChatsState>('chats', {
+                ...this.store.getState<AppStore>().chats,
+                isLoading: true,
+                isError: '',
+            });
+
             const data: CreateChatRequestDto = { title };
             const { status, response } = await this.apiInstance.create(data);
 
+            this.store.set<boolean>('chats.isLoading', false);
+
             if ('reason' in response) {
-                throw new Error(response.reason);
+                this.store.set<string>('chats.isError', response.reason);
             }
 
             if (status !== 200) {
@@ -65,8 +82,16 @@ export class ChatsService {
 
     async deleteChat(chatId: number): Promise<void> {
         try {
+            this.store.set<ChatsState>('chats', {
+                ...this.store.getState<AppStore>().chats,
+                isLoading: true,
+                isError: '',
+            });
+
             const data: DeleteChatRequestDto = { chatId };
             const { status } = await this.apiInstance.delete(data);
+
+            this.store.set<boolean>('chats.isLoading', false);
 
             if (status !== 200) {
                 throw new Error(`Error delete chat. Status: ${status}`);
@@ -78,6 +103,12 @@ export class ChatsService {
 
     async addUsersToChat(chatId: number, userIds: number[]): Promise<void> {
         try {
+            this.store.set<ChatsState>('chats', {
+                ...this.store.getState<AppStore>().chats,
+                isLoading: true,
+                isError: '',
+            });
+
             const data: AddUsersToChatRequestDto = {
                 chatId,
                 users: userIds,
@@ -85,8 +116,10 @@ export class ChatsService {
 
             const { status, response } = await this.apiInstance.addUsersToChat(data);
 
+            this.store.set<boolean>('chats.isLoading', false);
+
             if (typeof response === 'object' && 'reason' in response) {
-                throw new Error(response.reason);
+                this.store.set<string>('chats.isError', response.reason);
             }
 
             if (status !== 200) {
@@ -99,14 +132,22 @@ export class ChatsService {
 
     async deleteUsersFromChat(chatId: number, userIds: number[]): Promise<void> {
         try {
+            this.store.set<ChatsState>('chats', {
+                ...this.store.getState<AppStore>().chats,
+                isLoading: true,
+                isError: '',
+            });
+
             const data: DeleteUsersFromChatRequestDto = {
                 chatId,
                 users: userIds,
             };
             const { status, response } = await this.apiInstance.deleteUsersFromChat(data);
 
+            this.store.set<boolean>('chats.isLoading', false);
+
             if (typeof response === 'object' && 'reason' in response) {
-                throw new Error(response.reason);
+                this.store.set<string>('chats.isError', response.reason);
             }
 
             if (status !== 200) {
@@ -119,8 +160,16 @@ export class ChatsService {
 
     async getChatUsers(chatId: number): Promise<void> {
         try {
+            this.store.set<SelectedChatState>('selectedChat', {
+                ...this.store.getState<AppStore>().selectedChat,
+                isLoading: true,
+                isError: '',
+            });
+
             const data: GetChatUsersRequestDto = { id: chatId };
             const { status, response } = await this.apiInstance.getChatUsers(data);
+
+            this.store.set<boolean>('selectedChat.isLoading', false);
 
             if (status !== 200) {
                 throw new Error(`Error get chat users. Status: ${status}`);
@@ -136,7 +185,7 @@ export class ChatsService {
                 return acc;
             }, []);
 
-            this.store.set('selectedChat.users', users);
+            this.store.set<ChatUser[]>('selectedChat.users', users);
         } catch (error: unknown) {
             throw new Error(error as string);
         }
@@ -144,7 +193,15 @@ export class ChatsService {
 
     async getChatToken(chatId: number): Promise<string> {
         try {
+            this.store.set<SelectedChatState>('selectedChat', {
+                ...this.store.getState<AppStore>().selectedChat,
+                isLoading: true,
+                isError: '',
+            });
+
             const { status, response } = await this.apiInstance.getChatToken(chatId);
+
+            this.store.set<boolean>('selectedChat.isLoading', false);
 
             if (status !== 200) {
                 throw new Error(`Error get chat token. Status: ${status}`);

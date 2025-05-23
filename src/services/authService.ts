@@ -1,6 +1,7 @@
 import { AuthApi } from '@/api';
 import { ROUTER } from '@/const';
 import { Router, Store } from '@/core';
+import { AppStore, UserState } from '@/store';
 import { SignInRequestDto, SignUpRequestDto } from '@/types';
 
 export default class AuthService {
@@ -10,10 +11,18 @@ export default class AuthService {
 
     async signUp(data: SignUpRequestDto): Promise<void> {
         try {
+            this.store.set<UserState>('user', {
+                ...this.store.getState<AppStore>().user,
+                isLoading: true,
+                isError: '',
+            });
+
             const { status, response } = await this.authApi.create(data);
 
+            this.store.set<boolean>('user.isLoading', false);
+
             if ('reason' in response) {
-                throw new Error(response.reason);
+                this.store.set<string>('user.isError', response.reason);
             }
 
             if (status !== 200) {
@@ -28,10 +37,18 @@ export default class AuthService {
 
     async login(data: SignInRequestDto): Promise<void> {
         try {
+            this.store.set<UserState>('user', {
+                ...this.store.getState<AppStore>().user,
+                isLoading: true,
+                isError: '',
+            });
+
             const { status, response } = await this.authApi.login(data);
 
+            this.store.set<boolean>('user.isLoading', false);
+
             if (typeof response === 'object' && 'reason' in response) {
-                throw new Error(response.reason);
+                this.store.set<string>('user.isError', response.reason);
             }
 
             if (status !== 200) {
@@ -46,21 +63,37 @@ export default class AuthService {
 
     async getUser(): Promise<void> {
         try {
+            this.store.set<UserState>('user', {
+                ...this.store.getState<AppStore>().user,
+                isLoading: true,
+                isError: '',
+            });
+
             const { status, response } = await this.authApi.request();
+
+            this.store.set<boolean>('user.isLoading', false);
 
             if (status === 401) {
                 this.router.go(ROUTER.login);
             }
 
             if ('reason' in response) {
-                throw new Error(response.reason);
+                this.store.set<string>('user.isError', response.reason);
             }
 
             if (status !== 200) {
+                this.router.go(ROUTER.login);
                 throw new Error(`Error get user. Status: ${status}`);
             }
 
             this.store.set('user.user', response);
+
+            if (
+                this.router.getCurrentRoute()?.match(ROUTER.signUp) ||
+                this.router.getCurrentRoute()?.match(ROUTER.login)
+            ) {
+                this.router.go(ROUTER.messenger);
+            }
         } catch (error) {
             throw error;
         }
@@ -68,7 +101,15 @@ export default class AuthService {
 
     async logout(): Promise<void> {
         try {
+            this.store.set<UserState>('user', {
+                ...this.store.getState<AppStore>().user,
+                isLoading: true,
+                isError: '',
+            });
+
             const { status } = await this.authApi.logout();
+
+            this.store.set<boolean>('user.isLoading', false);
 
             if (status !== 200) {
                 throw new Error(`Error logout. Status: ${status}`);

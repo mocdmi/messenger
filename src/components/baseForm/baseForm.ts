@@ -1,71 +1,38 @@
+import { isEqual } from '@/helpers';
+import {
+    BaseFormProps,
+    FormConfig,
+    FormField,
+    FormFieldState,
+    SubmitButtonProps,
+    ThemeProps,
+} from './types';
 import { Block } from '@/core';
-import { Button, LabelInput } from '@/components';
+import { LabelInput } from '@/components';
 
-export type InputType = 'text' | 'password' | 'email';
-
-interface FormField {
-    component: string;
-    label: string;
-    type: InputType;
-    autocomplete?: string;
-}
-
-type FormFieldState = {
-    value: string;
-    error: string;
-};
-
-interface BaseFormProps {
-    form: Record<string, FormFieldState>;
-}
-
-type FormValidator = (value: string) => string;
-
-interface FormConfig<TKey extends string> {
-    formFields: Record<TKey, FormField>;
-    validators: Record<TKey, FormValidator>;
-}
-
-type SubmitButtonProps = {
-    label: string;
-};
-
-// TODO: Не сбрасываются поля формы при повторной отправке, когда поля уже пустые (запоминает старые значения)
+// TODO: Сделать, чтобы при не успешной отправке формы поля не сбрасывались
 export default abstract class BaseForm<
     TProps extends BaseFormProps,
     TKey extends string = string,
 > extends Block<TProps> {
     public readonly props: TProps;
-    public readonly children: Record<string, Block>;
     private config: FormConfig<TKey>;
+    readonly children: Record<string, Block>;
 
     protected constructor(
         props: TProps,
         config: FormConfig<TKey>,
         submitButtonProps: SubmitButtonProps,
+        buildChildren: (props: ThemeProps<TKey>) => Record<string, Block>,
     ) {
-        const children: Record<string, Block> = {};
-
-        (Object.entries(config.formFields) as Array<[TKey, FormField]>).forEach(
-            ([fieldName, field]) => {
-                children[field.component] = new LabelInput({
-                    'theme-default': true,
-                    name: fieldName,
-                    value: '',
-                    type: field.type,
-                    label: field.label,
-                    autocomplete: field.autocomplete,
-                    onChange: (e: Event) => this.handleInputChange(e, fieldName),
-                    onBlur: (e: Event) => this.handleInputBlur(e, fieldName, field.component),
-                }) as Block;
-            },
-        );
-
-        children.SubmitButton = new Button({
-            'theme-default': true,
-            label: submitButtonProps.label,
-            type: 'submit',
-        }) as Block;
+        const children: Record<string, Block> = buildChildren({
+            config,
+            props,
+            submitLabel: submitButtonProps.label,
+            handleInputChange: (e: Event, fieldName: TKey) => this.handleInputChange(e, fieldName),
+            handleInputBlur: (e: Event, fieldName: TKey, component: string) =>
+                this.handleInputBlur(e, fieldName, component),
+        });
 
         super(
             'form',
@@ -83,8 +50,31 @@ export default abstract class BaseForm<
         );
 
         this.props = props;
-        this.children = children;
         this.config = config;
+        this.children = children;
+    }
+
+    resetForm(): void {
+        const newFormState: Record<TKey, FormFieldState> = {} as Record<TKey, FormFieldState>;
+
+        (Object.entries(this.config.formFields) as Array<[TKey, FormField]>).forEach(
+            ([fieldName, field]) => {
+                const input = this.children[field.component] as LabelInput;
+
+                input.setProps({
+                    ...input.props,
+                    value: '',
+                    error: '',
+                });
+
+                newFormState[fieldName] = { value: '', error: '' };
+            },
+        );
+
+        this.setProps({
+            ...this.props,
+            form: newFormState,
+        });
     }
 
     private handleInputChange(e: Event, fieldName: TKey): void {
@@ -133,14 +123,19 @@ export default abstract class BaseForm<
     private handleSubmit(e: Event): void {
         e.preventDefault();
         const errors: Record<string, string> = {};
+        const formValues: Record<TKey, string> = {} as Record<TKey, string>;
 
         (Object.entries(this.config.formFields) as Array<[TKey, FormField]>).forEach(
-            ([_, field]) => {
+            ([fieldName, field]) => {
                 const input = this.children[field.component] as Block;
+                const currentValue = this.props.form[fieldName].value;
+
+                formValues[fieldName] = currentValue;
 
                 if (input) {
                     input.setProps({
                         error: '',
+                        value: currentValue,
                     });
                 }
             },
@@ -156,7 +151,10 @@ export default abstract class BaseForm<
                     if (fieldConfig) {
                         const input = this.children[fieldConfig.component] as Block;
                         errors[key] = error;
-                        input.setProps({ error });
+                        input.setProps({
+                            error,
+                            value,
+                        });
                     }
                 }
             }
@@ -166,4 +164,21 @@ export default abstract class BaseForm<
     }
 
     protected abstract onSubmit(e: Event, errors: Record<string, string>): void;
+
+    componentDidUpdate(oldProps: TProps, newProps: TProps): boolean {
+        if (!isEqual(oldProps, newProps)) {
+            Object.entries(newProps.form).forEach(([key, value]) => {
+                const field = this.config.formFields[key as TKey];
+                const input = this.children[field.component] as Block;
+
+                if (input) {
+                    input.setProps({ value: value.value });
+                }
+            });
+
+            return true;
+        }
+
+        return false;
+    }
 }

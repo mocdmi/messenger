@@ -26,7 +26,7 @@ export default class Store extends EventBus {
         return this.makeStateProxy<TStore>(this.state as TStore);
     }
 
-    set(path: string, value: unknown): void {
+    set<TStore>(path: string, value: TStore): void {
         set(this.state, path, value);
         this.emit(StoreEvents.Updated, this.state);
     }

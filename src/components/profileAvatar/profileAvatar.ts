@@ -1,18 +1,20 @@
 import { Block } from '@/core';
 import { Button, Popup } from '@/components';
+import { connect } from '@/helpers';
 import { UserService } from '@/services';
 import { API_URL } from '@/const';
 import noPhoto from '@/assets/images/no-photo.svg';
+import { AppStore } from '@/store';
 import UploadForm from './parts/uploadForm';
 import styles from './styles.module.css';
 
 interface ProfileAvatarProps {
     name?: string;
-    avatar: string;
-    popupShow?: boolean;
+    avatar?: string;
+    isShowUploadForm?: boolean;
 }
 
-export default class ProfileAvatar extends Block<ProfileAvatarProps> {
+class ProfileAvatar extends Block<ProfileAvatarProps> {
     private readonly userService = new UserService();
 
     constructor(props: ProfileAvatarProps) {
@@ -28,12 +30,17 @@ export default class ProfileAvatar extends Block<ProfileAvatarProps> {
                     Children: new UploadForm({
                         onSubmit: async (file: File) => {
                             await this.userService.editAvatar(file);
+
+                            this.setProps({
+                                ...this.props,
+                                isShowUploadForm: false,
+                            });
                         },
                     }) as Block,
                     hidePopupHandler: () => {
                         this.setProps({
-                            ...props,
-                            popupShow: false,
+                            ...this.props,
+                            isShowUploadForm: false,
                         });
                     },
                 }) as Block,
@@ -43,8 +50,8 @@ export default class ProfileAvatar extends Block<ProfileAvatarProps> {
                     type: 'submit',
                     onClick: () => {
                         this.setProps({
-                            ...props,
-                            popupShow: true,
+                            ...this.props,
+                            isShowUploadForm: true,
                         });
                     },
                 }) as Block,
@@ -66,9 +73,18 @@ export default class ProfileAvatar extends Block<ProfileAvatarProps> {
                 </div>
             </div>
             {{#if name}}<h2 class="${styles.name}">{{name}}</h2>{{/if}}
-            {{#if popupShow}}
+            {{#if isShowUploadForm}}
                 {{{UploadForm}}}
             {{/if}}
         `;
     }
 }
+
+function mapStateToProps(state: AppStore): ProfileAvatarProps {
+    return {
+        name: state.user?.user?.first_name,
+        avatar: state.user?.user?.avatar,
+    };
+}
+
+export default connect<AppStore, ProfileAvatarProps>(mapStateToProps)(ProfileAvatar);

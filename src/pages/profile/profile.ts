@@ -1,5 +1,5 @@
 import { Profile } from '@/components';
-import { Block } from '@/core';
+import { Block, Store } from '@/core';
 import { connect } from '@/helpers';
 import { AuthService } from '@/services';
 import { AppStore } from '@/store';
@@ -9,11 +9,11 @@ import { ProfileProps } from './types';
 
 class ProfilePage extends Block<ProfileProps> {
     private readonly authService = new AuthService();
+    private readonly store = Store.getInstance();
 
     constructor(props: ProfileProps) {
         super('div', props, {
             Profile: new Profile({
-                avatar: props.avatar,
                 Children: new ProfileInner(props) as Block,
             }) as Block,
         });
@@ -21,10 +21,12 @@ class ProfilePage extends Block<ProfileProps> {
 
     componentDidMount() {
         const getUser = async () => {
-            await this.authService.getUser();
+            if (!this.store.getState<AppStore>().user.user) {
+                await this.authService.getUser();
+            }
         };
 
-        getUser();
+        void getUser();
     }
 
     componentDidUpdate(oldProps: ProfileProps, newProps: ProfileProps): boolean {
@@ -32,7 +34,6 @@ class ProfilePage extends Block<ProfileProps> {
             const profile = this.children.Profile as Block;
 
             if (profile) {
-                const Avatar = profile.children.Avatar as Block;
                 const bodyChildren = profile.children.Body;
 
                 if (Array.isArray(bodyChildren) && bodyChildren.length > 0) {
@@ -41,10 +42,6 @@ class ProfilePage extends Block<ProfileProps> {
                     if (profileInner) {
                         profileInner.setProps(newProps);
                     }
-                }
-
-                if (Avatar) {
-                    Avatar.setProps({ avatar: newProps.avatar });
                 }
             }
         }

@@ -1,9 +1,7 @@
 import { ROUTER } from '@/const';
-import * as context from '@/context';
 import { Router } from '@/core';
 import * as Pages from '@/pages';
 import '@/assets/styles/styles.css';
-import { ErrorContext } from '@/context/types/ErrorContext';
 import { initStore } from '@/store';
 
 initStore();
@@ -17,6 +15,5 @@ router
     .use(ROUTER.login, Pages.LoginPage)
     .use(ROUTER.settings, Pages.ProfilePage)
     .use(ROUTER.signUp, Pages.SignUpPage)
-    .use<ErrorContext>('/404', Pages.ErrorPage, context.errorNotFoundContext)
-    .use<ErrorContext>('/500', Pages.ErrorPage, context.errorServerContext)
+    .use('/404', Pages.ErrorPage)
     .start();

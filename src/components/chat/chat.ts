@@ -1,8 +1,9 @@
+import { initProps } from '@/components/sendMessageForm';
 import { Block, Store, WebSocketClient } from '@/core';
-import { ChatHeader, SendMessageForm, Messages, ChatUsersActions } from '@/components';
-import { connect, formatDate, isErrorsEmpty } from '@/helpers';
+import { ChatHeader, SendMessageForm, Messages, ChatActions } from '@/components';
+import { connect, formatDate } from '@/helpers';
 import { ChatsService } from '@/services';
-import { AppStore, ChatMessage } from '@/store';
+import { AppStore, ChatMessage, SelectedChatState } from '@/store';
 import {
     GetMessageRequestDto,
     GetMessageResponseDto,
@@ -32,7 +33,7 @@ class Chat extends Block<ChatProps> {
                 className: styles.chat,
             },
             {
-                Actions: new ChatUsersActions({
+                Actions: new ChatActions({
                     isShowActionsPanel: false,
                     isShowAddPopup: false,
                     isShowRemovePopup: false,
@@ -45,18 +46,11 @@ class Chat extends Block<ChatProps> {
                     messages: [],
                 }) as Block,
                 MessageForm: new SendMessageForm({
-                    onSubmit: (e: Event, message: string, errors) =>
-                        this.handleSubmitMessage(e, message, errors),
+                    ...initProps,
+                    onSubmit: (message: string) => this.sendMessage(message),
                 }) as Block,
             },
         );
-    }
-
-    private handleSubmitMessage(e: Event, message: string, errors: Record<string, string>) {
-        if (isErrorsEmpty(errors)) {
-            this.sendMessage(message);
-            (e.target as HTMLFormElement).reset();
-        }
     }
 
     private webSocketNotInitialized() {
@@ -93,7 +87,12 @@ class Chat extends Block<ChatProps> {
         }
 
         const sortedMessages = messages.sort((a, b) => a.timestamp - b.timestamp);
-        this.store.set('selectedChat.messages', sortedMessages);
+
+        this.store.set<SelectedChatState>('selectedChat', {
+            ...this.store.getState<AppStore>().selectedChat,
+            isLoading: false,
+            messages: sortedMessages,
+        });
     };
 
     private onErrorCallback = ({ type, message }: WebsocketLog) => {
@@ -104,12 +103,6 @@ class Chat extends Block<ChatProps> {
         console.warn(`${type}: ${message}`);
     };
 
-    private initMessageSubscription() {
-        if (this.webSocketNotInitialized()) return;
-
-        this.wsClient?.subscribe('message', this.onMessageCallback);
-    }
-
     private async initWebSocket() {
         if (!this.props.chatId) {
             throw new Error('Chat not found');
@@ -119,12 +112,13 @@ class Chat extends Block<ChatProps> {
             throw new Error('User not found');
         }
 
-        this.wsClient = await this.chatsService.chatWsConnect(this.props.chatId, this.props.userId);
+        this.store.set<boolean>('selectedChat.isLoading', true);
 
-        void this.initMessageSubscription();
+        this.wsClient = await this.chatsService.chatWsConnect(this.props.chatId, this.props.userId);
 
         this.wsClient.send('get old', '0');
 
+        this.wsClient.subscribe('message', this.onMessageCallback);
         this.wsClient.subscribe(WebSocketEvents.Error, this.onErrorCallback);
         this.wsClient.subscribe(WebSocketEvents.Warning, this.onWarningCallback);
     }
@@ -140,21 +134,9 @@ class Chat extends Block<ChatProps> {
     }
 
     componentDidUpdate(oldProps: ChatProps, newProps: ChatProps): boolean {
-        if (oldProps.chatId !== newProps.chatId) {
+        if (newProps.chatId && oldProps.chatId !== newProps.chatId) {
             this.disconnectWebSocket(this.wsClient);
-
-            if (!newProps.chatId) {
-                this.store.set('selectedChat', {
-                    isLoading: false,
-                    isError: '',
-                    chat: null,
-                    users: null,
-                    messages: null,
-                });
-            } else {
-                void this.initWebSocket();
-            }
-
+            void this.initWebSocket();
             return true;
         }
 

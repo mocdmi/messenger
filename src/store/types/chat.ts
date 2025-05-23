@@ -4,5 +4,6 @@ export interface Chat {
     lastMessage?: string;
     lastMessageTime?: string;
     newMessagesNum?: number;
+    createdBy: number;
     avatar?: string;
 }
