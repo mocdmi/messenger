@@ -13,7 +13,6 @@ export default class Messenger extends Block {
             'div',
             {},
             {
-                // TODO: Сделать пропсы опциональными
                 Sidebar: new Sidebar({ chats: [] }) as Block,
                 Chat: new Chat({}) as Block,
             },

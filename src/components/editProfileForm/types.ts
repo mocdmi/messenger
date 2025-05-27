@@ -27,4 +27,5 @@ export interface EditProfileFormProps {
             error: string;
         };
     };
+    isError?: string;
 }

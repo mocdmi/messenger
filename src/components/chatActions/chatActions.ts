@@ -12,9 +12,10 @@ interface ChatActionsProps {
     isShowRemovePopup?: boolean;
     chatId?: number;
     createdBy?: number;
+    userId?: number;
 }
 
-// TODO: Убирать кнопку удалить чат, если пользователь не является создателем чата
+// TODO: Убирать кнопки удалить пользователя и удалить чат, если пользователь не является создателем чата
 class ChatActions extends Block<ChatActionsProps> {
     private readonly store = Store.getInstance();
     private readonly chatsService = new ChatsService();
@@ -111,7 +112,7 @@ class ChatActions extends Block<ChatActionsProps> {
                 ...this.props,
                 isShowAddPopup: false,
             });
-        } catch (_error: unknown) {
+        } catch {
             this.store.set<string>(
                 'selectedChat.isError',
                 'Ошибка при добавлении пользователя в чат',
@@ -133,7 +134,7 @@ class ChatActions extends Block<ChatActionsProps> {
                 ...this.props,
                 isShowRemovePopup: false,
             });
-        } catch (_error: unknown) {
+        } catch {
             this.store.set<string>(
                 'selectedChat.isError',
                 'Ошибка при удалении пользователя из чата',
@@ -190,6 +191,7 @@ function mapStateToProps(state: AppStore): ChatActionsProps {
     return {
         chatId: state.selectedChat.chat?.id,
         createdBy: state.selectedChat.chat?.createdBy,
+        userId: state.user.user?.id,
     };
 }
 

@@ -15,4 +15,5 @@ export interface EditPasswordFormProps {
             error: string;
         };
     };
+    isError?: string;
 }

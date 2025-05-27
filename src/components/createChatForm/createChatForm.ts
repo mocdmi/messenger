@@ -17,6 +17,10 @@ class CreateChatForm extends BaseForm<CreateChatFormProps, InputKey> {
             const chatName = this.props.form.chatName.value;
             this.props.onSubmit?.(chatName);
             super.resetForm();
+            this.setProps({
+                ...this.props,
+                isError: '',
+            });
         }
     }
 

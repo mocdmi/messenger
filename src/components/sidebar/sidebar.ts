@@ -54,7 +54,7 @@ class Sidebar extends Block<SidebarProps> {
     componentDidUpdate(oldProps: SidebarProps, newProps: SidebarProps): boolean {
         if (oldProps !== newProps) {
             if (newProps.chats) {
-                this.children.Chats = newProps.chats.map(
+                this.children.Chats = newProps.chats?.map(
                     (props) =>
                         new ChatCard({
                             ...props,
@@ -76,7 +76,7 @@ class Sidebar extends Block<SidebarProps> {
                 {{{ProfileLink}}}
             </div>
             {{{SearchForm}}}
-            {{#if isLoading}}{{#unless Chats}}{{{Loading}}}{{/unless}}{{/if}}
+            {{#if isLoading}}{{{Loading}}}{{/if}}
             <div class="${styles.chatsWrap}">
                 {{#each Chats}}
                     {{{this}}}
@@ -93,7 +93,8 @@ function mapStateToProps(state: AppStore): SidebarProps {
     return {
         chats: state.chats.chats ?? [],
         selectedChatId: state.selectedChat.chat?.id,
-        isLoading: state.chats.isLoading,
+        // isLoading: state.chats.isLoading,
+        isLoading: false, // TODO: Сделать чтобы компонент отображал лоадер при загрузке чатов только если чаты есть
     };
 }
 

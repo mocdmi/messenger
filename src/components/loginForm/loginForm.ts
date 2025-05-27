@@ -9,7 +9,6 @@ import { AuthService } from '@/services';
 import { InputKey, LoginFormProps } from './types';
 import styles from './styles.module.css';
 
-// TODO: Сделать очистку ошибок, которые приходят с сервера
 class LoginForm extends BaseForm<LoginFormProps, InputKey> {
     private readonly authService = new AuthService();
 

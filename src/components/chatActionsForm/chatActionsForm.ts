@@ -20,6 +20,10 @@ class ChatActionsForm extends BaseForm<ChatActionsFormProps, InputKey> {
 
             this.props.onSubmit?.(Number(userId));
             super.resetForm();
+            this.setProps({
+                ...this.props,
+                isError: '',
+            });
         }
     }
 

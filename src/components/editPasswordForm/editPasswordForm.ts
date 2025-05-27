@@ -1,15 +1,16 @@
 import { BaseForm } from '@/components';
 import { blankTheme } from '@/components/baseForm';
 import { Store } from '@/core';
-import { isErrorsEmpty } from '@/helpers';
+import { connect, isErrorsEmpty } from '@/helpers';
 import { AuthService, UserService } from '@/services';
 import { AppStore } from '@/store';
 import { UpdateUserPasswordRequestDto } from '@/types';
 import { config } from './config';
 import { EditPasswordFormProps, InputKey } from './types';
+import mapStateToProps from './mapStateToProps';
 import styles from './styles.module.css';
 
-export default class EditPasswordForm extends BaseForm<EditPasswordFormProps, InputKey> {
+class EditPasswordForm extends BaseForm<EditPasswordFormProps, InputKey> {
     private readonly authService = new AuthService();
     private readonly userService = new UserService();
     private readonly store = Store.getInstance();
@@ -31,6 +32,11 @@ export default class EditPasswordForm extends BaseForm<EditPasswordFormProps, In
             await this.userService.editPassword(formData);
 
             super.resetForm();
+
+            this.setProps({
+                ...this.props,
+                isError: '',
+            });
         }
     }
 
@@ -64,6 +70,13 @@ export default class EditPasswordForm extends BaseForm<EditPasswordFormProps, In
             <div class="${styles.save}">
                 {{{SubmitButton}}}
             </div>
+            {{#if isError}}
+                <div class="${styles.errorMessage}">
+                    {{isError}}
+                </div>
+            {{/if}}
         `;
     }
 }
+
+export default connect<AppStore, EditPasswordFormProps>(mapStateToProps)(EditPasswordForm);

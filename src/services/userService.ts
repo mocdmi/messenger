@@ -18,7 +18,7 @@ export default class UserService {
             const { status, response } = await this.userApi.update(data);
 
             if ('reason' in response) {
-                throw new Error(response.reason);
+                this.store.set<string>('user.isError', response.reason);
             }
 
             if (status !== 200) {
@@ -68,9 +68,13 @@ export default class UserService {
                 isError: '',
             });
 
-            const { status } = await this.userApi.updatePassword(data);
+            const { status, response } = await this.userApi.updatePassword(data);
 
             this.store.set<boolean>('user.isLoading', false);
+
+            if (typeof response === 'object' && 'reason' in response) {
+                this.store.set<string>('user.isError', response.reason);
+            }
 
             if (status !== 200) {
                 throw new Error(`Error edit password. Status: ${status}`);

@@ -29,3 +29,10 @@
     flex-direction: column;
     align-items: center;
 }
+
+.errorMessage {
+    font-size: var(--font-size-xs);
+    color: var(--danger-color);
+    text-align: center;
+    margin-top: 10px;
+}

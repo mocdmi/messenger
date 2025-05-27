@@ -74,7 +74,15 @@ export default class AuthService {
             this.store.set<boolean>('user.isLoading', false);
 
             if (status === 401) {
+                if (
+                    this.router.getCurrentRoute()?.match(ROUTER.login) ||
+                    this.router.getCurrentRoute()?.match(ROUTER.signUp)
+                )
+                    return;
+
                 this.router.go(ROUTER.login);
+
+                return;
             }
 
             if ('reason' in response) {
@@ -82,11 +90,8 @@ export default class AuthService {
             }
 
             if (status !== 200) {
-                this.router.go(ROUTER.login);
                 throw new Error(`Error get user. Status: ${status}`);
             }
-
-            this.store.set('user.user', response);
 
             if (
                 this.router.getCurrentRoute()?.match(ROUTER.signUp) ||
@@ -94,6 +99,8 @@ export default class AuthService {
             ) {
                 this.router.go(ROUTER.messenger);
             }
+
+            this.store.set('user.user', response);
         } catch (error) {
             throw error;
         }

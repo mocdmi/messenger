@@ -48,7 +48,7 @@ export default class CreateChat extends Block<CreateChatProps> {
                 ...this.props,
                 isShowPopup: false,
             });
-        } catch (_error: unknown) {
+        } catch {
             this.store.set<string>('selectedChat', 'Ошибка при создании чата');
         }
 

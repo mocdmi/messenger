@@ -5,6 +5,7 @@ type ButtonType = 'button' | 'submit' | 'reset';
 
 interface ButtonAttrs {
     type: ButtonType;
+    disabled?: string;
 }
 
 interface ButtonProps extends ButtonAttrs {
@@ -14,6 +15,7 @@ interface ButtonProps extends ButtonAttrs {
     rounded?: boolean;
     icon?: string;
     label?: string;
+    isDisabled?: boolean;
     onClick?: (e: Event) => void;
 }
 
@@ -30,6 +32,7 @@ export default class Button extends Block<ButtonProps, ButtonAttrs> {
             `,
             attrs: {
                 type: props.type,
+                disabled: props.isDisabled ? 'disabled' : undefined,
             },
             events: {
                 ...(props.onClick ? { click: props.onClick } : {}),

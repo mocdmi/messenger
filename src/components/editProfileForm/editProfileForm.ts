@@ -30,6 +30,11 @@ class EditProfileForm extends BaseForm<EditProfileFormProps, InputKey> {
             );
 
             await this.userService.editUser(formData);
+
+            this.setProps({
+                ...this.props,
+                isError: '',
+            });
         }
     }
 
@@ -63,6 +68,11 @@ class EditProfileForm extends BaseForm<EditProfileFormProps, InputKey> {
             <div class="${styles.save}">
                 {{{SubmitButton}}}
             </div>
+            {{#if isError}}
+                <div class="${styles.errorMessage}">
+                    {{isError}}
+                </div>
+            {{/if}}
         `;
     }
 }

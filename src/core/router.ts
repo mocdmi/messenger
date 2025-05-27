@@ -35,7 +35,7 @@ export default class Router {
 
         try {
             this.onRoute(window.location.pathname);
-        } catch (_error: unknown) {
+        } catch {
             this.onRoute(ROUTER.notFound);
         }
     }
