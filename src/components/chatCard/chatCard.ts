@@ -1,3 +1,4 @@
+import { API_URL } from '@/const';
 import { Block, Store } from '@/core';
 import { ChatsService } from '@/services';
 import { SelectedChatState } from '@/store';
@@ -51,7 +52,9 @@ export default class ChatCard extends Block<ChatCardProps> {
             <div class="${styles.inner} {{#if active}}${styles.active}{{/if}}">
                 {{#if avatar}}
                     <div class="${styles.avatarWrap}">
-                        <div class="${styles.avatar}"></div>
+                        <div class="${styles.avatar}">
+                            <img src="${API_URL}/resources/{{avatar}}" alt="{{title}}" class="${styles.avatarImage}" />
+                        </div>
                     </div>
                 {{/if}}
                 <h2 class="${styles.title}">{{title}}</h2>

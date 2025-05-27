@@ -1,3 +1,4 @@
+import { API_URL } from '@/const';
 import { Block } from '@/core';
 import { connect } from '@/helpers';
 import { AppStore } from '@/store';
@@ -18,7 +19,9 @@ class ChatHeader extends Block<ChatHeaderProps> {
         return `
             <div class="${styles.selectedChatInfo}">
                 {{#if selectedChatAvatar}}
-                    <div class="${styles.avatar}"></div>
+                    <div class="${styles.avatar}">
+                        <img src="${API_URL}/resources/{{selectedChatAvatar}}" alt="{{selectedChatTitle}}" class="${styles.avatarImage}" />
+                    </div>
                 {{/if}}
                 <h2 class="${styles.title}">{{selectedChatTitle}}</h2>
             </div>

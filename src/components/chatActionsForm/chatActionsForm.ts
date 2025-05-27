@@ -1,5 +1,6 @@
 import { BaseForm } from '@/components';
 import { defaultTheme } from '@/components/baseForm';
+import { UserService } from '@/services';
 import { AppStore } from '@/store';
 import { ChatActionsFormProps, InputKey } from './types';
 import { config } from './config';
@@ -8,6 +9,8 @@ import styles from './styles.module.css';
 import mapStateToProps from './mapStateToProps';
 
 class ChatActionsForm extends BaseForm<ChatActionsFormProps, InputKey> {
+    private readonly userService = new UserService();
+
     constructor(props: ChatActionsFormProps) {
         super(props, config, { label: props.buttonTitle ?? 'Отправить' }, (props) =>
             defaultTheme(props),
@@ -16,9 +19,21 @@ class ChatActionsForm extends BaseForm<ChatActionsFormProps, InputKey> {
 
     async onSubmit(_e: Event, errors: Record<string, string>) {
         if (isErrorsEmpty(errors)) {
-            const userId = this.props.form.login.value; // TODO: Переделать на поиск id пользователя по логину
+            const searchUsers = await this.userService.searchUser(this.props.form.login.value);
+            const user = searchUsers.filter(
+                (user) => user.login === this.props.form.login.value,
+            )[0];
 
-            this.props.onSubmit?.(Number(userId));
+            if (!user) {
+                this.setProps({
+                    ...this.props,
+                    isError: 'Пользователь не найден',
+                });
+
+                return;
+            }
+
+            this.props.onSubmit?.(Number(user.id));
             super.resetForm();
             this.setProps({
                 ...this.props,

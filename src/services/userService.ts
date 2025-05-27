@@ -1,7 +1,7 @@
 import { UserApi } from '@/api';
 import { Store } from '@/core';
 import { AppStore, UserState } from '@/store';
-import { UpdateUserPasswordRequestDto, UserDto } from '@/types';
+import { BaseUserDto, UpdateUserPasswordRequestDto, UserDto } from '@/types';
 
 export default class UserService {
     private readonly store = Store.getInstance();
@@ -79,6 +79,32 @@ export default class UserService {
             if (status !== 200) {
                 throw new Error(`Error edit password. Status: ${status}`);
             }
+        } catch (error: unknown) {
+            throw error;
+        }
+    }
+
+    async searchUser(login: string): Promise<BaseUserDto[]> {
+        try {
+            this.store.set<UserState>('user', {
+                ...this.store.getState<AppStore>().user,
+                isLoading: true,
+                isError: '',
+            });
+
+            const { status, response } = await this.userApi.search({ login });
+
+            this.store.set<boolean>('user.isLoading', false);
+
+            if ('reason' in response) {
+                this.store.set<string>('user.isError', response.reason);
+            }
+
+            if (status !== 200) {
+                throw new Error(`Error search user. Status: ${status}`);
+            }
+
+            return 'reason' in response ? [] : response;
         } catch (error: unknown) {
             throw error;
         }
