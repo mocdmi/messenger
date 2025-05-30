@@ -1,19 +1,31 @@
-import { Panel } from '../../components';
-import { Block } from '../../core';
-import PanelInner from './parts/panel-inner';
+import { Panel } from '@/components';
+import { Block } from '@/core';
+import { AuthService } from '@/services';
+import LoginFormContainer from './loginFormContainer';
 import styles from './styles.module.css';
 
 export default class LoginPage extends Block {
+    private readonly authService = new AuthService();
+
     constructor() {
         super(
             'div',
             {},
             {
                 Panel: new Panel({
-                    Children: new PanelInner(),
+                    'inner-class': styles.panel,
+                    Children: new LoginFormContainer(),
                 }) as Block,
             },
         );
+    }
+
+    componentDidMount() {
+        const getData = async () => {
+            await this.authService.getUser();
+        };
+
+        void getData();
     }
 
     // language=Handlebars

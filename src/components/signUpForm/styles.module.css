@@ -1,0 +1,18 @@
+.field {
+    margin-top: 16px;
+
+    &:first-child {
+        margin-top: 0;
+    }
+}
+
+.submit {
+    margin-top: 47px;
+}
+
+.errorMessage {
+    font-size: var(--font-size-xs);
+    color: var(--danger-color);
+    text-align: center;
+    margin-top: 10px;
+}

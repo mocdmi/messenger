@@ -8,7 +8,7 @@
     padding: 20px;
 }
 
-.inner {
+.panel {
     padding: 30px;
 }
 
@@ -19,19 +19,7 @@
     margin: 0 0 40px;
 }
 
-.field {
-    margin-top: 16px;
-
-    &:first-child {
-        margin-top: 0;
-    }
-}
-
-.submit {
-    margin-top: 160px;
-}
-
-.signIn {
+.signUp {
     font-size: var(--font-size-s);
     text-align: center;
     margin-top: 14px;

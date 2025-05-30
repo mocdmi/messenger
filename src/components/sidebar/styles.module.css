@@ -1,0 +1,42 @@
+.sidebar {
+    background: var(--light-gray-color);
+    height: 100%;
+
+    .link {
+        display: inline-block;
+        color: var(--dark-gray-color);
+        text-decoration: none;
+        font-size: var(--font-size-s);
+
+        &::after {
+            content: '';
+            display: inline-block;
+            background: url('../../assets/images/arrow-left.svg') no-repeat center center;
+            width: 10px;
+            height: 6px;
+        }
+    }
+}
+
+.linkWrap {
+    text-align: right;
+    padding: 21px 10px 23px;
+}
+
+.search {
+    padding: 0 10px 14px;
+}
+
+.chatsWrap {
+    margin-bottom: 20px;
+}
+
+.createChat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.loading {
+    height: 60px;
+}
