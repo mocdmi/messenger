@@ -1,0 +1,148 @@
+import { HttpTransportResponse } from '@/types';
+import HttpTransport from './httpTransport';
+
+jest.mock('@/const', () => ({
+    API_URL: 'https://example.com',
+}));
+
+const mockXhr: jest.Mocked<Partial<XMLHttpRequest>> = {
+    open: jest.fn(),
+    send: jest.fn(),
+    withCredentials: true,
+    setRequestHeader: jest.fn(),
+    getAllResponseHeaders: jest.fn(() => 'Content-Type: application/json\r\nX-Test: test'),
+    getResponseHeader: jest.fn((name: string) => {
+        if (name === 'Content-Type') return 'application/json';
+        if (name === 'X-Test') return 'test';
+        return null;
+    }),
+    status: 200,
+    statusText: 'OK',
+    response: JSON.stringify({ ok: true }),
+    onload: null,
+};
+
+describe('HttpTransport', () => {
+    let apiInstance: HttpTransport;
+    const OriginalXMLHttpRequest = global.XMLHttpRequest;
+
+    function simulateLoad() {
+        return (mockXhr as jest.Mocked<XMLHttpRequest>).onload?.(new ProgressEvent('load'));
+    }
+
+    function simulateError() {
+        return (mockXhr as jest.Mocked<XMLHttpRequest>).onerror?.(new ProgressEvent('error'));
+    }
+
+    function expectSuccessResponse(result: HttpTransportResponse<void>) {
+        expect(result.headers).toEqual({
+            'Content-Type': 'application/json',
+            'X-Test': 'test',
+        });
+        expect(result.statusText).toBe('OK');
+        expect(result.status).toBe(200);
+        expect(result.response).toEqual({ ok: true });
+    }
+
+    beforeEach(() => {
+        jest.clearAllMocks();
+        apiInstance = new HttpTransport('/test');
+
+        const MockXMLHttpRequest = function (this: XMLHttpRequest) {
+            return mockXhr;
+        } as unknown as typeof XMLHttpRequest;
+
+        Object.defineProperties(MockXMLHttpRequest, {
+            UNSENT: { value: 0 },
+            OPENED: { value: 1 },
+            HEADERS_RECEIVED: { value: 2 },
+            LOADING: { value: 3 },
+            DONE: { value: 4 },
+        });
+
+        global.XMLHttpRequest = MockXMLHttpRequest;
+    });
+
+    afterEach(() => {
+        global.XMLHttpRequest = OriginalXMLHttpRequest;
+    });
+
+    it('should properly handle GET request and process JSON response', async () => {
+        const promise = apiInstance.get('/example');
+
+        simulateLoad();
+
+        const result = await promise;
+
+        expect(mockXhr.open).toHaveBeenCalledWith('GET', 'https://example.com/test/example');
+        expectSuccessResponse(result);
+    });
+
+    it('should properly handle POST send JSON body request and process JSON response', async () => {
+        const data = { name: 'test' };
+        const promise = apiInstance.post('/example', { data });
+
+        simulateLoad();
+
+        const result = await promise;
+
+        expect(mockXhr.open).toHaveBeenCalledWith('POST', 'https://example.com/test/example');
+        expect(mockXhr.setRequestHeader).toHaveBeenCalledWith('Content-Type', 'application/json');
+        expect(mockXhr.send).toHaveBeenCalledWith(JSON.stringify(data));
+        expectSuccessResponse(result);
+    });
+
+    it('should properly handle POST send FormData body request and not send Content-Type header', async () => {
+        const formData = new FormData();
+        formData.append('file', new Blob(['test']));
+        const promise = apiInstance.post('/upload', { data: formData });
+
+        simulateLoad();
+
+        const result = await promise;
+
+        expect(mockXhr.open).toHaveBeenCalledWith('POST', 'https://example.com/test/upload');
+        expect(mockXhr.setRequestHeader).not.toHaveBeenCalledWith(
+            'Content-Type',
+            expect.anything(),
+        );
+        expect(mockXhr.send).toHaveBeenCalledWith(formData);
+        expectSuccessResponse(result);
+    });
+
+    it('should properly handle PUT send JSON body request and process JSON response', async () => {
+        const data = { name: 'test' };
+        const promise = apiInstance.put('/example', { data });
+
+        simulateLoad();
+
+        const result = await promise;
+
+        expect(mockXhr.open).toHaveBeenCalledWith('PUT', 'https://example.com/test/example');
+        expect(mockXhr.setRequestHeader).toHaveBeenCalledWith('Content-Type', 'application/json');
+        expect(mockXhr.send).toHaveBeenCalledWith(JSON.stringify(data));
+        expectSuccessResponse(result);
+    });
+
+    it('should properly handle DELETE send JSON body request and process JSON response', async () => {
+        const data = { name: 'test' };
+        const promise = apiInstance.delete('/example', { data });
+
+        simulateLoad();
+
+        const result = await promise;
+
+        expect(mockXhr.open).toHaveBeenCalledWith('DELETE', 'https://example.com/test/example');
+        expect(mockXhr.setRequestHeader).toHaveBeenCalledWith('Content-Type', 'application/json');
+        expect(mockXhr.send).toHaveBeenCalledWith(JSON.stringify(data));
+        expectSuccessResponse(result);
+    });
+
+    it('should handle network errors', async () => {
+        const promise = apiInstance.get('/fail');
+
+        simulateError();
+
+        await expect(promise).rejects.toThrow('Network error');
+    });
+});
