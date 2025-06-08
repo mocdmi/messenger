@@ -129,6 +129,8 @@ describe('Block', () => {
         childComponent.dispatchComponentDidMount();
 
         expect(emitSpy).toHaveBeenCalledWith('flow:component-did-mount');
+
+        emitSpy.mockRestore();
     });
 
     test('should add event listeners on render', () => {

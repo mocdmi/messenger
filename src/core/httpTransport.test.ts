@@ -5,9 +5,26 @@ jest.mock('@/const', () => ({
     API_URL: 'https://example.com',
 }));
 
+const mockXhr: jest.Mocked<Partial<XMLHttpRequest>> = {
+    open: jest.fn(),
+    send: jest.fn(),
+    withCredentials: true,
+    setRequestHeader: jest.fn(),
+    getAllResponseHeaders: jest.fn(() => 'Content-Type: application/json\r\nX-Test: test'),
+    getResponseHeader: jest.fn((name: string) => {
+        if (name === 'Content-Type') return 'application/json';
+        if (name === 'X-Test') return 'test';
+        return null;
+    }),
+    status: 200,
+    statusText: 'OK',
+    response: JSON.stringify({ ok: true }),
+    onload: null,
+};
+
 describe('HttpTransport', () => {
     let apiInstance: HttpTransport;
-    let mockXhr: jest.Mocked<Partial<XMLHttpRequest>>;
+    const OriginalXMLHttpRequest = global.XMLHttpRequest;
 
     function simulateLoad() {
         return (mockXhr as jest.Mocked<XMLHttpRequest>).onload?.(new ProgressEvent('load'));
@@ -28,28 +45,13 @@ describe('HttpTransport', () => {
     }
 
     beforeEach(() => {
+        jest.clearAllMocks();
         apiInstance = new HttpTransport('/test');
-
-        mockXhr = {
-            open: jest.fn(),
-            send: jest.fn(),
-            withCredentials: true,
-            setRequestHeader: jest.fn(),
-            getAllResponseHeaders: jest.fn(() => 'Content-Type: application/json\r\nX-Test: test'),
-            getResponseHeader: jest.fn((name: string) => {
-                if (name === 'Content-Type') return 'application/json';
-                if (name === 'X-Test') return 'test';
-                return null;
-            }),
-            status: 200,
-            statusText: 'OK',
-            response: JSON.stringify({ ok: true }),
-            onload: null,
-            onreadystatechange: null,
-            readyState: 4,
-        };
-
         global.XMLHttpRequest = jest.fn(() => mockXhr);
+    });
+
+    afterEach(() => {
+        global.XMLHttpRequest = OriginalXMLHttpRequest;
     });
 
     it('should properly handle GET request and process JSON response', async () => {
@@ -128,6 +130,6 @@ describe('HttpTransport', () => {
 
         simulateError();
 
-        await expect(promise).rejects.toThrow('Ошибка соединения');
+        await expect(promise).rejects.toThrow('Network error');
     });
 });

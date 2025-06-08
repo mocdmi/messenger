@@ -26,6 +26,10 @@ export default class Route {
         return path === this.path;
     }
 
+    getPath(): string {
+        return this.path;
+    }
+
     private renderDom(rootQuery: string, block: Block): void {
         const root = document.querySelector(rootQuery);
 

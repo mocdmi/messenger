@@ -18,6 +18,10 @@ export default class Router {
         return Router.instance;
     }
 
+    getRoutes(): Route[] {
+        return this.routes;
+    }
+
     createApp(rootQuery: string): Router {
         this.rootQuery = rootQuery;
         return this;
@@ -80,6 +84,12 @@ export default class Router {
 
     getCurrentRoute(): Route | null {
         return this.currentRoute;
+    }
+
+    reset(): void {
+        this.routes = [];
+        this.currentRoute = null;
+        this.rootQuery = undefined;
     }
 
     private getBlockByPath(path: string): Route | undefined {

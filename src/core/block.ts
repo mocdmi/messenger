@@ -22,6 +22,7 @@ export default abstract class Block<
         props: TProps & Attributes<TAttrs>;
     };
     private readonly eventBus: EventBus = new EventBus();
+    // TODO: ограничить чтением
     readonly children: Children;
     readonly props: TProps & Attributes<TAttrs>;
     protected readonly id = crypto.randomUUID();

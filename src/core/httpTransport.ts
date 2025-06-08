@@ -131,9 +131,9 @@ export default class HttpTransport {
                 });
             };
 
-            xhr.onerror = (): void => reject(new Error('Ошибка соединения'));
-            xhr.onabort = (): void => reject(new Error('Запрос прерван'));
-            xhr.ontimeout = (): void => reject(new Error('Таймаут'));
+            xhr.onerror = (): void => reject(new Error('Network error'));
+            xhr.onabort = (): void => reject(new Error('Request aborted'));
+            xhr.ontimeout = (): void => reject(new Error('Request timeout'));
         });
     }
 }
