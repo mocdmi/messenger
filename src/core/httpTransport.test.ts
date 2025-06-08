@@ -47,7 +47,15 @@ describe('HttpTransport', () => {
     beforeEach(() => {
         jest.clearAllMocks();
         apiInstance = new HttpTransport('/test');
-        global.XMLHttpRequest = jest.fn(() => mockXhr);
+
+        const MockXMLHttpRequest = jest.fn(() => mockXhr) as unknown as typeof XMLHttpRequest;
+        MockXMLHttpRequest.UNSENT = 0;
+        MockXMLHttpRequest.OPENED = 1;
+        MockXMLHttpRequest.HEADERS_RECEIVED = 2;
+        MockXMLHttpRequest.LOADING = 3;
+        MockXMLHttpRequest.DONE = 4;
+
+        global.XMLHttpRequest = MockXMLHttpRequest;
     });
 
     afterEach(() => {
