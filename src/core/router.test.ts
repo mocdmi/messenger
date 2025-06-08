@@ -1,8 +1,8 @@
 import { ROUTER } from '@/const';
-import { Block } from '@/core/index';
+import Block from './block';
 import { BlockConstructor } from '@/types';
 
-jest.mock('./Route', () => {
+jest.mock('./route', () => {
     class MockRoute {
         path: string;
         block: Block | null;
